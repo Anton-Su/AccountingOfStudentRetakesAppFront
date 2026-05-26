@@ -1,5 +1,6 @@
 package com.example.accountingofstudentretakesapp.presentation.ui.screen
-
+import com.example.accountingofstudentretakesapp.R
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -15,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.ui.res.painterResource
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RoleSelector
 import kotlinx.coroutines.launch
 
@@ -34,6 +36,11 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Image(
+            painter = painterResource(  R.drawable.reklamatry),
+            contentDescription = "Реклама",
+            modifier = Modifier.size(200.dp)
+        )
         Text("Вход в приложение", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(32.dp))
         RoleSelector(
@@ -89,6 +96,18 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         ) {
             Text(if (isLoading) "Вход..." else "Войти")
         }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Не получается войти? Уточните у ответственного лица университета.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Нашли ошибку в системе? Напишите разработчику на почту @develroper@mail.ru",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
         errorMessage?.let {
             Spacer(modifier = Modifier.height(16.dp))
             Text(it, color = MaterialTheme.colorScheme.error)
