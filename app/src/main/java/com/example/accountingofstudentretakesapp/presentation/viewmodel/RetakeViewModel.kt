@@ -3,9 +3,11 @@ package com.example.accountingofstudentretakesapp.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
+import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailDto
 import com.example.accountingofstudentretakesapp.domain.model.UserDto
 import com.example.accountingofstudentretakesapp.domain.repository.AuthRepository
 import com.example.accountingofstudentretakesapp.domain.usecase.GetCurrentUserUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetTeacherRetakesUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.LoginUseCase
 import com.example.accountingofstudentretakesapp.presentation.model.UserRole
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,6 +23,9 @@ data class RetakeUiState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val loggedInUser: UserDto? = null,
+    val teacherRetakes: List<RetakeDetailDto> = emptyList(),
+    val teacherRetakesLoading: Boolean = false,
+    val teacherRetakesError: String? = null,
 )
 
 class RetakeViewModel(
@@ -28,6 +33,7 @@ class RetakeViewModel(
     private val settingsDataStore: SettingsDataStore,
     private val loginUseCase: LoginUseCase,
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val getTeacherRetakesUseCase: GetTeacherRetakesUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RetakeUiState())
@@ -87,6 +93,36 @@ class RetakeViewModel(
             authRepository.logout()
             settingsDataStore.clearUserData()
             _uiState.update { RetakeUiState() }
+        }
+    }
+
+    fun loadTeacherRetakes() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    teacherRetakesLoading = true,
+                    teacherRetakesError = null
+                )
+            }
+
+            runCatching { getTeacherRetakesUseCase() }
+                .onSuccess { retakes ->
+                    _uiState.update {
+                        it.copy(
+                            teacherRetakes = retakes,
+                            teacherRetakesLoading = false,
+                            teacherRetakesError = null
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(
+                            teacherRetakesLoading = false,
+                            teacherRetakesError = error.message ?: "Не удалось загрузить пересдачи"
+                        )
+                    }
+                }
         }
     }
 }

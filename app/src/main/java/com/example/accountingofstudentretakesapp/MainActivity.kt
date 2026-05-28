@@ -14,8 +14,10 @@ import com.example.accountingofstudentretakesapp.navigation.Navigation
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.data.remote.TokenManager
 import com.example.accountingofstudentretakesapp.data.repository.AuthRepositoryImpl
+import com.example.accountingofstudentretakesapp.data.repository.TeacherRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.UserRepositoryImpl
 import com.example.accountingofstudentretakesapp.domain.usecase.GetCurrentUserUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetTeacherRetakesUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.LoginUseCase
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
 import com.example.accountingofstudentretakesapp.ui.theme.AccountingOfStudentRetakesAppTheme
@@ -28,13 +30,16 @@ class MainActivity : ComponentActivity() {
         val tokenManager = TokenManager(applicationContext)
         val authRepository = AuthRepositoryImpl(tokenManager)
         val userRepository = UserRepositoryImpl()
+        val teacherRepository = TeacherRepositoryImpl()
         val loginUseCase = LoginUseCase(authRepository)
         val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
+        val getTeacherRetakesUseCase = GetTeacherRetakesUseCase(teacherRepository)
         val viewModel = RetakeViewModel(
             authRepository = authRepository,
             settingsDataStore = settingsDataStore,
             loginUseCase = loginUseCase,
             getCurrentUserUseCase = getCurrentUserUseCase,
+            getTeacherRetakesUseCase = getTeacherRetakesUseCase,
         )
         setContent {
             AccountingOfStudentRetakesAppTheme {

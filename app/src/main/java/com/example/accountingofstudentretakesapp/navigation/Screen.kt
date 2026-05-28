@@ -14,6 +14,7 @@ import com.example.accountingofstudentretakesapp.presentation.ui.screen.StudentH
 import com.example.accountingofstudentretakesapp.presentation.ui.screen.TeacherHomeScreen
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
 import kotlinx.coroutines.flow.collectLatest
+import androidx.compose.runtime.collectAsState
 
 sealed class Screen(val route: String) {
     data object LoginScreen : Screen("login")
@@ -62,15 +63,19 @@ fun Navigation(
             })
         }
         composable(Screen.TeacherAllScreen.route) {
-            TeacherHomeScreen(onLogout = {
-                viewModel.logout()
-                navController.navigate(Screen.LoginScreen.route) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        inclusive = true
+            TeacherHomeScreen(
+                uiState = viewModel.uiState.collectAsState().value,
+                onLoadRetakes = { viewModel.loadTeacherRetakes() },
+                onLogout = {
+                    viewModel.logout()
+                    navController.navigate(Screen.LoginScreen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
                     }
-                    launchSingleTop = true
                 }
-            })
+            )
         }
 
         composable(Screen.AdminAllScreen.route) {
