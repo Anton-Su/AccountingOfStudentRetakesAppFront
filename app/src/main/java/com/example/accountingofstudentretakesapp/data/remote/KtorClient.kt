@@ -15,6 +15,7 @@ import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailDto
 import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailsResponseDto
 import com.example.accountingofstudentretakesapp.domain.model.EnrollmentDto
 import com.example.accountingofstudentretakesapp.domain.model.GradeRequestDto
+import com.example.accountingofstudentretakesapp.presentation.model.UserRole
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
@@ -72,13 +73,14 @@ object KtorClient {
 
     }
 
-    suspend fun login(email: String, password: String): LoginResponseDto {
+    suspend fun login(email: String, password: String, role: UserRole): LoginResponseDto {
         return client.post("http://10.0.2.2:8080/auth/login") {
             contentType(ContentType.Application.Json)
             setBody(
                 mapOf(
                     "email" to email,
-                    "password" to password
+                    "password" to password,
+                    "role" to role.name
                 )
             )
         }.body()

@@ -11,12 +11,12 @@ import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.data.remote.TokenManager
 import com.example.accountingofstudentretakesapp.data.repository.AuthRepositoryImpl
 import com.example.accountingofstudentretakesapp.domain.usecase.LoginUseCase
-import com.example.accountingofstudentretakesapp.presentation.model.Role
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.ui.res.painterResource
+import com.example.accountingofstudentretakesapp.presentation.model.UserRole
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RoleSelector
 import kotlinx.coroutines.launch
 
@@ -26,7 +26,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
     var password by remember { mutableStateOf("Teacher123!") }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
-    var role by remember { mutableStateOf(Role.STUDENT) }
+    var role by remember { mutableStateOf(UserRole.STUDENT) }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     Column(
@@ -85,7 +85,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                 scope.launch {
                     val repository = AuthRepositoryImpl(TokenManager(context))
                     val loginUseCase = LoginUseCase(repository)
-                    loginUseCase(email, password)
+                    loginUseCase(email, password, role)
                         .onSuccess { onLoginSuccess() }
                         .onFailure { errorMessage = it.message }
                     // "Попробуйте ещё"

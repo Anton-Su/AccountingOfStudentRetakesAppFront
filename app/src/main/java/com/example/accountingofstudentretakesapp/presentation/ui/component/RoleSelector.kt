@@ -21,12 +21,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.presentation.model.Role
+import com.example.accountingofstudentretakesapp.presentation.model.UserRole
 
 @Composable
 fun RoleSelector(
-    selectedRole: Role,
-    onRoleSelected: (Role) -> Unit
+    selectedRole: UserRole,
+    onRoleSelected: (UserRole) -> Unit
 ) {
     val shape = RoundedCornerShape(14.dp)
     val borderColor = MaterialTheme.colorScheme.outline
@@ -52,14 +52,14 @@ fun RoleSelector(
                     .width(itemWidth)
                     .fillMaxHeight()
                     .background(
-                        if (selectedRole == Role.STUDENT) studentColor else Color.Transparent
+                        if (selectedRole == UserRole.STUDENT) studentColor else Color.Transparent
                     )
-                    .clickable { onRoleSelected(Role.STUDENT) },
+                    .clickable { onRoleSelected(UserRole.STUDENT) },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     "Студент",
-                    color = if (selectedRole == Role.STUDENT) textColorSelected else textColorUnselected,
+                    color = if (selectedRole == UserRole.STUDENT) textColorSelected else textColorUnselected,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -68,14 +68,14 @@ fun RoleSelector(
                     .width(itemWidth)
                     .fillMaxHeight()
                     .background(
-                        if (selectedRole == Role.TEACHER) teacherColor else Color.Transparent
+                        if (selectedRole == UserRole.TEACHER) teacherColor else Color.Transparent
                     )
-                    .clickable { onRoleSelected(Role.TEACHER) },
+                    .clickable { onRoleSelected(UserRole.TEACHER) },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     "Препод",
-                    color = if (selectedRole == Role.TEACHER) textColorSelected else textColorUnselected,
+                    color = if (selectedRole == UserRole.TEACHER) textColorSelected else textColorUnselected,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -84,14 +84,14 @@ fun RoleSelector(
                     .width(itemWidth)
                     .fillMaxHeight()
                     .background(
-                        if (selectedRole == Role.ADMIN) adminColor else Color.Transparent
+                        if (selectedRole == UserRole.ADMIN) adminColor else Color.Transparent
                     )
-                    .clickable { onRoleSelected(Role.ADMIN) },
+                    .clickable { onRoleSelected(UserRole.ADMIN) },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     "Админ",
-                    color = if (selectedRole == Role.ADMIN) textColorSelected else textColorUnselected,
+                    color = if (selectedRole == UserRole.ADMIN) textColorSelected else textColorUnselected,
                     fontWeight = FontWeight.Bold
                 )
             }
