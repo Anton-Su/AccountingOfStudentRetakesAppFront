@@ -22,8 +22,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit) {
-    var email by remember { mutableStateOf("test@mail.ru") }
-    var password by remember { mutableStateOf("emilyspass") }
+    var email by remember { mutableStateOf("kuznetsova.i.a@edu.mirea.ru") }
+    var password by remember { mutableStateOf("Teacher123!") }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var role by remember { mutableStateOf(Role.STUDENT) }
@@ -88,6 +88,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                     loginUseCase(email, password)
                         .onSuccess { onLoginSuccess() }
                         .onFailure { errorMessage = it.message }
+                    // "Попробуйте ещё"
                     isLoading = false
                 }
             },
@@ -104,9 +105,9 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Нашли ошибку в системе? Напишите разработчику на почту @develroper@mail.ru",
+            text = "Нашли ошибку в системе? Напишите разработчику на почту @develplover@mail.ru. Он, возможно, прочитает. Возможно...",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onErrorContainer
         )
         errorMessage?.let {
             Spacer(modifier = Modifier.height(16.dp))

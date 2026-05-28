@@ -22,9 +22,10 @@ sealed class Screen(val route: String) {
 
     data object LoginScreen : Screen("login")
 
-    data object PhotoListScreen : Screen("photo_list")
-    data object FavouriteScreen : Screen("favourite")
-    data object ProfileScreen : Screen("profile")
+    data object StudentAllScreen : Screen("student_all_screen")
+    data object TeacherAllScreen : Screen("teacher_all_screen")
+    data object AdminAllScreen : Screen("admin_all_screen")
+
     data object PhotoDetailScreen : Screen("photo_detail/{itemId}") {
         fun createRoute(itemId: Int) = "photo_detail/$itemId"
     }
@@ -35,7 +36,7 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
     NavHost(navController, startDestination = Screen.LoginScreen.route) {
 
         composable(Screen.LoginScreen.route) {
-            LoginScreen { navController.navigate(Screen.PhotoListScreen.route) }
+            LoginScreen { navController.navigate(Screen.StudentAllScreen) }
         }
 
 //        composable(Screen.PhotoListScreen.route) {
