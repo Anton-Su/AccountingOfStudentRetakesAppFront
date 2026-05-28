@@ -7,6 +7,9 @@ import com.example.accountingofstudentretakesapp.domain.model.SubjectDto
 import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequestDto
 import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeResponseDto
 import com.example.accountingofstudentretakesapp.domain.model.CommentDto
+import com.example.accountingofstudentretakesapp.domain.model.CreateCommentRequestDto
+import com.example.accountingofstudentretakesapp.domain.model.StudentDebtDto
+import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRankDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
@@ -19,6 +22,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.request.delete
 import io.ktor.client.request.put
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -151,6 +155,37 @@ object KtorClient {
 
     suspend fun getAllComments(): List<CommentDto> {
         return client.get("http://10.0.2.2:8080/api/admin/comments") {
+            contentType(ContentType.Application.Json)
+        }.body()
+    }
+
+    suspend fun getStudentDebts(studentId: Long): List<StudentDebtDto> {
+        return client.get("http://10.0.2.2:8080/api/student/$studentId/debts") {
+            contentType(ContentType.Application.Json)
+        }.body()
+    }
+
+    suspend fun enrollToRetake(studentId: Long, debtId: Long, retakeId: Long): Boolean {
+        return client.post("http://10.0.2.2:8080/api/student/$studentId/debts/$debtId/retakes/$retakeId") {
+            contentType(ContentType.Application.Json)
+        }.body()
+    }
+
+    suspend fun cancelRetakeEnrollment(studentId: Long, debtId: Long, retakeId: Long): Boolean {
+        return client.delete("http://10.0.2.2:8080/api/student/$studentId/debts/$debtId/retakes/$retakeId") {
+            contentType(ContentType.Application.Json)
+        }.body()
+    }
+
+    suspend fun createComment(studentId: Long, request: CreateCommentRequestDto): CommentDto {
+        return client.post("http://10.0.2.2:8080/api/student/$studentId/comments") {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+    }
+
+    suspend fun getStudentDebtRank(studentId: Long): StudentDebtRankDto {
+        return client.get("http://10.0.2.2:8080/api/student/$studentId/debts/rank") {
             contentType(ContentType.Application.Json)
         }.body()
     }
