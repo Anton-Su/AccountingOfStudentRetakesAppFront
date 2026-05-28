@@ -7,6 +7,7 @@ import com.example.accountingofstudentretakesapp.domain.model.SubjectDto
 import com.example.accountingofstudentretakesapp.domain.model.TeacherDto
 import com.example.accountingofstudentretakesapp.domain.repository.AdminRepository
 import com.example.accountingofstudentretakesapp.data.remote.KtorClient
+import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailDto
 
 class AdminRepositoryImpl : AdminRepository {
     override suspend fun getTeachersByDiscipline(discipline: String): List<TeacherDto> {
@@ -27,6 +28,10 @@ class AdminRepositoryImpl : AdminRepository {
 
     override suspend fun getAllComments(): List<CommentDto> {
         return KtorClient.getAllComments()
+    }
+
+    override suspend fun getAllRetakes(): List<RetakeDetailDto> {
+        return KtorClient.getAllRetakes()
     }
 }
 

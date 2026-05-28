@@ -125,6 +125,12 @@ object KtorClient {
         }.body()
     }
 
+    suspend fun getAllRetakes(): List<RetakeDetailDto> {
+        return client.get("http://10.0.2.2:8080/api/admin/retakes") {
+            contentType(ContentType.Application.Json)
+        }.body()
+    }
+
     suspend fun getStudentDebts(studentId: Long): List<StudentDebtDto> {
         return client.get("http://10.0.2.2:8080/api/student/$studentId/debts") {
             contentType(ContentType.Application.Json)
