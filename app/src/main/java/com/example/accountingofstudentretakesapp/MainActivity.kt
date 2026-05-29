@@ -22,7 +22,9 @@ import com.example.accountingofstudentretakesapp.domain.usecase.CreateRetakeUseC
 import com.example.accountingofstudentretakesapp.domain.usecase.CreateCommentUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.CancelRetakeEnrollmentUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.DeleteRetakeUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetAvailableRetakesUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetCurrentUserUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetEnrolledRetakesUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetStudentDebtRankUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetStudentDebtsUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetTeacherRetakesUseCase
@@ -58,6 +60,8 @@ class MainActivity : ComponentActivity() {
         val getAllCommentsUseCase = GetAllCommentsUseCase(adminRepository)
         val getStudentDebtsUseCase = GetStudentDebtsUseCase(studentRepository)
         val getStudentDebtRankUseCase = GetStudentDebtRankUseCase(studentRepository)
+        val getAvailableRetakesUseCase = GetAvailableRetakesUseCase(studentRepository)
+        val getEnrolledRetakesUseCase = GetEnrolledRetakesUseCase(studentRepository)
         val enrollToRetakeUseCase = EnrollToRetakeUseCase(studentRepository)
         val cancelRetakeEnrollmentUseCase = CancelRetakeEnrollmentUseCase(studentRepository)
         val createCommentUseCase = CreateCommentUseCase(studentRepository)
@@ -83,6 +87,8 @@ class MainActivity : ComponentActivity() {
             getAllCommentsUseCase = getAllCommentsUseCase,
             getStudentDebtsUseCase = getStudentDebtsUseCase,
             getStudentDebtRankUseCase = getStudentDebtRankUseCase,
+            getAvailableRetakesUseCase = getAvailableRetakesUseCase,
+            getEnrolledRetakesUseCase = getEnrolledRetakesUseCase,
             enrollToRetakeUseCase = enrollToRetakeUseCase,
             cancelRetakeEnrollmentUseCase = cancelRetakeEnrollmentUseCase,
             createCommentUseCase = createCommentUseCase,

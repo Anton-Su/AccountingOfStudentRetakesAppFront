@@ -3,6 +3,7 @@ package com.example.accountingofstudentretakesapp.data.repository
 import com.example.accountingofstudentretakesapp.data.remote.KtorClient
 import com.example.accountingofstudentretakesapp.domain.model.CommentDto
 import com.example.accountingofstudentretakesapp.domain.model.CreateCommentRequestDto
+import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailDto
 import com.example.accountingofstudentretakesapp.domain.model.StudentDebtDto
 import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRankDto
 import com.example.accountingofstudentretakesapp.domain.repository.StudentRepository
@@ -10,6 +11,14 @@ import com.example.accountingofstudentretakesapp.domain.repository.StudentReposi
 class StudentRepositoryImpl : StudentRepository {
     override suspend fun findDebtsByStudentId(studentId: Long): List<StudentDebtDto> {
         return KtorClient.getStudentDebts(studentId)
+    }
+
+    override suspend fun findAvailableRetakes(studentId: Long): List<RetakeDetailDto> {
+        return KtorClient.getAvailableRetakes(studentId)
+    }
+
+    override suspend fun findEnrolledRetakes(studentId: Long): List<RetakeDetailDto> {
+        return KtorClient.getEnrolledRetakes(studentId)
     }
 
     override suspend fun enrollToRetake(studentId: Long, debtId: Long, retakeId: Long): Boolean {

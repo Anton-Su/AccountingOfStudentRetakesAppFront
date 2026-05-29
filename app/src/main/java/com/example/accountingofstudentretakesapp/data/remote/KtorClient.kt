@@ -154,6 +154,18 @@ object KtorClient {
         }.body()
     }
 
+    suspend fun getAvailableRetakes(studentId: Long): List<RetakeDetailDto> {
+        return client.get("http://10.0.2.2:8080/api/student/$studentId/retakes/available") {
+            contentType(ContentType.Application.Json)
+        }.body()
+    }
+
+    suspend fun getEnrolledRetakes(studentId: Long): List<RetakeDetailDto> {
+        return client.get("http://10.0.2.2:8080/api/student/$studentId/retakes/enrolled") {
+            contentType(ContentType.Application.Json)
+        }.body()
+    }
+
     suspend fun enrollToRetake(studentId: Long, debtId: Long, retakeId: Long): Boolean {
         return client.post("http://10.0.2.2:8080/api/student/$studentId/debts/$debtId/retakes/$retakeId") {
             contentType(ContentType.Application.Json)

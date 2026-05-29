@@ -70,27 +70,29 @@ fun Navigation(
                 onLoadStudentData = { studentId ->
                     viewModel.loadStudentDebts(studentId)
                     viewModel.loadStudentDebtRank(studentId)
+                    viewModel.loadAvailableRetakes(studentId)
+                    viewModel.loadEnrolledRetakes(studentId)
                 },
                 onRetakeClick = { retakeId ->
                     navController.navigate(Screen.StudentCommentScreen.createRoute(retakeId))
                 },
-                onEnrollRetake = { debtId ->
+                onEnrollRetake = { debtId, retakeId ->
                     uiState.loggedInUser?.id?.let { studentId ->
                         viewModel.enrollToRetake(
                             studentId = studentId,
                             debtId = debtId,
-                            retakeId = debtId,
+                            retakeId = retakeId,
                             onSuccess = {},
                             onError = { _ -> }
                         )
                     }
                 },
-                onCancelRetake = { debtId ->
+                onCancelRetake = { debtId, retakeId ->
                     uiState.loggedInUser?.id?.let { studentId ->
                         viewModel.cancelRetakeEnrollment(
                             studentId = studentId,
                             debtId = debtId,
-                            retakeId = debtId,
+                            retakeId = retakeId,
                             onSuccess = {},
                             onError = {}
                         )

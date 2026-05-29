@@ -18,8 +18,10 @@ import com.example.accountingofstudentretakesapp.domain.usecase.CreateRetakeUseC
 import com.example.accountingofstudentretakesapp.domain.usecase.CancelRetakeEnrollmentUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.CreateCommentUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.DeleteRetakeUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetAvailableRetakesUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetAllRetakesUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetCurrentUserUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetEnrolledRetakesUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetStudentDebtRankUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetStudentDebtsUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetRetakeDetailsUseCase
@@ -76,6 +78,12 @@ data class RetakeUiState(
     val studentDebtRank: StudentDebtRankDto? = null,
     val studentDebtRankLoading: Boolean = false,
     val studentDebtRankError: String? = null,
+    val availableRetakes: List<RetakeDetailDto> = emptyList(),
+    val availableRetakesLoading: Boolean = false,
+    val availableRetakesError: String? = null,
+    val enrolledRetakes: List<RetakeDetailDto> = emptyList(),
+    val enrolledRetakesLoading: Boolean = false,
+    val enrolledRetakesError: String? = null,
     val createCommentLoading: Boolean = false,
     val createCommentError: String? = null,
     val enrollRetakeLoading: Boolean = false,
@@ -98,6 +106,8 @@ class RetakeViewModel(
     private val getAllCommentsUseCase: GetAllCommentsUseCase,
     private val getStudentDebtsUseCase: GetStudentDebtsUseCase,
     private val getStudentDebtRankUseCase: GetStudentDebtRankUseCase,
+    private val getAvailableRetakesUseCase: GetAvailableRetakesUseCase,
+    private val getEnrolledRetakesUseCase: GetEnrolledRetakesUseCase,
     private val enrollToRetakeUseCase: EnrollToRetakeUseCase,
     private val cancelRetakeEnrollmentUseCase: CancelRetakeEnrollmentUseCase,
     private val createCommentUseCase: CreateCommentUseCase,
@@ -407,6 +417,66 @@ class RetakeViewModel(
                 }
         }
     }
+
+            fun loadAvailableRetakes(studentId: Long) {
+                viewModelScope.launch {
+                    _uiState.update {
+                        it.copy(
+                            availableRetakesLoading = true,
+                            availableRetakesError = null
+                        )
+                    }
+
+                    runCatching { getAvailableRetakesUseCase(studentId) }
+                        .onSuccess { retakes ->
+                            _uiState.update {
+                                it.copy(
+                                    availableRetakes = retakes,
+                                    availableRetakesLoading = false,
+                                    availableRetakesError = null
+                                )
+                            }
+                        }
+                        .onFailure { error ->
+                            _uiState.update {
+                                it.copy(
+                                    availableRetakesLoading = false,
+                                    availableRetakesError = error.message ?: "Не удалось загрузить доступные пересдачи"
+                                )
+                            }
+                        }
+                }
+            }
+
+            fun loadEnrolledRetakes(studentId: Long) {
+                viewModelScope.launch {
+                    _uiState.update {
+                        it.copy(
+                            enrolledRetakesLoading = true,
+                            enrolledRetakesError = null
+                        )
+                    }
+
+                    runCatching { getEnrolledRetakesUseCase(studentId) }
+                        .onSuccess { retakes ->
+                            _uiState.update {
+                                it.copy(
+                                    enrolledRetakes = retakes,
+                                    enrolledRetakesLoading = false,
+                                    enrolledRetakesError = null
+                                )
+                            }
+                        }
+                        .onFailure { error ->
+                            _uiState.update {
+                                it.copy(
+                                    enrolledRetakesLoading = false,
+                                    enrolledRetakesError = error.message ?: "Не удалось загрузить записанные пересдачи"
+                                )
+                            }
+                        }
+                }
+            }
 
     fun enrollToRetake(
         studentId: Long,
