@@ -18,6 +18,11 @@ import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,19 +42,35 @@ fun TeacherHomeScreen(
 	LaunchedEffect(Unit) {
 		onLoadRetakes()
 	}
-
+	val context = LocalContext.current
+	val settings = SettingsDataStore(context)
+	val firstName by settings.firstNameFlow.collectAsState(initial = "")
+	val lastName by settings.lastNameFlow.collectAsState(initial = "")
+	val secondName by settings.secondNameFlow.collectAsState(initial = "")
+	val formattedName = remember(firstName, lastName, secondName) {
+		val lastInitial = lastName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
+		val secondInitial = secondName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
+		listOf(firstName, lastInitial, secondInitial).filter { it.isNotBlank() }.joinToString(" ")
+	}
 	Scaffold(
 		modifier = Modifier.fillMaxSize(),
 		containerColor = MaterialTheme.colorScheme.background,
 		topBar = {
 			TopAppBar(
-				title = { Text("Кабинет преподавателя") },
-				actions = {
-					IconButton(onClick = onLogout) {
-						Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Выйти")
+			title = {
+				Column {
+					Text("Кабинет преподавателя")
+					if (formattedName.isNotBlank()) {
+						Text(formattedName, style = MaterialTheme.typography.bodyMedium)
 					}
 				}
-			)
+			},
+			actions = {
+				IconButton(onClick = onLogout) {
+					Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Выйти")
+				}
+			}
+		)
 		}
 	) { innerPadding ->
 		Column(

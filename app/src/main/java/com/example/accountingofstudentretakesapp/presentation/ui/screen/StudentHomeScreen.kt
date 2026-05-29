@@ -24,6 +24,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
+import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,17 +47,32 @@ fun StudentHomeScreen(
 ) {
     val enrolledRetakes = remember { mutableStateMapOf<Long, Boolean>() }
     val studentId = uiState.loggedInUser?.id
-
     LaunchedEffect(studentId) {
         studentId?.let(onLoadStudentData)
     }
-
+    val context = LocalContext.current
+    val settings = SettingsDataStore(context)
+    val firstName by settings.firstNameFlow.collectAsState(initial = "")
+    val lastName by settings.lastNameFlow.collectAsState(initial = "")
+    val secondName by settings.secondNameFlow.collectAsState(initial = "")
+    val formattedName = remember(firstName, lastName, secondName) {
+        val lastInitial = lastName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
+        val secondInitial = secondName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
+        listOf(firstName, lastInitial, secondInitial).filter { it.isNotBlank() }.joinToString(" ")
+    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Личный кабинет студента") },
+                title = {
+                    Column {
+                        Text("Кабинет студента")
+                        if (formattedName.isNotBlank()) {
+                            Text(formattedName, style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                },
                 actions = {
                     IconButton(onClick = onLogout) {
                         Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Выйти")
