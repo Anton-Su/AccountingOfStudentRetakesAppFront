@@ -2,9 +2,12 @@ package com.example.accountingofstudentretakesapp.presentation.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -28,6 +31,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Send
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.style.TextAlign
+import com.example.accountingofstudentretakesapp.presentation.ui.component.RatingField
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,17 +73,17 @@ fun StudentCommentScreen(
             teacherValue !in 0..10 -> "Оценка преподавателя должна быть от 0 до 10"
             overallValue == null -> "Введите общую оценку"
             overallValue !in 0..100 -> "Общая оценка должна быть от 0 до 100"
-            // commentText.isEmpty() -> "Введите комментарий"
             commentText.length > 500 -> "Комментарий не должен быть длиннее 500 символов"
             else -> null
         }
     }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Комментарий к пересдаче") },
+                title = { Text("Отзыв о пересдаче") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
@@ -80,60 +95,132 @@ fun StudentCommentScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
                 .padding(innerPadding)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (errorMessage.value != null) {
-                Card(modifier = Modifier.fillMaxWidth()) {
+            // Ошибки валидации
+            val displayError = errorMessage.value ?: uiState.createCommentError
+            if (displayError != null) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Outlined.Warning,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Text(
+                            text = displayError,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
+
+            // Блок оценок
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                shape = MaterialTheme.shapes.large
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
                     Text(
-                        text = errorMessage.value ?: "",
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(12.dp)
+                        text = "Оценки",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    RatingField(
+                        value = gradePlace.value,
+                        onValueChange = { gradePlace.value = it.filter(Char::isDigit) },
+                        label = "Аудитория",
+                        range = "0–10",
+                        icon = Icons.Outlined.LocationOn
+                    )
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    RatingField(
+                        value = gradeTeacher.value,
+                        onValueChange = { gradeTeacher.value = it.filter(Char::isDigit) },
+                        label = "Преподаватель",
+                        range = "0–10",
+                        icon = Icons.Outlined.Person
+                    )
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    RatingField(
+                        value = gradeOverall.value,
+                        onValueChange = { gradeOverall.value = it.filter(Char::isDigit) },
+                        label = "Общая оценка",
+                        range = "0–100",
+                        icon = Icons.Outlined.Star
                     )
                 }
             }
-            if (uiState.createCommentError != null) {
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = uiState.createCommentError,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(12.dp)
+
+            // Комментарий
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                shape = MaterialTheme.shapes.large
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Outlined.Edit,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            text = "Комментарий",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    OutlinedTextField(
+                        value = comment.value,
+                        onValueChange = { comment.value = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        placeholder = { Text("Расскажите о своём опыте...") },
+                        minLines = 4,
+                        maxLines = 8,
+                        shape = MaterialTheme.shapes.medium,
+                        supportingText = {
+                            Text(
+                                text = "${comment.value.text.length}/500",
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.End,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = if (comment.value.text.length > 500)
+                                    MaterialTheme.colorScheme.error
+                                else
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     )
                 }
             }
-            OutlinedTextField(
-                value = gradePlace.value,
-                onValueChange = { value -> gradePlace.value = value.filter { ch -> ch.isDigit() } },
-                label = { Text("Оценка аудитории (0-10)") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = gradeTeacher.value,
-                onValueChange = { value -> gradeTeacher.value = value.filter { ch -> ch.isDigit() } },
-                label = { Text("Оценка преподавателя (0-10)") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = gradeOverall.value,
-                onValueChange = { value -> gradeOverall.value = value.filter { ch -> ch.isDigit() } },
-                label = { Text("Общая оценка (0-100)") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = comment.value,
-                onValueChange = { value -> comment.value = value },
-                label = { Text("Комментарий") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                minLines = 4,
-                maxLines = 8
-            )
+
             Button(
                 onClick = {
                     val validationError = validate()
@@ -150,12 +237,29 @@ fun StudentCommentScreen(
                     )
                 },
                 enabled = !uiState.createCommentLoading,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+                shape = MaterialTheme.shapes.large
             ) {
                 if (uiState.createCommentLoading) {
-                    CircularProgressIndicator(modifier = Modifier.padding(end = 8.dp))
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(18.dp)
+                            .padding(end = 8.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                } else {
+//                    Icon(
+//                        Icons.AutoMirrored.Outlined.Send,
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .size(18.dp)
+//                            .padding(end = 4.dp)
+//                    )
                 }
-                Text("Отправить")
+                Text("Отправить отзыв", style = MaterialTheme.typography.labelLarge)
             }
         }
     }
