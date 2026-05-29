@@ -13,7 +13,7 @@ import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRankDto
 import com.example.accountingofstudentretakesapp.domain.model.UserDto
 import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailDto
 import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailsResponseDto
-import com.example.accountingofstudentretakesapp.domain.model.EnrollmentDto
+import com.example.accountingofstudentretakesapp.domain.model.RetakeEnrollmentDto
 import com.example.accountingofstudentretakesapp.domain.model.GradeRequestDto
 import com.example.accountingofstudentretakesapp.presentation.model.UserRole
 import io.ktor.client.HttpClient
@@ -191,7 +191,7 @@ object KtorClient {
         }.body()
     }
 
-    suspend fun gradeStudent(retakeId: Long, studentId: Long, request: GradeRequestDto): EnrollmentDto {
+    suspend fun gradeStudent(retakeId: Long, studentId: Long, request: GradeRequestDto): RetakeEnrollmentDto {
         return client.post("http://10.0.2.2:8080/api/teacher/retake/$retakeId/student/$studentId/grade") {
             contentType(ContentType.Application.Json)
             setBody(request)

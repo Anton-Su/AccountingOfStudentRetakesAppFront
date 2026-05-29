@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
@@ -21,8 +22,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun StudentGradeCard(
-    studentId: Long,
-    enrollmentId: Long,
+    studentFullName: String,
+    groupName: String,
     retakeType: String,
     onGradeSubmit: (Int) -> Unit,
 ) {
@@ -33,23 +34,29 @@ fun StudentGradeCard(
     } else {
         listOf(2, 3)
     }
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(12.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             Text(
-                text = "Студент ID: $studentId",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(bottom = 8.dp)
+                text = studentFullName,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "Запись ID: $enrollmentId",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 12.dp)
+                text = "Группа: $groupName",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp),
+                    .padding(top = 4.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {

@@ -4,16 +4,20 @@ import com.example.accountingofstudentretakesapp.presentation.model.RetakeEnroll
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EnrollmentDto(
+data class RetakeEnrollmentDto(
     val id: Long,
     val retakeId: Long,
     val studentId: Long,
     val studentSubjectId: Long,
+    val studentFullName: String,
+    val groupName: String
 )
 
-fun RetakeEnrollment.toEnrollmentDto(): EnrollmentDto = EnrollmentDto(
+fun RetakeEnrollment.toEnrollmentDto(): RetakeEnrollmentDto = RetakeEnrollmentDto(
     id = this.id,
     retakeId = this.retakeId,
     studentId = this.studentId,
     studentSubjectId = this.studentSubjectId,
+    studentFullName = this.studentFullName,
+    groupName = this.groupName
 )

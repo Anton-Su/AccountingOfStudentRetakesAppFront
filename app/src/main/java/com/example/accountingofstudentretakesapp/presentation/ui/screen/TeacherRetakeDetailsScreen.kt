@@ -1,5 +1,6 @@
 package com.example.accountingofstudentretakesapp.presentation.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -111,8 +112,8 @@ fun TeacherRetakeDetailsScreen(
                                 )
                             }
                             Text(
-                                text = "Последнее изменение: ${retake.lastModified}",
-                                style = MaterialTheme.typography.bodySmall,
+                                text = "Последнее изменение: ${formatIsoDateTimeToHuman(retake.lastModified)}",
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
@@ -136,8 +137,8 @@ fun TeacherRetakeDetailsScreen(
                         ) {
                             items(details.enrollments) { enrollment ->
                                 StudentGradeCard(
-                                    studentId = enrollment.studentId,
-                                    enrollmentId = enrollment.id,
+                                    studentFullName = enrollment.studentFullName,
+                                    groupName = enrollment.groupName,
                                     retakeType = retake.type,
                                     onGradeSubmit = { score ->
                                         onGradeStudent(retakeId, enrollment.studentId, score)
