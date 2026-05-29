@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.presentation.ui.component.CircularPercentageIndicator
+import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeInfoCard
 import com.example.accountingofstudentretakesapp.presentation.ui.component.formatIsoDateTimeToHuman
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
@@ -182,37 +183,24 @@ fun StudentHomeScreen(
                         items(availableForDebts, key = { "available-${it.id}" }) { retake ->
                             val matchingDebt = uiState.studentDebts.find { it.subjectId == retake.subjectId }
                             if (matchingDebt != null) {
-                                Card(modifier = Modifier.fillMaxWidth()) {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(12.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Column(modifier = Modifier.weight(1f)) {
-                                            Text(matchingDebt.subjectTitle, style = MaterialTheme.typography.titleMedium)
-                                            Text(retake.place, style = MaterialTheme.typography.bodySmall)
-                                            Text(formatIsoDateTimeToHuman(retake.startAt), style = MaterialTheme.typography.bodySmall)
-                                            Text(formatIsoDateTimeToHuman(retake.endAt), style = MaterialTheme.typography.bodySmall)
-                                            Text("Тип: ${retake.type}", style = MaterialTheme.typography.bodySmall)
-                                            Text("Допуск: ${retake.admission ?: "нет"}", style = MaterialTheme.typography.bodySmall)
-                                        }
-
-                                        IconButton(onClick = { onEnrollRetake(matchingDebt.subjectId, retake.id) }) {
-                                            Icon(Icons.Filled.Add, contentDescription = "Записаться на пересдачу")
-                                        }
-                                    }
-                                }
+                                RetakeInfoCard(
+                                    subjectTitle = matchingDebt.subjectTitle,
+                                    place = retake.place,
+                                    startAt = retake.startAt,
+                                    endAt = retake.endAt,
+                                    type = retake.type,
+                                    admission = retake.admission,
+                                    actionIcon = Icons.Filled.Add,
+                                    actionDescription = "Записаться на пересдачу",
+                                    onAction = { onEnrollRetake(matchingDebt.subjectId, retake.id) }
+                                )
                             }
                         }
                     }
                     item { Text("Я записан на...", style = MaterialTheme.typography.titleMedium) }
-
                     val enrolledForDebts = uiState.enrolledRetakes.filter { retake ->
                         uiState.studentDebts.any { debt -> debt.subjectId == retake.subjectId }
                     }
-
                     if (uiState.enrolledRetakesLoading) {
                         item { Text("Загрузка записей...", style = MaterialTheme.typography.bodyMedium) }
                     } else if (uiState.enrolledRetakesError != null) {
@@ -229,31 +217,18 @@ fun StudentHomeScreen(
                         items(enrolledForDebts, key = { "enrolled-${it.id}" }) { retake ->
                             val matchingDebt = uiState.studentDebts.find { it.subjectId == retake.subjectId }
                             if (matchingDebt != null) {
-                                Card(modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { onRetakeClick(retake.id) }
-                                ) {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(12.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Column(modifier = Modifier.weight(1f)) {
-                                            Text(matchingDebt.subjectTitle, style = MaterialTheme.typography.titleMedium)
-                                            Text(retake.place, style = MaterialTheme.typography.bodyMedium)
-                                            Text(formatIsoDateTimeToHuman(retake.startAt), style = MaterialTheme.typography.bodyMedium)
-                                            Text(formatIsoDateTimeToHuman(retake.endAt), style = MaterialTheme.typography.bodyMedium)
-                                            Text(formatIsoDateTimeToHuman(retake.lastModified), style = MaterialTheme.typography.bodyMedium)
-                                            Text("Тип: ${retake.type}", style = MaterialTheme.typography.bodyMedium)
-                                            Text("Допуск: ${retake.admission ?: "нет"}", style = MaterialTheme.typography.bodyMedium)
-                                        }
-                                        IconButton(onClick = { onCancelRetake(matchingDebt.subjectId, retake.id) }) {
-                                            Icon(Icons.Filled.Close, contentDescription = "Отменить запись")
-                                        }
-                                    }
-                                }
+                                RetakeInfoCard(
+                                    subjectTitle = matchingDebt.subjectTitle,
+                                    place = retake.place,
+                                    startAt = retake.startAt,
+                                    endAt = retake.endAt,
+                                    type = retake.type,
+                                    admission = retake.admission,
+                                    actionIcon = Icons.Filled.Close,
+                                    actionDescription = "Отменить запись",
+                                    onAction = { onCancelRetake(matchingDebt.subjectId, retake.id) },
+                                    modifier = Modifier.clickable { onRetakeClick(retake.id) }
+                                )
                             }
                         }
                     }

@@ -52,13 +52,13 @@ fun StudentCommentScreen(
         val overallValue = parseIntOrNull(gradeOverall.value)
         val commentText = comment.value.text.trim()
         return when {
-            placeValue == null -> "Введите оценку за место"
-            placeValue !in 0..10 -> "Оценка за место должна быть от 0 до 10"
-            teacherValue == null -> "Введите оценку за преподавателя"
-            teacherValue !in 0..10 -> "Оценка за преподавателя должна быть от 0 до 10"
+            placeValue == null -> "Оцените аудиторию"
+            placeValue !in 0..10 -> "Оценка за аудиторию должна быть от 0 до 10"
+            teacherValue == null -> "Оцените преподавателя"
+            teacherValue !in 0..10 -> "Оценка преподавателя должна быть от 0 до 10"
             overallValue == null -> "Введите общую оценку"
             overallValue !in 0..100 -> "Общая оценка должна быть от 0 до 100"
-            commentText.isEmpty() -> "Введите комментарий"
+            // commentText.isEmpty() -> "Введите комментарий"
             commentText.length > 500 -> "Комментарий не должен быть длиннее 500 символов"
             else -> null
         }
@@ -68,7 +68,7 @@ fun StudentCommentScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Комментарий к пересдаче #$retakeId") },
+                title = { Text("Комментарий к пересдаче") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
@@ -106,14 +106,14 @@ fun StudentCommentScreen(
             OutlinedTextField(
                 value = gradePlace.value,
                 onValueChange = { value -> gradePlace.value = value.filter { ch -> ch.isDigit() } },
-                label = { Text("Оценка за место (0-10)") },
+                label = { Text("Оценка аудитории (0-10)") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = gradeTeacher.value,
                 onValueChange = { value -> gradeTeacher.value = value.filter { ch -> ch.isDigit() } },
-                label = { Text("Оценка за преподавателя (0-10)") },
+                label = { Text("Оценка преподавателя (0-10)") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
