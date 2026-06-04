@@ -8,7 +8,7 @@ import com.example.accountingofstudentretakesapp.presentation.model.StudentDebtR
 import com.example.accountingofstudentretakesapp.presentation.model.Subject
 import com.example.accountingofstudentretakesapp.presentation.model.Teacher
 
-data class RetakeUiState(
+data class RetakeUiState( // god object но пока будет так
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val teacherRetakes: List<Retake> = emptyList(),

@@ -36,6 +36,7 @@ import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.presentation.helpers.formatInstantToHuman
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeCommentsCard
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
+import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -145,7 +146,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                                                 IconButton(
                                                     onClick = { onEditRetake(retake.id) },
                                                     modifier = Modifier.padding(0.dp),
-                                                    // enabled = retake.startAt > Instant.now()
+                                                    enabled = retake.startAt > Instant.now()
                                                 ) {
                                                     Icon(
                                                         Icons.Default.Edit,

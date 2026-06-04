@@ -43,6 +43,7 @@ import java.time.Instant
 fun AdminCreateRetakeScreen(uiState: RetakeUiState,
                             onLoadSubjects: () -> Unit,
                             onLoadTeachers: (String) -> Unit,
+                            onClearTeachers: () -> Unit,
                             onCreateRetake: (startAt: Instant, endAt: Instant, teacherIds: List<Long>, subjectId: Long, type: String, place: String, admission: String?) -> Unit,
                             onBack: () -> Unit)
 {
@@ -51,6 +52,7 @@ fun AdminCreateRetakeScreen(uiState: RetakeUiState,
         submitButtonText = "Создать",
         isLoading = uiState.createRetakeLoading,
         uiState = uiState,
+        onClearTeachers = onClearTeachers,
         onLoadSubjects = onLoadSubjects,
         onLoadTeachers = onLoadTeachers,
         onSubmit = onCreateRetake,

@@ -41,7 +41,9 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 "ADMIN" -> Screen.AdminAllScreen.route
                 else -> Screen.LoginScreen.route
             }
-        } else Screen.LoginScreen.route
+        }
+        else
+            Screen.LoginScreen.route
     }
     LaunchedEffect(Unit) {
         viewModel.navigationEvents.collectLatest { role ->
@@ -170,6 +172,7 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 onCreateRetake = { startAt, endAt, teacherIds, subjectId, type, place, admission ->
                     viewModel.createRetake(startAt = startAt, endAt = endAt, teacherIds = teacherIds, subjectId = subjectId, type = type, place = place, admission = admission, onSuccess = { navController.popBackStack() }, onError = { _ -> })
                 },
+                onClearTeachers = { viewModel.clearTeachersByDiscipline() },
                 onBack = { navController.popBackStack() }
             )
         }
@@ -188,9 +191,8 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 onRedactRetake = { id, startAt, endAt, teacherIds, subjectId, type, place, admission ->
                     viewModel.redactRetake(retakeId = id, startAt = startAt, endAt = endAt, teacherIds = teacherIds, subjectId = subjectId, type = type, place = place, admission = admission, onSuccess = { navController.popBackStack() }, onError = { _ -> })
                 },
-                onBack = {
-                    navController.popBackStack()
-                }
+                onClearTeachers = { viewModel.clearTeachersByDiscipline() },
+                onBack = { navController.popBackStack() }
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.example.accountingofstudentretakesapp.presentation.ui.component
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -36,22 +38,12 @@ import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RetakeFormScreen(
-    title: String,
-    uiState: RetakeUiState,
-    initialType: String? = null,
-    initialPlace: String = "",
-    initialStartAt: Instant? = null,
-    initialEndAt: Instant? = null,
-    initialAdmission: String = "",
-    initialSubjectId: Long? = null,
-    initialTeacherIds: List<Long> = emptyList(),
-    isLoading: Boolean = false,
-    submitButtonText: String,
-    onLoadSubjects: () -> Unit,
-    onLoadTeachers: (String) -> Unit,
-    onSubmit: (startAt: Instant, endAt: Instant, teacherIds: List<Long>, subjectId: Long, type: String, place: String, admission: String?) -> Unit,
-    onBack: () -> Unit
+fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String? = null, initialPlace: String = "", initialStartAt: Instant = Instant.now(), initialEndAt: Instant = Instant.now().plusSeconds(90 * 60), initialAdmission: String = "", initialSubjectId: Long? = null, initialTeacherIds: List<Long> = emptyList(), isLoading: Boolean = false, submitButtonText: String,
+                     onLoadSubjects: () -> Unit,
+                     onLoadTeachers: (String) -> Unit,
+                     onClearTeachers: () -> Unit,
+                     onSubmit: (startAt: Instant, endAt: Instant, teacherIds: List<Long>, subjectId: Long, type: String, place: String, admission: String?) -> Unit,
+                     onBack: () -> Unit
 ) {
     val type = remember { mutableStateOf(initialType) }
     val place = remember { mutableStateOf(initialPlace) }
@@ -61,23 +53,32 @@ fun RetakeFormScreen(
     val selectedSubject = remember { mutableStateOf(initialSubjectId) }
     val selectedTeachers = remember { mutableStateListOf<Long>().also { it.addAll(initialTeacherIds) } }
     val expandedSubject = remember { mutableStateOf(false) }
-    val errorMessage = remember { mutableStateOf<String?>(null) }
     val showStartDateTimePicker = remember { mutableStateOf(false) }
     val showEndDateTimePicker = remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) { onLoadSubjects() }
-    fun validateAndSubmit() {
-        when {
-            type.value.isNullOrEmpty() -> errorMessage.value = "Выберите тип пересдачи"
-            place.value.isEmpty() -> errorMessage.value = "Укажите место проведения"
-            startAt.value == null -> errorMessage.value = "Укажите время начала"
-            endAt.value == null -> errorMessage.value = "Укажите время окончания"
-            selectedSubject.value == null -> errorMessage.value = "Выберите предмет"
-            selectedTeachers.isEmpty() -> errorMessage.value = "Выберите хотя бы одного преподавателя"
-            else -> {
-                errorMessage.value = null
-                onSubmit(startAt.value!!, endAt.value!!, selectedTeachers, selectedSubject.value!!, type.value!!, place.value, admission.value.takeIf { it.isNotEmpty() })
+    LaunchedEffect(Unit) {
+        onLoadSubjects()
+    }
+    LaunchedEffect(uiState.subjects) {
+        if (initialSubjectId != null && uiState.subjects.isNotEmpty()) {
+            val subjectTitle = uiState.subjects.find { it.id == initialSubjectId }?.title
+            if (subjectTitle != null) {
+                onLoadTeachers(subjectTitle)
             }
         }
+    }
+    LaunchedEffect(uiState.teachersByDiscipline) {
+        if (uiState.teachersByDiscipline.isNotEmpty()) {
+            selectedTeachers.clear()
+            selectedTeachers.addAll(
+                initialTeacherIds.filter { id ->
+                    uiState.teachersByDiscipline.any { it.userId == id }
+                }
+            )
+        }
+    }
+    // очищаем преподавателей при уходе с экрана
+    DisposableEffect(Unit) {
+        onDispose { onClearTeachers() }
     }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -93,7 +94,6 @@ fun RetakeFormScreen(
             )
         }
     ) { innerPadding ->
-        // нуу, LazyColumn с item для каждого поля - это, конечно, мдэ, но зато скролится вся страница целиком
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -102,9 +102,10 @@ fun RetakeFormScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                if (errorMessage.value != null) {
+                val error = uiState.createRetakeError ?: uiState.redactRetakeError
+                if (error != null) {
                     Card(modifier = Modifier.fillMaxWidth()) {
-                        Text(text = errorMessage.value ?: "", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(12.dp))
+                        Text(text = error, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(12.dp))
                     }
                 }
             }
@@ -126,7 +127,7 @@ fun RetakeFormScreen(
             }
             item {
                 DateTimePickerField(
-                    value = startAt.value ?: Instant.now(),
+                    value = startAt.value,
                     label = "Время начала",
                     onDateTimePickerClick = { showStartDateTimePicker.value = true },
                     modifier = Modifier.fillMaxWidth()
@@ -134,7 +135,7 @@ fun RetakeFormScreen(
             }
             item {
                 DateTimePickerField(
-                    value = endAt.value ?: Instant.now(),
+                    value = endAt.value,
                     label = "Время окончания",
                     onDateTimePickerClick = { showEndDateTimePicker.value = true },
                     modifier = Modifier.fillMaxWidth()
@@ -154,7 +155,7 @@ fun RetakeFormScreen(
                     onClick = { expandedSubject.value = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(selectedSubject.value?.let { subjectId -> uiState.subjects.find { it.id == subjectId }?.title } ?: "Выберите предмет")
+                    Text(selectedSubject.value?.let { id -> uiState.subjects.find { it.id == id }?.title } ?: "Предмет не выбран")
                 }
                 DropdownMenu(
                     expanded = expandedSubject.value,
@@ -165,10 +166,9 @@ fun RetakeFormScreen(
                         DropdownMenuItem(
                             text = { Text(subject.title) },
                             onClick = {
-
-                                // дебаг
                                 selectedSubject.value = subject.id
                                 expandedSubject.value = false
+                                selectedTeachers.clear()
                                 onLoadTeachers(subject.title)
                             }
                         )
@@ -176,40 +176,45 @@ fun RetakeFormScreen(
                 }
             }
             item {
-                Text(text = "Выберите преподавателей", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
-                if (uiState.teachersByDisciplineLoading)
-                    CircularProgressIndicator(modifier = Modifier.padding(16.dp))
-                else if (uiState.teachersByDiscipline.isEmpty())
-                    Text("Нет преподавателей по этому предмету")
-                else {
-                    Card {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(12.dp)
-                        ) {
-                            uiState.teachersByDiscipline.forEach { teacher ->
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 4.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Text(text = teacher.fullName)
-                                        Text(text = "Дисциплины: ${teacher.disciplines.joinToString(", ")}", style = MaterialTheme.typography.bodySmall)
-                                    }
-                                    Checkbox(
-                                        checked = selectedTeachers.contains(teacher.userId),
-                                        onCheckedChange = { checked ->
-                                            if (checked) {
-                                                selectedTeachers.add(teacher.userId)
-                                            } else {
-                                                selectedTeachers.remove(teacher.userId)
-                                            }
+                Text(
+                    text = "Выберите преподавателей",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                when {
+                    uiState.teachersByDisciplineLoading -> {
+                        CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                    }
+                    uiState.teachersByDiscipline.isEmpty() -> {
+                        Text("Нет преподавателей по этому предмету")
+                    }
+                    else -> {
+                        Card {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp)
+                            ) {
+                                uiState.teachersByDiscipline.forEach { teacher ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 4.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(text = teacher.fullName)
+                                            Text(text = teacher.disciplines.joinToString("; "), style = MaterialTheme.typography.bodySmall)
                                         }
-                                    )
+                                        Checkbox(
+                                            checked = selectedTeachers.contains(teacher.userId),
+                                            onCheckedChange = { checked ->
+                                                if (checked) selectedTeachers.add(teacher.userId)
+                                                else selectedTeachers.remove(teacher.userId)
+                                            }
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -223,19 +228,16 @@ fun RetakeFormScreen(
                         .padding(top = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Button(
-                        onClick = onBack,
-                        modifier = Modifier.weight(1f)
-                    ) {
+                    Button(onClick = onBack, modifier = Modifier.weight(1f)) {
                         Text("Отмена")
                     }
+                    Log.e("RetakeFormScreen", "Submitting with startAt=${startAt.value}, endAt=${endAt.value}, teachers=$selectedTeachers, subject=${selectedSubject.value}, type=${type.value}, place=${place.value}, admission=${admission.value}")
                     Button(
-                        onClick = { validateAndSubmit() },
-                        enabled = !isLoading,
+                        onClick = { onSubmit(startAt.value, endAt.value, selectedTeachers, selectedSubject.value!!, type.value!!, place.value, admission.value.takeIf { it.isNotEmpty() }) },
+                        enabled = !isLoading && selectedSubject.value != null && type.value != null && selectedTeachers.isNotEmpty(),
                         modifier = Modifier.weight(1f)
                     ) {
-                        if (isLoading)
-                            CircularProgressIndicator(modifier = Modifier.padding(end = 8.dp))
+                        if (isLoading) CircularProgressIndicator(modifier = Modifier.padding(end = 8.dp))
                         Text(submitButtonText)
                     }
                 }

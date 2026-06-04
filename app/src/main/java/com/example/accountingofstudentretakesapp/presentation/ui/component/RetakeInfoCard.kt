@@ -27,7 +27,10 @@ import com.example.accountingofstudentretakesapp.presentation.helpers.formatInst
 import java.time.Instant
 
 @Composable
-fun RetakeInfoCard(subjectTitle: String, place: String, startAt: Instant, endAt: Instant, type: String, admission: String?, actionIcon: ImageVector, actionDescription: String, onAction: () -> Unit, modifier: Modifier = Modifier) {
+fun RetakeInfoCard(subjectTitle: String, place: String, startAt: Instant, endAt: Instant, type: String, admission: String?, actionIcon: ImageVector, actionDescription: String,
+                   onAction: () -> Unit,
+                   actionEnabled: Boolean = true,
+                   modifier: Modifier = Modifier) {
     Card(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
@@ -61,7 +64,7 @@ fun RetakeInfoCard(subjectTitle: String, place: String, startAt: Instant, endAt:
                     }
                 }
             }
-            IconButton(onClick = onAction) {
+            IconButton(onClick = onAction, enabled = actionEnabled) {
                 Icon(actionIcon, contentDescription = actionDescription)
             }
         }

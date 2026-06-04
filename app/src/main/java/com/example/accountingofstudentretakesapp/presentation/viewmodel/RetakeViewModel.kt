@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.Instant
 
-class RetakeViewModel(
+class RetakeViewModel( // god object но пока будет так
     private val authRepository: AuthRepository,
     private val settingsDataStore: SettingsDataStore,
     private val loginUseCase: LoginUseCase,
@@ -61,10 +61,8 @@ class RetakeViewModel(
 {
     private val _uiState = MutableStateFlow(RetakeUiState())
     val uiState: StateFlow<RetakeUiState> = _uiState.asStateFlow()
-
     private val _navigationEvents = MutableSharedFlow<UserRole>(extraBufferCapacity = 1)
-
-    // создание потока навигации для отправки событий (emit) о том, что пользователь успешно вошел в систему и его роль определена. Это позволяет фрагментам подписываться на эти события и навигировать в зависимости от роли пользователя
+    // создание потока навигации для отправки событий (emit) о том, что пользователь успешно вошёл в систему
     val navigationEvents: SharedFlow<UserRole> = _navigationEvents.asSharedFlow()
 
     fun login(email: String, password: String) {
@@ -629,5 +627,8 @@ class RetakeViewModel(
                     onError(errorMsg)
                 }
         }
+    }
+    fun clearTeachersByDiscipline() {
+        _uiState.update { it.copy(teachersByDiscipline = emptyList()) }
     }
 }

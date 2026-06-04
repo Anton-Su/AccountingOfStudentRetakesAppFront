@@ -38,6 +38,7 @@ import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.presentation.ui.component.CircularPercentageIndicator
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeInfoCard
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
+import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,17 +99,9 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        text = "Занимаемое место в топе:",
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
+                                    Text(text = "Занимаемое место в топе:", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text = "${rank.place} из ${rank.totalStudents}",
-                                        style = MaterialTheme.typography.titleLarge,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
+                                    Text(text = "${rank.place} из ${rank.totalStudents}", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 }
                                 CircularPercentageIndicator(
                                     percentage = rank.topPercent,
@@ -143,11 +136,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                             )
                         ) {
                             Column(modifier = Modifier.padding(12.dp)) {
-                                Text(
-                                    debt.subjectTitle,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.error
-                                )
+                                Text(debt.subjectTitle, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.error)
                             }
                         }
                     }
@@ -161,11 +150,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                         item { Text("Загрузка доступных пересдач...", style = MaterialTheme.typography.bodyMedium) }
                     } else if (uiState.availableRetakesError != null) {
                         item {
-                            Text(
-                                text = uiState.availableRetakesError,
-                                color = MaterialTheme.colorScheme.error,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                            Text(text = uiState.availableRetakesError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                         }
                     } else if (availableForDebts.isEmpty()) {
                         item { Text("Нет доступных пересдач по вашим долгам", style = MaterialTheme.typography.bodyMedium) }
@@ -191,20 +176,17 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                     val enrolledForDebts = uiState.enrolledRetakes.filter { retake ->
                         uiState.studentDebts.any { debt -> debt.subjectId == retake.subjectId }
                     }
-                    if (uiState.enrolledRetakesLoading) {
+                    if (uiState.enrolledRetakesLoading)
                         item { Text("Загрузка записей...", style = MaterialTheme.typography.bodyMedium) }
-                    } else if (uiState.enrolledRetakesError != null) {
+                    else if (uiState.enrolledRetakesError != null) {
                         item {
-                            Text(
-                                text = uiState.enrolledRetakesError,
-                                color = MaterialTheme.colorScheme.error,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                            Text(text = uiState.enrolledRetakesError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                         }
                     } else if (enrolledForDebts.isEmpty()) {
                         item { Text("Пока вы ни на что не записаны", style = MaterialTheme.typography.bodyMedium) }
                     } else {
-                        items(enrolledForDebts, key = { "enrolled-${it.id}" }) { retake ->
+                        //, key = { "enrolled-${it.id}" }
+                        items(enrolledForDebts) { retake ->
                             val matchingDebt = uiState.studentDebts.find { it.subjectId == retake.subjectId }
                             if (matchingDebt != null) {
                                 RetakeInfoCard(
@@ -216,8 +198,11 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                                     admission = retake.admission,
                                     actionIcon = Icons.Filled.Close,
                                     actionDescription = "Отменить запись",
+                                    actionEnabled = retake.startAt > Instant.now(),
                                     onAction = { onCancelRetake(matchingDebt.subjectId, retake.id) },
-                                    modifier = Modifier.clickable { onRetakeClick(retake.id) }
+                                    modifier = Modifier.clickable(
+                                        enabled = retake.startAt < Instant.now(),
+                                        onClick = {onRetakeClick(retake.id)})
                                 )
                             }
                         }
