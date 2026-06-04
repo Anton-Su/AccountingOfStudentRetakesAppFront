@@ -5,10 +5,7 @@ import com.example.accountingofstudentretakesapp.data.remote.TokenManager
 import com.example.accountingofstudentretakesapp.domain.model.LoginResponseDto
 import com.example.accountingofstudentretakesapp.domain.repository.AuthRepository
 
-class AuthRepositoryImpl(
-    private val tokenManager: TokenManager
-) : AuthRepository {
-
+class AuthRepositoryImpl(private val tokenManager: TokenManager) : AuthRepository {
     override suspend fun login(email: String, password: String): Result<String> = runCatching {
         val response: LoginResponseDto = KtorClient.login(email, password)
         tokenManager.saveAccessToken(response.token)

@@ -6,8 +6,8 @@ import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.domain.model.CreateCommentRequestDto
 import com.example.accountingofstudentretakesapp.domain.model.StudentDebtDto
 import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRankDto
-import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailDto
-import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailsResponseDto
+import com.example.accountingofstudentretakesapp.domain.model.RetakeDto
+import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailsDto
 import com.example.accountingofstudentretakesapp.domain.model.SubjectDto
 import com.example.accountingofstudentretakesapp.domain.model.TeacherDto
 import com.example.accountingofstudentretakesapp.domain.model.UserDto
@@ -46,13 +46,13 @@ data class RetakeUiState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val loggedInUser: UserDto? = null,
-    val teacherRetakes: List<RetakeDetailDto> = emptyList(),
+    val teacherRetakes: List<RetakeDto> = emptyList(),
     val teacherRetakesLoading: Boolean = false,
     val teacherRetakesError: String? = null,
-    val teacherRetakeDetails: RetakeDetailsResponseDto? = null,
+    val teacherRetakeDetails: RetakeDetailsDto? = null,
     val teacherRetakeDetailsLoading: Boolean = false,
     val teacherRetakeDetailsError: String? = null,
-    val allRetakes: List<RetakeDetailDto> = emptyList(),
+    val allRetakes: List<RetakeDto> = emptyList(),
     val allRetakesLoading: Boolean = false,
     val allRetakesError: String? = null,
     val subjects: List<SubjectDto> = emptyList(),
@@ -76,10 +76,10 @@ data class RetakeUiState(
     val studentDebtRank: StudentDebtRankDto? = null,
     val studentDebtRankLoading: Boolean = false,
     val studentDebtRankError: String? = null,
-    val availableRetakes: List<RetakeDetailDto> = emptyList(),
+    val availableRetakes: List<RetakeDto> = emptyList(),
     val availableRetakesLoading: Boolean = false,
     val availableRetakesError: String? = null,
-    val enrolledRetakes: List<RetakeDetailDto> = emptyList(),
+    val enrolledRetakes: List<RetakeDto> = emptyList(),
     val enrolledRetakesLoading: Boolean = false,
     val enrolledRetakesError: String? = null,
     val createCommentLoading: Boolean = false,

@@ -5,14 +5,13 @@ package com.example.accountingofstudentretakesapp.data.remote
 import com.example.accountingofstudentretakesapp.domain.model.TeacherDto
 import com.example.accountingofstudentretakesapp.domain.model.SubjectDto
 import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequestDto
-import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeResponseDto
 import com.example.accountingofstudentretakesapp.domain.model.CommentDto
 import com.example.accountingofstudentretakesapp.domain.model.CreateCommentRequestDto
 import com.example.accountingofstudentretakesapp.domain.model.StudentDebtDto
 import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRankDto
 import com.example.accountingofstudentretakesapp.domain.model.UserDto
-import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailDto
-import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailsResponseDto
+import com.example.accountingofstudentretakesapp.domain.model.RetakeDto
+import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailsDto
 import com.example.accountingofstudentretakesapp.domain.model.RetakeEnrollmentDto
 import com.example.accountingofstudentretakesapp.domain.model.GradeRequestDto
 import com.example.accountingofstudentretakesapp.domain.model.LoginResponseDto
@@ -115,14 +114,14 @@ object KtorClient {
         }.body()
     }
 
-    suspend fun createRetake(request: CreateRetakeRequestDto): CreateRetakeResponseDto {
+        suspend fun createRetake(request: CreateRetakeRequestDto): RetakeDto {
         return client.post("http://10.0.2.2:8080/api/admin/create_retake") {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
     }
 
-    suspend fun updateRetake(id: Long, request: CreateRetakeRequestDto): CreateRetakeResponseDto {
+    suspend fun updateRetake(id: Long, request: CreateRetakeRequestDto): RetakeDto {
         return client.put("http://10.0.2.2:8080/api/admin/retakes/$id") {
             contentType(ContentType.Application.Json)
             setBody(request)
@@ -141,7 +140,7 @@ object KtorClient {
         }.body()
     }
 
-    suspend fun getAllRetakes(): List<RetakeDetailDto> {
+    suspend fun getAllRetakes(): List<RetakeDto> {
         return client.get("http://10.0.2.2:8080/api/admin/retakes") {
             contentType(ContentType.Application.Json)
         }.body()
@@ -153,13 +152,13 @@ object KtorClient {
         }.body()
     }
 
-    suspend fun getAvailableRetakes(studentId: Long): List<RetakeDetailDto> {
+    suspend fun getAvailableRetakes(studentId: Long): List<RetakeDto> {
         return client.get("http://10.0.2.2:8080/api/student/$studentId/retakes/available") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
-    suspend fun getEnrolledRetakes(studentId: Long): List<RetakeDetailDto> {
+    suspend fun getEnrolledRetakes(studentId: Long): List<RetakeDto> {
         return client.get("http://10.0.2.2:8080/api/student/$studentId/retakes/enrolled") {
             contentType(ContentType.Application.Json)
         }.body()
@@ -190,13 +189,13 @@ object KtorClient {
         }.body()
     }
 
-    suspend fun getTeacherRetakes(): List<RetakeDetailDto> {
+    suspend fun getTeacherRetakes(): List<RetakeDto> {
         return client.get("http://10.0.2.2:8080/api/teacher/retakes") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
-    suspend fun getRetakeDetails(retakeId: Long): RetakeDetailsResponseDto {
+    suspend fun getRetakeDetails(retakeId: Long): RetakeDetailsDto {
         return client.get("http://10.0.2.2:8080/api/teacher/retake/$retakeId") {
             contentType(ContentType.Application.Json)
         }.body()

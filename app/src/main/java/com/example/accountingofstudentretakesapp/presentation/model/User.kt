@@ -10,5 +10,4 @@ data class User(
     val gender: String,
     val age: Int,
     val email: String,
-    val passwordHash: String,
 )

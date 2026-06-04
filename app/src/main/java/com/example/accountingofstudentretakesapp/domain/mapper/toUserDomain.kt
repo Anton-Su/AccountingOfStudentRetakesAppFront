@@ -1,0 +1,15 @@
+package com.example.accountingofstudentretakesapp.domain.mapper
+
+import com.example.accountingofstudentretakesapp.domain.model.UserDto
+import com.example.accountingofstudentretakesapp.presentation.model.User
+
+fun UserDto.toUserDomain() = User(
+    id = id,
+    role = role,
+    firstName = firstName,
+    secondName = secondName,
+    lastName = lastName,
+    gender = gender,
+    age = age,
+    email = email,
+)
