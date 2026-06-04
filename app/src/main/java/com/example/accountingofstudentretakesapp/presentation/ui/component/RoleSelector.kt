@@ -24,10 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.presentation.model.UserRole
 
 @Composable
-fun RoleSelector(
-    selectedRole: UserRole,
-    onRoleSelected: (UserRole) -> Unit
-) {
+fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
     val shape = RoundedCornerShape(14.dp)
     val borderColor = MaterialTheme.colorScheme.outline
     val studentColor = Color(0xFF4CAF50)

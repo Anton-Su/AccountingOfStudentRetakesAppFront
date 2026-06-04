@@ -40,10 +40,7 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun Navigation(
-    navController: NavHostController = rememberNavController(),
-    viewModel: RetakeViewModel,
-) {
+fun Navigation(navController: NavHostController = rememberNavController(), viewModel: RetakeViewModel, ) {
     LaunchedEffect(viewModel) {
         viewModel.navigationEvents.collectLatest { role ->
             val target = when (role) {
@@ -117,15 +114,14 @@ fun Navigation(
             val retakeId = backStackEntry.arguments?.getLong("retakeId") ?: return@composable
             val uiState = viewModel.uiState.collectAsState().value
             StudentCommentScreen(
-                retakeId = retakeId,
                 uiState = uiState,
-                onSubmit = { gradeplace, gradeteacher, gradeoverall, comment ->
+                onSubmit = { gradePlace, gradeTeacher, gradeOverall, comment ->
                     uiState.loggedInUser?.id?.let { studentId ->
                         viewModel.createComment(
                             studentId = studentId,
-                            gradeplace = gradeplace,
-                            gradeteacher = gradeteacher,
-                            gradeoverall = gradeoverall,
+                            gradePlace = gradePlace,
+                            gradeTeacher = gradeTeacher,
+                            gradeOverall = gradeOverall,
                             comment = comment,
                             retakeId = retakeId,
                             onSuccess = { navController.popBackStack() },

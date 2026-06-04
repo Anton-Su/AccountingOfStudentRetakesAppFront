@@ -23,11 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RetakeTypeSelector(
-    selectedType: String?,
-    onTypeSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun RetakeTypeSelector(selectedType: String?, onTypeSelected: (String) -> Unit, modifier: Modifier = Modifier) {
     val shape = RoundedCornerShape(14.dp)
     val borderColor = MaterialTheme.colorScheme.outline
     val examColor = MaterialTheme.colorScheme.primary

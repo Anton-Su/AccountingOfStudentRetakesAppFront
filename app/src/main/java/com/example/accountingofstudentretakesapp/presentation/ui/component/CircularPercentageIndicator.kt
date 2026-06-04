@@ -19,20 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CircularPercentageIndicator(
-    percentage: Int,
-    modifier: Modifier = Modifier,
-    size: Dp = 80.dp,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
-    progressColor: Color = MaterialTheme.colorScheme.primary,
-    strokeWidth: Dp = 6.dp,
-) {
+fun CircularPercentageIndicator(percentage: Int, modifier: Modifier = Modifier, size: Dp = 80.dp, backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant, progressColor: Color = MaterialTheme.colorScheme.primary, strokeWidth: Dp = 6.dp) {
     val targetPercentage = percentage.toFloat() / 100f
-    val animatedProgress by animateFloatAsState(
-        targetValue = targetPercentage,
-        animationSpec = tween(durationMillis = 1000),
-        label = "percentageAnimation"
-    )
+    val animatedProgress by animateFloatAsState(targetValue = targetPercentage, animationSpec = tween(durationMillis = 1000), label = "percentageAnimation")
     Box(
         modifier = modifier
             .size(size)

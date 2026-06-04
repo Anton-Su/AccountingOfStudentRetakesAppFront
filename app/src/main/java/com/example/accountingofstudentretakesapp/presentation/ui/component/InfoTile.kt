@@ -23,11 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun InfoTile(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier,
-) {
+fun InfoTile(label: String, value: String, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),

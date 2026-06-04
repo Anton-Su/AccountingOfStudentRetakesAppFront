@@ -38,21 +38,9 @@ import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminRedactRetakeScreen(
-    retakeId: Long,
-    uiState: RetakeUiState,
-    onLoadSubjects: () -> Unit,
-    onLoadTeachers: (String) -> Unit,
-    onRedactRetake: (
-        id: Long,
-        startAt: String,
-        endAt: String,
-        teacherIds: List<Long>,
-        subjectId: Long,
-        type: String,
-        place: String,
-        admission: String?
-    ) -> Unit,
+fun AdminRedactRetakeScreen(retakeId: Long, uiState: RetakeUiState,
+    onLoadSubjects: () -> Unit, onLoadTeachers: (String) -> Unit,
+    onRedactRetake: (id: Long, startAt: String, endAt: String, teacherIds: List<Long>, subjectId: Long, type: String, place: String, admission: String?) -> Unit,
     onBack: () -> Unit
 ) {
     val type = remember { mutableStateOf<String?>(null) }

@@ -55,9 +55,9 @@ fun CommentItemCard(comment: CommentDto) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CommentRatingBadge(label = "Преподаватель", rating = comment.gradeteacher)
-                CommentRatingBadge(label = "Аудитория", rating = comment.gradeplace)
-                CommentRatingBadge(label = "Итог", rating = comment.gradeoverall, isTotal = true)
+                CommentRatingBadge(label = "Преподаватель", rating = comment.gradeTeacher)
+                CommentRatingBadge(label = "Аудитория", rating = comment.gradePlace)
+                CommentRatingBadge(label = "Итог", rating = comment.gradeOverall, isTotal = true)
             }
         }
     }

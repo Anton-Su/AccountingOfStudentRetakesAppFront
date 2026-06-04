@@ -20,13 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RatingField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String,
-    range: String,
-    icon: ImageVector,
-) {
+fun RatingField(value: String, onValueChange: (String) -> Unit, label: String, range: String, icon: ImageVector) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,

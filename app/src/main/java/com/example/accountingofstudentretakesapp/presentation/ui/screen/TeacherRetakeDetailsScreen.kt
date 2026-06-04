@@ -26,24 +26,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.presentation.helpers.formatIsoDateTimeToHuman
 import com.example.accountingofstudentretakesapp.presentation.ui.component.InfoTile
 import com.example.accountingofstudentretakesapp.presentation.ui.component.StudentGradeCard
-import com.example.accountingofstudentretakesapp.presentation.ui.component.formatIsoDateTimeToHuman
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TeacherRetakeDetailsScreen(
-    retakeId: Long,
-    uiState: RetakeUiState,
-    onLoadRetakeDetails: (Long) -> Unit,
-    onGradeStudent: (retakeId: Long, studentId: Long, score: Int) -> Unit,
-    onBack: () -> Unit,
+fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,
+                               onLoadRetakeDetails: (Long) -> Unit,
+                               onGradeStudent: (retakeId: Long, studentId: Long, score: Int) -> Unit,
+                               onBack: () -> Unit
 ) {
     LaunchedEffect(retakeId) {
         onLoadRetakeDetails(retakeId)
     }
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
@@ -71,11 +68,7 @@ fun TeacherRetakeDetailsScreen(
                     Text("Загрузка деталей пересдачи...", style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.teacherRetakeDetailsError != null -> {
-                    Text(
-                        text = uiState.teacherRetakeDetailsError,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    Text(text = uiState.teacherRetakeDetailsError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.teacherRetakeDetails != null -> {
                     val details = uiState.teacherRetakeDetails
@@ -128,24 +121,12 @@ fun TeacherRetakeDetailsScreen(
                                     value = retake.admission
                                 )
                             }
-                            Text(
-                                text = "Последнее изменение: ${formatIsoDateTimeToHuman(retake.lastModified)}",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                            Text(text = "Последнее изменение: ${formatIsoDateTimeToHuman(retake.lastModified)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
-                    Text(
-                        text = "Записанные студенты (${details.enrollments.size})",
-                        style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier.padding(top = 16.dp, bottom = 12.dp)
-                    )
+                    Text(text = "Записанные студенты (${details.enrollments.size})", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 16.dp, bottom = 12.dp))
                     if (details.enrollments.isEmpty()) {
-                        Text(
-                            text = "Нет записанных студентов",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        Text(text = "Нет записанных студентов", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     } else {
                         LazyColumn(
                             modifier = Modifier.fillMaxWidth(),

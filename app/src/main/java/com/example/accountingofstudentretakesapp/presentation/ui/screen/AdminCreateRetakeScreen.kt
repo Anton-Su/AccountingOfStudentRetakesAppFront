@@ -38,21 +38,12 @@ import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminCreateRetakeScreen(
-    uiState: RetakeUiState,
-    onLoadSubjects: () -> Unit,
-    onLoadTeachers: (String) -> Unit,
-    onCreateRetake: (
-        startAt: String,
-        endAt: String,
-        teacherIds: List<Long>,
-        subjectId: Long,
-        type: String,
-        place: String,
-        admission: String?
-    ) -> Unit,
-    onBack: () -> Unit
-) {
+fun AdminCreateRetakeScreen(uiState: RetakeUiState,
+                            onLoadSubjects: () -> Unit,
+                            onLoadTeachers: (String) -> Unit,
+                            onCreateRetake: (startAt: String, endAt: String, teacherIds: List<Long>, subjectId: Long, type: String, place: String, admission: String?) -> Unit,
+                            onBack: () -> Unit)
+{
     val type = remember { mutableStateOf<String?>(null) }
     val place = remember { mutableStateOf("") }
     val startAt = remember { mutableStateOf("") }
@@ -77,19 +68,10 @@ fun AdminCreateRetakeScreen(
             selectedTeachers.isEmpty() -> errorMessage.value = "Выберите хотя бы одного преподавателя"
             else -> {
                 errorMessage.value = null
-                onCreateRetake(
-                    startAt.value,
-                    endAt.value,
-                    selectedTeachers,
-                    selectedSubject.value!!,
-                    type.value!!,
-                    place.value,
-                    admission.value.takeIf { it.isNotEmpty() }
-                )
+                onCreateRetake(startAt.value, endAt.value, selectedTeachers, selectedSubject.value!!, type.value!!, place.value, admission.value.takeIf { it.isNotEmpty() })
             }
         }
     }
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
@@ -114,16 +96,10 @@ fun AdminCreateRetakeScreen(
             item {
                 if (errorMessage.value != null) {
                     Card(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = errorMessage.value ?: "",
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(12.dp)
-                        )
+                        Text(text = errorMessage.value ?: "", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(12.dp))
                     }
                 }
             }
-
             item {
                 OutlinedTextField(
                     value = place.value,
@@ -132,20 +108,14 @@ fun AdminCreateRetakeScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-
             item {
-                Text(
-                    text = "Выберите тип пересдачи",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
+                Text(text = "Выберите тип пересдачи", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
                 RetakeTypeSelector(
                     selectedType = type.value,
                     onTypeSelected = { type.value = it },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-
             item {
                 DateTimePickerField(
                     value = startAt.value,
@@ -154,7 +124,6 @@ fun AdminCreateRetakeScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-
             item {
                 DateTimePickerField(
                     value = endAt.value,
@@ -163,7 +132,6 @@ fun AdminCreateRetakeScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-
             item {
                 OutlinedTextField(
                     value = admission.value,
@@ -172,22 +140,13 @@ fun AdminCreateRetakeScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-
             item {
-                Text(
-                    text = "Выберите предмет",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
+                Text(text = "Выберите предмет", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
                 Button(
                     onClick = { expandedSubject.value = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(
-                        selectedSubject.value?.let { subjectId ->
-                            uiState.subjects.find { it.id == subjectId }?.title
-                        } ?: "Выберите предмет"
-                    )
+                    Text(selectedSubject.value?.let { subjectId -> uiState.subjects.find { it.id == subjectId }?.title } ?: "Выберите предмет")
                 }
                 DropdownMenu(
                     expanded = expandedSubject.value,
@@ -206,18 +165,13 @@ fun AdminCreateRetakeScreen(
                     }
                 }
             }
-
             item {
-                Text(
-                    text = "Выберите преподавателей",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-                if (uiState.teachersByDisciplineLoading) {
+                Text(text = "Выберите преподавателей", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
+                if (uiState.teachersByDisciplineLoading)
                     CircularProgressIndicator(modifier = Modifier.padding(16.dp))
-                } else if (uiState.teachersByDiscipline.isEmpty()) {
+                else if (uiState.teachersByDiscipline.isEmpty())
                     Text("Нет преподавателей по этому предмету")
-                } else {
+                else {
                     Card {
                         Column(
                             modifier = Modifier
@@ -234,10 +188,7 @@ fun AdminCreateRetakeScreen(
                                 ) {
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(text = teacher.fullName)
-                                        Text(
-                                            text = "Дисциплины: ${teacher.disciplines.joinToString(", ")}",
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
+                                        Text(text = "Дисциплины: ${teacher.disciplines.joinToString(", ")}", style = MaterialTheme.typography.bodySmall)
                                     }
                                     Checkbox(
                                         checked = selectedTeachers.contains(teacher.userId),
@@ -255,7 +206,6 @@ fun AdminCreateRetakeScreen(
                     }
                 }
             }
-
             item {
                 Row(
                     modifier = Modifier
@@ -283,14 +233,10 @@ fun AdminCreateRetakeScreen(
             }
         }
     }
-
-
-    // Диалоги выбора даты и времени
     DateTimePickerDialogs(
         showDatePicker = showStartDateTimePicker,
         onDateTimeSelected = { startAt.value = it }
     )
-
     DateTimePickerDialogs(
         showDatePicker = showEndDateTimePicker,
         onDateTimeSelected = { endAt.value = it }

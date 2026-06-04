@@ -28,18 +28,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
-import com.example.accountingofstudentretakesapp.presentation.ui.component.formatIsoDateTimeToHuman
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.presentation.helpers.formatIsoDateTimeToHuman
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TeacherHomeScreen(
-    uiState: RetakeUiState,
-    onLoadRetakes: () -> Unit,
-    onRetakeClick: (Long) -> Unit,
-    onLogout: () -> Unit,
-) {
+fun TeacherHomeScreen(uiState: RetakeUiState,
+					  onLoadRetakes: () -> Unit,
+					  onRetakeClick: (Long) -> Unit,
+					  onLogout: () -> Unit)
+{
 	LaunchedEffect(Unit) {
 		onLoadRetakes()
 	}
@@ -61,9 +60,8 @@ fun TeacherHomeScreen(
 			title = {
 				Column {
 					Text("Кабинет преподавателя")
-					if (formattedName.isNotBlank()) {
+					if (formattedName.isNotBlank())
 						Text(formattedName, style = MaterialTheme.typography.bodyMedium)
-					}
 				}
 			},
 			actions = {
@@ -82,22 +80,13 @@ fun TeacherHomeScreen(
 			horizontalAlignment = Alignment.Start,
 			verticalArrangement = Arrangement.Top
 		) {
-			Text(
-				text = "Мои пересдачи",
-				style = MaterialTheme.typography.headlineSmall,
-				modifier = Modifier.padding(bottom = 12.dp)
-			)
-
+			Text(text = "Мои пересдачи", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 12.dp))
 			when {
 				uiState.teacherRetakesLoading -> {
 					Text("Загрузка пересдач...", style = MaterialTheme.typography.bodyMedium)
 				}
 				uiState.teacherRetakesError != null -> {
-					Text(
-						text = uiState.teacherRetakesError,
-						color = MaterialTheme.colorScheme.error,
-						style = MaterialTheme.typography.bodyMedium
-					)
+					Text(text = uiState.teacherRetakesError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
 				}
 				uiState.teacherRetakes.isEmpty() -> {
 					Text("Пока нет назначенных пересдач", style = MaterialTheme.typography.bodyMedium)
@@ -115,21 +104,10 @@ fun TeacherHomeScreen(
 									.clickable { onRetakeClick(retake.id) }
 							) {
 								Column(modifier = Modifier.padding(12.dp)) {
-									Text(
-										text = retake.type,
-										style = MaterialTheme.typography.titleMedium
-									)
-									Text(
-										text = "Место: ${retake.place}",
-										style = MaterialTheme.typography.bodyMedium
-									)
-									Text(
-										text = "Начало: ${formatIsoDateTimeToHuman(retake.startAt)}",
-										style = MaterialTheme.typography.bodyMedium
-									)
-									Text(text = "Окончание: ${formatIsoDateTimeToHuman(retake.endAt)}",
-										style = MaterialTheme.typography.bodyMedium
-									)
+									Text(text = retake.type, style = MaterialTheme.typography.titleMedium)
+									Text(text = "Место: ${retake.place}", style = MaterialTheme.typography.bodyMedium)
+									Text(text = "Начало: ${formatIsoDateTimeToHuman(retake.startAt)}", style = MaterialTheme.typography.bodyMedium)
+									Text(text = "Окончание: ${formatIsoDateTimeToHuman(retake.endAt)}", style = MaterialTheme.typography.bodyMedium)
 								}
 							}
 						}

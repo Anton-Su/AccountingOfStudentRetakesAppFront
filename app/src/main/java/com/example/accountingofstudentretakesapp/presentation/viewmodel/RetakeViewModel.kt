@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.example.accountingofstudentretakesapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
@@ -125,7 +123,7 @@ class RetakeViewModel(
     fun login(email: String, password: String, selectedRole: UserRole) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-            val loginResult = loginUseCase(email, password, selectedRole)
+            val loginResult = loginUseCase(email, password)
             if (loginResult.isFailure) {
                 _uiState.update {
                     it.copy(
@@ -418,73 +416,65 @@ class RetakeViewModel(
         }
     }
 
-            fun loadAvailableRetakes(studentId: Long) {
-                viewModelScope.launch {
+    fun loadAvailableRetakes(studentId: Long) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    availableRetakesLoading = true,
+                    availableRetakesError = null
+                )
+            }
+            runCatching { getAvailableRetakesUseCase(studentId) }
+                .onSuccess { retakes ->
                     _uiState.update {
                         it.copy(
-                            availableRetakesLoading = true,
+                            availableRetakes = retakes,
+                            availableRetakesLoading = false,
                             availableRetakesError = null
                         )
                     }
-
-                    runCatching { getAvailableRetakesUseCase(studentId) }
-                        .onSuccess { retakes ->
-                            _uiState.update {
-                                it.copy(
-                                    availableRetakes = retakes,
-                                    availableRetakesLoading = false,
-                                    availableRetakesError = null
-                                )
-                            }
-                        }
-                        .onFailure { error ->
-                            _uiState.update {
-                                it.copy(
-                                    availableRetakesLoading = false,
-                                    availableRetakesError = error.message ?: "Не удалось загрузить доступные пересдачи"
-                                )
-                            }
-                        }
                 }
-            }
-
-            fun loadEnrolledRetakes(studentId: Long) {
-                viewModelScope.launch {
+                .onFailure { error ->
                     _uiState.update {
                         it.copy(
-                            enrolledRetakesLoading = true,
+                            availableRetakesLoading = false,
+                            availableRetakesError = error.message ?: "Не удалось загрузить доступные пересдачи"
+                        )
+                    }
+                }
+        }
+    }
+
+    fun loadEnrolledRetakes(studentId: Long) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    enrolledRetakesLoading = true,
+                    enrolledRetakesError = null
+                )
+            }
+            runCatching { getEnrolledRetakesUseCase(studentId) }
+                .onSuccess { retakes ->
+                    _uiState.update {
+                        it.copy(
+                            enrolledRetakes = retakes,
+                            enrolledRetakesLoading = false,
                             enrolledRetakesError = null
                         )
                     }
-
-                    runCatching { getEnrolledRetakesUseCase(studentId) }
-                        .onSuccess { retakes ->
-                            _uiState.update {
-                                it.copy(
-                                    enrolledRetakes = retakes,
-                                    enrolledRetakesLoading = false,
-                                    enrolledRetakesError = null
-                                )
-                            }
-                        }
-                        .onFailure { error ->
-                            _uiState.update {
-                                it.copy(
-                                    enrolledRetakesLoading = false,
-                                    enrolledRetakesError = error.message ?: "Не удалось загрузить записанные пересдачи"
-                                )
-                            }
-                        }
                 }
-            }
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(
+                            enrolledRetakesLoading = false,
+                            enrolledRetakesError = error.message ?: "Не удалось загрузить записанные пересдачи"
+                        )
+                    }
+                }
+        }
+    }
 
-    fun enrollToRetake(
-        studentId: Long,
-        debtId: Long,
-        retakeId: Long,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit,
-    ) {
+    fun enrollToRetake(studentId: Long, debtId: Long, retakeId: Long, onSuccess: () -> Unit, onError: (String) -> Unit, ) {
         viewModelScope.launch {
             _uiState.update { it.copy(enrollRetakeLoading = true, enrollRetakeError = null) }
             runCatching { enrollToRetakeUseCase(studentId, debtId, retakeId) }
@@ -510,13 +500,7 @@ class RetakeViewModel(
         }
     }
 
-    fun cancelRetakeEnrollment(
-        studentId: Long,
-        debtId: Long,
-        retakeId: Long,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit,
-    ) {
+    fun cancelRetakeEnrollment(studentId: Long, debtId: Long, retakeId: Long, onSuccess: () -> Unit, onError: (String) -> Unit, ) {
         viewModelScope.launch {
             _uiState.update { it.copy(cancelRetakeLoading = true, cancelRetakeError = null) }
             runCatching { cancelRetakeEnrollmentUseCase(studentId, debtId, retakeId) }
@@ -542,22 +526,13 @@ class RetakeViewModel(
         }
     }
 
-    fun createComment(
-        studentId: Long,
-        gradeplace: Int,
-        gradeteacher: Int,
-        gradeoverall: Int,
-        comment: String?,
-        retakeId: Long,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit,
-    ) {
+    fun createComment(studentId: Long, gradePlace: Int, gradeTeacher: Int, gradeOverall: Int, comment: String?, retakeId: Long, onSuccess: () -> Unit, onError: (String) -> Unit, ) {
         viewModelScope.launch {
             _uiState.update { it.copy(createCommentLoading = true, createCommentError = null) }
             val request = CreateCommentRequestDto(
-                gradeplace = gradeplace,
-                gradeteacher = gradeteacher,
-                gradeoverall = gradeoverall,
+                gradePlace = gradePlace,
+                gradeTeacher = gradeTeacher,
+                gradeOverall = gradeOverall,
                 comment = comment,
                 retakeId = retakeId
             )
@@ -574,17 +549,7 @@ class RetakeViewModel(
         }
     }
 
-    fun createRetake(
-        startAt: String,
-        endAt: String,
-        teacherIds: List<Long>,
-        subjectId: Long,
-        type: String,
-        place: String,
-        admission: String? = null,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ) {
+    fun createRetake(startAt: String, endAt: String, teacherIds: List<Long>, subjectId: Long, type: String, place: String, admission: String? = null, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
@@ -622,11 +587,7 @@ class RetakeViewModel(
         }
     }
 
-    fun deleteRetake(
-        retakeId: Long,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ) {
+    fun deleteRetake(retakeId: Long, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
@@ -658,18 +619,7 @@ class RetakeViewModel(
         }
     }
 
-    fun redactRetake(
-        retakeId: Long,
-        startAt: String,
-        endAt: String,
-        teacherIds: List<Long>,
-        subjectId: Long,
-        type: String,
-        place: String,
-        admission: String? = null,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ) {
+    fun redactRetake(retakeId: Long, startAt: String, endAt: String, teacherIds: List<Long>, subjectId: Long, type: String, place: String, admission: String? = null, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
             _uiState.update {
                 it.copy(

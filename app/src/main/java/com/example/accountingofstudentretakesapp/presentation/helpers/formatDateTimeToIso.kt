@@ -1,24 +1,11 @@
-package com.example.accountingofstudentretakesapp.presentation.ui.component
+package com.example.accountingofstudentretakesapp.presentation.helpers
+
 
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
 
-fun formatIsoDateTimeToHuman(isoDateTime: String): String {
-    return try {
-        val instant = Instant.parse(isoDateTime)
-        val formatter = DateTimeFormatter.ofPattern(
-            "dd.MM.yyyy, HH:mm"
-        ).withZone(ZoneId.systemDefault())
-        formatter.format(instant)
-    } catch (_: Exception) {
-        isoDateTime
-    }
-}
 fun formatDateTimeToIso(dateMillis: Long?, hour: Int, minute: Int): String {
     if (dateMillis == null) return ""
     val calendar = Calendar.getInstance()
@@ -31,4 +18,3 @@ fun formatDateTimeToIso(dateMillis: Long?, hour: Int, minute: Int): String {
     }
     return format.format(calendar.time)
 }
-

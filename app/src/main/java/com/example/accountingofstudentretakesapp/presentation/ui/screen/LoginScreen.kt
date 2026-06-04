@@ -34,15 +34,16 @@ import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeVi
 
 @Composable
 fun LoginScreen(viewModel: RetakeViewModel) {
+
   //  var email by remember { mutableStateOf("petrov.m.i@edu.mirea.ru") }
    // var password by remember { mutableStateOf("Student123!") }
     //var role by remember { mutableStateOf(UserRole.STUDENT) }
  // var email by remember { mutableStateOf("kuznetsova.i.a@edu.mirea.ru") }
   //  var password by remember { mutableStateOf("Teacher123!") }
   //  var role by remember { mutableStateOf(UserRole.TEACHER) }
-var email by remember { mutableStateOf("volkov.a.s@edu.mirea.ru") }
-var password by remember { mutableStateOf("Admin123!") }
- var role by remember { mutableStateOf(UserRole.ADMIN) }
+    var email by remember { mutableStateOf("volkov.a.s@edu.mirea.ru") }
+    var password by remember { mutableStateOf("Admin123!") }
+    var role by remember { mutableStateOf(UserRole.ADMIN) }
     val uiState by viewModel.uiState.collectAsState()
     val isLoginEnabled = !uiState.isLoading && email.isNotBlank() && password.isNotBlank()
     Column(
@@ -104,17 +105,9 @@ var password by remember { mutableStateOf("Admin123!") }
             Text(if (uiState.isLoading) "Вход..." else "Войти")
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "Не получается войти? Уточните у ответственного лица университета.",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        Text(text = "Не получается войти? Уточните у ответственного лица университета.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "Нашли ошибку в системе? Напишите разработчику на почту develplover@mail.ru. Он, возможно, прочитает. Возможно...",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onErrorContainer
-        )
+        Text(text = "Нашли ошибку в системе? Напишите разработчику на почту develplover@mail.ru. Он, возможно, прочитает. Возможно...", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onErrorContainer)
         uiState.errorMessage?.let {
             Spacer(modifier = Modifier.height(16.dp))
             Text(it, color = MaterialTheme.colorScheme.error)

@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.map
 val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = "auth_tokens")
 
 class TokenManager(private val context: Context) {
-
     private val ACCESS_TOKEN = stringPreferencesKey("access_token")
 
     suspend fun saveAccessToken(token: String) {

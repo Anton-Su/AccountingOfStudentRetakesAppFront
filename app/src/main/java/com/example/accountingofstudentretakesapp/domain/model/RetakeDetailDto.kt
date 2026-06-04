@@ -1,6 +1,5 @@
 package com.example.accountingofstudentretakesapp.domain.model
 
-import com.example.accountingofstudentretakesapp.presentation.model.Retake
 import kotlinx.serialization.Serializable
 
 @Serializable

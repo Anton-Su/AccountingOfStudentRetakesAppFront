@@ -1,6 +1,5 @@
 package com.example.accountingofstudentretakesapp.domain.repository
 
-
 import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailDto
 import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailsResponseDto
 import com.example.accountingofstudentretakesapp.domain.model.GradeRequestDto

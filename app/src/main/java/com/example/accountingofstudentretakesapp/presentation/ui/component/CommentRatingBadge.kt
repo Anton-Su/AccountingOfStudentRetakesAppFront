@@ -13,12 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CommentRatingBadge(
-    label: String,
-    rating: Int,
-    isTotal: Boolean = false,
-    modifier: Modifier = Modifier
-) {
+fun CommentRatingBadge(label: String, rating: Int, isTotal: Boolean = false, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

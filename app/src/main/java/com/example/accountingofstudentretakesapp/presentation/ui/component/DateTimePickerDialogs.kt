@@ -3,16 +3,10 @@ package com.example.accountingofstudentretakesapp.presentation.ui.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
@@ -24,36 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
-/**
- * Компонент для выбора даты и времени
- * Отображает дату в удобном формате, но хранит ISO 8601 для сервера
- */
-@Composable
-fun DateTimePickerField(
-    value: String,
-    label: String,
-    onDateTimePickerClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    readOnly: Boolean = true
-) {
-    OutlinedTextField(
-        value = formatIsoDateTimeToHuman(value),
-        onValueChange = { },
-        label = { Text(label) },
-        modifier = modifier,
-        trailingIcon = {
-            IconButton(onClick = onDateTimePickerClick) {
-                Icon(
-                    Icons.Filled.DateRange,
-                    contentDescription = "Выбрать дату",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-        },
-        readOnly = readOnly
-    )
-}
+import com.example.accountingofstudentretakesapp.presentation.helpers.formatDateTimeToIso
 
 /**
  * Полный диалог выбора даты и времени
@@ -62,10 +27,7 @@ fun DateTimePickerField(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateTimePickerDialogs(
-    showDatePicker: MutableState<Boolean>,
-    onDateTimeSelected: (String) -> Unit
-) {
+fun DateTimePickerDialogs(showDatePicker: MutableState<Boolean>, onDateTimeSelected: (String) -> Unit) {
     val datePickerState = rememberDatePickerState()
     val timePickerState = androidx.compose.material3.rememberTimePickerState(is24Hour = true)
     val showTimePicker = remember { mutableStateOf(false) }
@@ -124,6 +86,3 @@ fun DateTimePickerDialogs(
         )
     }
 }
-
-
-

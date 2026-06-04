@@ -23,20 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.presentation.helpers.formatIsoDateTimeToHuman
 
 @Composable
-fun RetakeInfoCard(
-    subjectTitle: String,
-    place: String,
-    startAt: String,
-    endAt: String,
-    type: String,
-    admission: String?,
-    actionIcon: ImageVector,
-    actionDescription: String,
-    onAction: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun RetakeInfoCard(subjectTitle: String, place: String, startAt: String, endAt: String, type: String, admission: String?, actionIcon: ImageVector, actionDescription: String, onAction: () -> Unit, modifier: Modifier = Modifier) {
     Card(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier

@@ -25,16 +25,6 @@ class SettingsDataStore(private val context: Context) {
         val EMAIL = stringPreferencesKey("email")
     }
 
-    val userIdFlow: Flow<Long> = context.dataStore.data
-        .map { prefs: Preferences ->
-            prefs[USER_ID] ?: 0L
-        }
-
-    val roleFlow: Flow<String> = context.dataStore.data
-        .map { prefs: Preferences ->
-            prefs[ROLE] ?: ""
-        }
-
     val firstNameFlow: Flow<String> = context.dataStore.data
         .map { prefs: Preferences ->
             prefs[FIRST_NAME] ?: ""
@@ -48,11 +38,6 @@ class SettingsDataStore(private val context: Context) {
     val lastNameFlow: Flow<String> = context.dataStore.data
         .map { prefs: Preferences ->
             prefs[LAST_NAME] ?: ""
-        }
-
-    val emailFlow: Flow<String> = context.dataStore.data
-        .map { prefs: Preferences ->
-            prefs[EMAIL] ?: ""
         }
 
     suspend fun saveUserProfile(user: UserDto) {

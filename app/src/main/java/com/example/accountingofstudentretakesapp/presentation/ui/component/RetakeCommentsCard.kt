@@ -30,11 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.domain.model.CommentDto
 
 @Composable
-fun RetakeCommentsCard(
-    retakeId: Long,
-    comments: List<CommentDto>,
-    modifier: Modifier = Modifier
-) {
+fun RetakeCommentsCard(retakeId: Long, comments: List<CommentDto>, modifier: Modifier = Modifier) {
     val retakeComments = comments.filter { it.retakeId == retakeId }
     var isExpanded by remember { mutableStateOf(false) }
     if (retakeComments.isEmpty()) return

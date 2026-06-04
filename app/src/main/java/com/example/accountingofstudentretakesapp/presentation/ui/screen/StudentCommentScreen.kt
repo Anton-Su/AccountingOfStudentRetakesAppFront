@@ -27,15 +27,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.CardDefaults
@@ -48,7 +44,6 @@ import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentCommentScreen(
-    retakeId: Long,
     uiState: RetakeUiState,
     onSubmit: (gradeplace: Int, gradeteacher: Int, gradeoverall: Int, comment: String) -> Unit,
     onBack: () -> Unit,
@@ -100,7 +95,6 @@ fun StudentCommentScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Ошибки валидации
             val displayError = errorMessage.value ?: uiState.createCommentError
             if (displayError != null) {
                 Card(
@@ -119,16 +113,10 @@ fun StudentCommentScreen(
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(18.dp)
                         )
-                        Text(
-                            text = displayError,
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        Text(text = displayError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }
-
-            // Блок оценок
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -139,11 +127,7 @@ fun StudentCommentScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text(
-                        text = "Оценки",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Text(text = "Оценки", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     RatingField(
                         value = gradePlace.value,
                         onValueChange = { gradePlace.value = it.filter(Char::isDigit) },
@@ -169,8 +153,6 @@ fun StudentCommentScreen(
                     )
                 }
             }
-
-            // Комментарий
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -191,11 +173,7 @@ fun StudentCommentScreen(
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Text(
-                            text = "Комментарий",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        Text(text = "Комментарий", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                     OutlinedTextField(
                         value = comment.value,
@@ -206,11 +184,7 @@ fun StudentCommentScreen(
                         maxLines = 8,
                         shape = MaterialTheme.shapes.medium,
                         supportingText = {
-                            Text(
-                                text = "${comment.value.text.length}/500",
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.End,
-                                style = MaterialTheme.typography.labelSmall,
+                            Text(text = "${comment.value.text.length}/500", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End, style = MaterialTheme.typography.labelSmall,
                                 color = if (comment.value.text.length > 500)
                                     MaterialTheme.colorScheme.error
                                 else
@@ -220,7 +194,6 @@ fun StudentCommentScreen(
                     )
                 }
             }
-
             Button(
                 onClick = {
                     val validationError = validate()

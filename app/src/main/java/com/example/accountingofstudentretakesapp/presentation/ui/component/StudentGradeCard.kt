@@ -22,12 +22,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun StudentGradeCard(
-    studentFullName: String,
-    groupName: String,
-    retakeType: String,
-    onGradeSubmit: (Int) -> Unit,
-) {
+fun StudentGradeCard(studentFullName: String, groupName: String, retakeType: String, onGradeSubmit: (Int) -> Unit) {
     val (selectedGrade, setSelectedGrade) = remember { mutableStateOf<Int?>(null) }
     val (expandedDropdown, setExpandedDropdown) = remember { mutableStateOf(false) }
     val availableGrades = if (retakeType == "Экзамен") {

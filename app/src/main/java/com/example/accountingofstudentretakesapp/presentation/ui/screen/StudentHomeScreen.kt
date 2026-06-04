@@ -38,19 +38,17 @@ import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.presentation.ui.component.CircularPercentageIndicator
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeInfoCard
-import com.example.accountingofstudentretakesapp.presentation.ui.component.formatIsoDateTimeToHuman
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StudentHomeScreen(
-    uiState: RetakeUiState,
-    onLoadStudentData: (Long) -> Unit,
-    onRetakeClick: (Long) -> Unit,
-    onEnrollRetake: (Long, Long) -> Unit,
-    onCancelRetake: (Long, Long) -> Unit,
-    onLogout: () -> Unit,
-) {
+fun StudentHomeScreen(uiState: RetakeUiState,
+                      onLoadStudentData: (Long) -> Unit,
+                      onRetakeClick: (Long) -> Unit,
+                      onEnrollRetake: (Long, Long) -> Unit,
+                      onCancelRetake: (Long, Long) -> Unit,
+                      onLogout: () -> Unit, )
+{
     val studentId = uiState.loggedInUser?.id
     LaunchedEffect(studentId) {
         studentId?.let(onLoadStudentData)

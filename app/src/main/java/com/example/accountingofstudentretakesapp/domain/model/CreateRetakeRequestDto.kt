@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateRetakeRequestDto(
-    val startAt: String, // ISO format
-    val endAt: String,   // ISO format
+    val startAt: String,
+    val endAt: String,
     val teacherIds: List<Long>,
     val subjectId: Long,
     val type: String,
