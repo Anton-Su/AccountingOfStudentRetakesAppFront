@@ -1,6 +1,5 @@
 package com.example.accountingofstudentretakesapp.presentation.ui.screen
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,15 +42,14 @@ import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentHomeScreen(uiState: RetakeUiState,
-                      onLoadStudentData: (Long) -> Unit,
+                      onLoadStudentData: () -> Unit,
                       onRetakeClick: (Long) -> Unit,
                       onEnrollRetake: (Long, Long) -> Unit,
                       onCancelRetake: (Long, Long) -> Unit,
-                      onLogout: () -> Unit, )
+                      onLogout: () -> Unit)
 {
-    val studentId = uiState.loggedInUser?.id
-    LaunchedEffect(studentId) {
-        studentId?.let(onLoadStudentData)
+    LaunchedEffect(Unit) {
+        onLoadStudentData()
     }
     val context = LocalContext.current
     val settings = SettingsDataStore(context)
@@ -59,9 +57,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
     val lastName by settings.lastNameFlow.collectAsState(initial = "")
     val secondName by settings.secondNameFlow.collectAsState(initial = "")
     val formattedName = remember(firstName, lastName, secondName) {
-        val lastInitial = lastName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
-        val secondInitial = secondName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
-        listOf(firstName, lastInitial, secondInitial).filter { it.isNotBlank() }.joinToString(" ")
+        firstName + " " + secondName + " " + lastName.take(1)
     }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -133,11 +129,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                     Text("Загрузка долгов...", style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.studentDebtsError != null -> item {
-                    Text(
-                        text = uiState.studentDebtsError,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    Text(text = uiState.studentDebtsError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.studentDebts.isEmpty() -> item {
                     Text("Пока нет долгов", style = MaterialTheme.typography.bodyMedium)

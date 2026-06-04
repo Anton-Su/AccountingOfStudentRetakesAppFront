@@ -29,7 +29,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.presentation.helpers.formatIsoDateTimeToHuman
+import com.example.accountingofstudentretakesapp.presentation.helpers.formatInstantToHuman
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,9 +48,7 @@ fun TeacherHomeScreen(uiState: RetakeUiState,
 	val lastName by settings.lastNameFlow.collectAsState(initial = "")
 	val secondName by settings.secondNameFlow.collectAsState(initial = "")
 	val formattedName = remember(firstName, lastName, secondName) {
-		val lastInitial = lastName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
-		val secondInitial = secondName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
-		listOf(firstName, lastInitial, secondInitial).filter { it.isNotBlank() }.joinToString(" ")
+		firstName + " " + secondName + " " + lastName.take(1)
 	}
 	Scaffold(
 		modifier = Modifier.fillMaxSize(),
@@ -106,8 +104,8 @@ fun TeacherHomeScreen(uiState: RetakeUiState,
 								Column(modifier = Modifier.padding(12.dp)) {
 									Text(text = retake.type, style = MaterialTheme.typography.titleMedium)
 									Text(text = "Место: ${retake.place}", style = MaterialTheme.typography.bodyMedium)
-									Text(text = "Начало: ${formatIsoDateTimeToHuman(retake.startAt)}", style = MaterialTheme.typography.bodyMedium)
-									Text(text = "Окончание: ${formatIsoDateTimeToHuman(retake.endAt)}", style = MaterialTheme.typography.bodyMedium)
+									Text(text = "Начало: ${formatInstantToHuman(retake.startAt)}", style = MaterialTheme.typography.bodyMedium)
+									Text(text = "Окончание: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodyMedium)
 								}
 							}
 						}

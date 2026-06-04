@@ -26,7 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.presentation.helpers.formatIsoDateTimeToHuman
+import com.example.accountingofstudentretakesapp.presentation.helpers.formatInstantToHuman
 import com.example.accountingofstudentretakesapp.presentation.ui.component.InfoTile
 import com.example.accountingofstudentretakesapp.presentation.ui.component.StudentGradeCard
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
@@ -106,12 +106,12 @@ fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,
                             ) {
                                 InfoTile(
                                     label = "Начало",
-                                    value = formatIsoDateTimeToHuman(retake.startAt),
+                                    value = formatInstantToHuman(retake.startAt),
                                     modifier = Modifier.weight(1f)
                                 )
                                 InfoTile(
                                     label = "Окончание",
-                                    value = formatIsoDateTimeToHuman(retake.endAt),
+                                    value = formatInstantToHuman(retake.endAt),
                                     modifier = Modifier.weight(1f)
                                 )
                             }
@@ -121,7 +121,7 @@ fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,
                                     value = retake.admission
                                 )
                             }
-                            Text(text = "Последнее изменение: ${formatIsoDateTimeToHuman(retake.lastModified)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(text = "Последнее изменение: ${formatInstantToHuman(retake.lastModified)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                     Text(text = "Записанные студенты (${details.enrollments.size})", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 16.dp, bottom = 12.dp))

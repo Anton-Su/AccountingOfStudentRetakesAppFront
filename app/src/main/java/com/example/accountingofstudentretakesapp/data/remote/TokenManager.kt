@@ -14,11 +14,18 @@ val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name 
 class TokenManager(private val context: Context) {
     private val ACCESS_TOKEN = stringPreferencesKey("access_token")
 
+    val accessTokenFlow: Flow<String?> = context.tokenDataStore.data
+        .map { prefs -> prefs[ACCESS_TOKEN] }
+
     suspend fun saveAccessToken(token: String) {
-        context.tokenDataStore.edit { it[ACCESS_TOKEN] = token }
+        context.tokenDataStore.edit {
+            it[ACCESS_TOKEN] = token
+        }
     }
 
     suspend fun clearTokens() {
-        context.tokenDataStore.edit { it.clear() }
+        context.tokenDataStore.edit {
+            it.clear()
+        }
     }
 }

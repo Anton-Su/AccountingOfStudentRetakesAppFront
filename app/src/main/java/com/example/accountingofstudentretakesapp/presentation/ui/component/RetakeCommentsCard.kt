@@ -27,10 +27,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.domain.model.CommentDto
+import com.example.accountingofstudentretakesapp.presentation.model.Comment
 
 @Composable
-fun RetakeCommentsCard(retakeId: Long, comments: List<CommentDto>, modifier: Modifier = Modifier) {
+fun RetakeCommentsCard(retakeId: Long, comments: List<Comment>, modifier: Modifier = Modifier) {
     val retakeComments = comments.filter { it.retakeId == retakeId }
     var isExpanded by remember { mutableStateOf(false) }
     if (retakeComments.isEmpty()) return
@@ -61,13 +61,8 @@ fun RetakeCommentsCard(retakeId: Long, comments: List<CommentDto>, modifier: Mod
                         modifier = Modifier.padding(end = 8.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
-                    Text(
-                        text = "Комментарии (${retakeComments.size})",
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    Text(text = "Комментарии (${retakeComments.size})", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
                 }
-
                 IconButton(
                     onClick = { isExpanded = !isExpanded },
                     modifier = Modifier.padding(0.dp)

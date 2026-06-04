@@ -27,9 +27,7 @@ fun InfoTile(label: String, value: String, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f)
-        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
@@ -46,26 +44,11 @@ fun InfoTile(label: String, value: String, modifier: Modifier = Modifier) {
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = label.take(1).uppercase(),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                Text(text = label.take(1).uppercase(), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
             }
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text(
-                    text = value,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    lineHeight = 20.sp
-                )
+                Text(text = label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(text = value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, lineHeight = 20.sp)
             }
         }
     }

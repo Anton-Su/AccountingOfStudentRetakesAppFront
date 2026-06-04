@@ -45,7 +45,7 @@ import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUi
 @Composable
 fun StudentCommentScreen(
     uiState: RetakeUiState,
-    onSubmit: (gradeplace: Int, gradeteacher: Int, gradeoverall: Int, comment: String) -> Unit,
+    onSubmit: (gradePlace: Int, gradeTeacher: Int, gradeOverall: Int, comment: String) -> Unit,
     onBack: () -> Unit,
 ) {
     val gradePlace = remember { mutableStateOf("") }
@@ -54,12 +54,10 @@ fun StudentCommentScreen(
     val comment = remember { mutableStateOf(TextFieldValue()) }
     val errorMessage = remember { mutableStateOf<String?>(null) }
 
-    fun parseIntOrNull(value: String): Int? = value.toIntOrNull()
-
     fun validate(): String? {
-        val placeValue = parseIntOrNull(gradePlace.value)
-        val teacherValue = parseIntOrNull(gradeTeacher.value)
-        val overallValue = parseIntOrNull(gradeOverall.value)
+        val placeValue = gradePlace.value.toIntOrNull()
+        val teacherValue = gradeTeacher.value.toIntOrNull()
+        val overallValue = gradeOverall.value.toIntOrNull()
         val commentText = comment.value.text.trim()
         return when {
             placeValue == null -> "Оцените аудиторию"
@@ -72,7 +70,6 @@ fun StudentCommentScreen(
             else -> null
         }
     }
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
@@ -223,14 +220,6 @@ fun StudentCommentScreen(
                         strokeWidth = 2.dp,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
-                } else {
-//                    Icon(
-//                        Icons.AutoMirrored.Outlined.Send,
-//                        contentDescription = null,
-//                        modifier = Modifier
-//                            .size(18.dp)
-//                            .padding(end = 4.dp)
-//                    )
                 }
                 Text("Отправить отзыв", style = MaterialTheme.typography.labelLarge)
             }

@@ -7,33 +7,33 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.presentation.helpers.formatIsoDateTimeToHuman
+import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
+import com.example.accountingofstudentretakesapp.presentation.helpers.formatInstantToHuman
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeCommentsCard
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
@@ -57,9 +57,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
     val lastName by settings.lastNameFlow.collectAsState(initial = "")
     val secondName by settings.secondNameFlow.collectAsState(initial = "")
     val formattedName = remember(firstName, lastName, secondName) {
-        val lastInitial = lastName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
-        val secondInitial = secondName.firstOrNull()?.uppercaseChar()?.let { "$it." } ?: ""
-        listOf(firstName, lastInitial, secondInitial).filter { it.isNotBlank() }.joinToString(" ")
+        firstName + " " + secondName + " " + lastName.take(1)
     }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -111,11 +109,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                     Text("Загрузка пересдач...", style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.allRetakesError != null -> {
-                    Text(
-                        text = uiState.allRetakesError,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    Text(text = uiState.allRetakesError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.allRetakes.isEmpty() -> {
                     Text("Нет пересдач", style = MaterialTheme.typography.bodyMedium)
@@ -140,29 +134,18 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Column(modifier = Modifier.weight(1f)) {
-                                                Text(
-                                                    text = retake.type,
-                                                    style = MaterialTheme.typography.titleMedium
-                                                )
-                                                Text(
-                                                    text = "Место: ${retake.place}",
-                                                    style = MaterialTheme.typography.bodySmall
-                                                )
-                                                Text(
-                                                    text = "Начало: ${formatIsoDateTimeToHuman(retake.startAt)}",
-                                                    style = MaterialTheme.typography.bodySmall
-                                                )
-                                                Text(
-                                                    text = "Окончание: ${formatIsoDateTimeToHuman(retake.endAt)}",
-                                                    style = MaterialTheme.typography.bodySmall
-                                                )
+                                                Text(text = retake.type, style = MaterialTheme.typography.titleMedium)
+                                                Text(text = "Место: ${retake.place}", style = MaterialTheme.typography.bodySmall)
+                                                Text(text = "Начало: ${formatInstantToHuman(retake.startAt)}", style = MaterialTheme.typography.bodySmall)
+                                                Text(text = "Окончание: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodySmall)
                                             }
                                             Row(
                                                 horizontalArrangement = Arrangement.spacedBy(4.dp)
                                             ) {
                                                 IconButton(
                                                     onClick = { onEditRetake(retake.id) },
-                                                    modifier = Modifier.padding(0.dp)
+                                                    modifier = Modifier.padding(0.dp),
+                                                    // enabled = retake.startAt > Instant.now()
                                                 ) {
                                                     Icon(
                                                         Icons.Default.Edit,

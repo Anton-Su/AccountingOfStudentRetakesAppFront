@@ -19,11 +19,7 @@ fun CommentRatingBadge(label: String, rating: Int, isTotal: Boolean = false, mod
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        Text(text = label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(
             text = if (isTotal) "$rating/100" else "$rating/10",
             style = MaterialTheme.typography.labelMedium,

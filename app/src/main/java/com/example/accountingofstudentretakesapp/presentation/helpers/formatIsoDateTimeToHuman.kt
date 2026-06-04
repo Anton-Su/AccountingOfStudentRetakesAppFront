@@ -4,14 +4,11 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-fun formatIsoDateTimeToHuman(isoDateTime: String): String {
+fun formatInstantToHuman(instant: Instant): String {
     return try {
-        val instant = Instant.parse(isoDateTime)
-        val formatter = DateTimeFormatter.ofPattern(
-            "dd.MM.yyyy, HH:mm"
-        ).withZone(ZoneId.systemDefault())
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm").withZone(ZoneId.systemDefault())
         formatter.format(instant)
     } catch (_: Exception) {
-        isoDateTime
+        instant.toString()
     }
 }

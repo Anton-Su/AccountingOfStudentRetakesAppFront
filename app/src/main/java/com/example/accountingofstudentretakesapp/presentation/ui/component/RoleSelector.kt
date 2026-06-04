@@ -54,11 +54,7 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
                     .clickable { onRoleSelected(UserRole.STUDENT) },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    "Студент",
-                    color = if (selectedRole == UserRole.STUDENT) textColorSelected else textColorUnselected,
-                    fontWeight = FontWeight.Bold
-                )
+                Text("Студент", color = if (selectedRole == UserRole.STUDENT) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
             }
             Box(
                 modifier = Modifier
@@ -70,11 +66,7 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
                     .clickable { onRoleSelected(UserRole.TEACHER) },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    "Препод",
-                    color = if (selectedRole == UserRole.TEACHER) textColorSelected else textColorUnselected,
-                    fontWeight = FontWeight.Bold
-                )
+                Text("Препод", color = if (selectedRole == UserRole.TEACHER) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
             }
             Box(
                 modifier = Modifier
@@ -86,11 +78,7 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
                     .clickable { onRoleSelected(UserRole.ADMIN) },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    "Админ",
-                    color = if (selectedRole == UserRole.ADMIN) textColorSelected else textColorUnselected,
-                    fontWeight = FontWeight.Bold
-                )
+                Text("Админ", color = if (selectedRole == UserRole.ADMIN) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
             }
         }
     }

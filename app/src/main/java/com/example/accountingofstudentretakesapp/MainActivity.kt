@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.example.accountingofstudentretakesapp.data.remote.KtorClient
 import com.example.accountingofstudentretakesapp.navigation.Navigation
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.data.remote.TokenManager
@@ -39,6 +41,8 @@ import com.example.accountingofstudentretakesapp.domain.usecase.RedactRetakeUseC
 import com.example.accountingofstudentretakesapp.domain.usecase.GetAllCommentsUseCase
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
 import com.example.accountingofstudentretakesapp.ui.theme.AccountingOfStudentRetakesAppTheme
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +50,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val settingsDataStore = SettingsDataStore(applicationContext)
         val tokenManager = TokenManager(applicationContext)
+        // восстанавливаем токен при запуске приложения и устанавливаем его в KtorClient
+        lifecycleScope.launch {
+            tokenManager.accessTokenFlow.first()?.let { token ->
+                KtorClient.updateAccessToken(token)
+            }
+        }
         val authRepository = AuthRepositoryImpl(tokenManager)
         val userRepository = UserRepositoryImpl()
         val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)

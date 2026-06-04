@@ -9,16 +9,17 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.accountingofstudentretakesapp.presentation.helpers.formatIsoDateTimeToHuman
+import com.example.accountingofstudentretakesapp.presentation.helpers.formatInstantToHuman
+import java.time.Instant
 
 /**
  * Компонент для выбора даты и времени
  * Отображает дату в удобном формате, но хранит ISO 8601 для сервера
  */
 @Composable
-fun DateTimePickerField(value: String, label: String, onDateTimePickerClick: () -> Unit, modifier: Modifier = Modifier, readOnly: Boolean = true) {
+fun DateTimePickerField(value: Instant, label: String, onDateTimePickerClick: () -> Unit, modifier: Modifier = Modifier, readOnly: Boolean = true) {
     OutlinedTextField(
-        value = formatIsoDateTimeToHuman(value),
+        value = formatInstantToHuman(value),
         onValueChange = { },
         label = { Text(label) },
         modifier = modifier,

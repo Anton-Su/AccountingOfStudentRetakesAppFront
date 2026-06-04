@@ -96,9 +96,7 @@ fun LoginScreen(viewModel: RetakeViewModel) {
         )
         Spacer(modifier = Modifier.height(24.dp))
         Button(
-            onClick = {
-                viewModel.login(email, password, role)
-            },
+            onClick = { viewModel.login(email, password) },
             modifier = Modifier.fillMaxWidth(),
             enabled = isLoginEnabled
         ) {

@@ -15,14 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.domain.model.CommentDto
+import com.example.accountingofstudentretakesapp.presentation.model.Comment
 
 @Composable
-fun CommentItemCard(comment: CommentDto) {
+fun CommentItemCard(comment: Comment) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background
-        )
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier.padding(10.dp),

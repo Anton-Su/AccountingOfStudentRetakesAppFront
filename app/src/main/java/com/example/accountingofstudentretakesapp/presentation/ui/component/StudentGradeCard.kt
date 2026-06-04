@@ -39,16 +39,8 @@ fun StudentGradeCard(studentFullName: String, groupName: String, retakeType: Str
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text(
-                text = studentFullName,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Группа: $groupName",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Text(text = studentFullName, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text(text = "Группа: $groupName", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

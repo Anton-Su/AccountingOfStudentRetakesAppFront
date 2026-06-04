@@ -59,11 +59,7 @@ fun RetakeTypeSelector(selectedType: String?, onTypeSelected: (String) -> Unit, 
                         .clickable { onTypeSelected(option) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = option,
-                        color = if (selected) textColorSelected else textColorUnselected,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Text(text = option, color = if (selected) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
                 }
             }
         }
