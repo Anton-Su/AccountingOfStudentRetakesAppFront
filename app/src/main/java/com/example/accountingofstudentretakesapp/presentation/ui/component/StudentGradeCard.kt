@@ -53,7 +53,7 @@ fun StudentGradeCard(studentFullName: String, groupName: String, retakeType: Str
                         onClick = { setExpandedDropdown(!expandedDropdown) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(selectedGrade?.toString() ?: "Выбрать оценку")
+                        Text(selectedGrade?.toString() ?: "???")
                     }
                     DropdownMenu(
                         expanded = expandedDropdown,
