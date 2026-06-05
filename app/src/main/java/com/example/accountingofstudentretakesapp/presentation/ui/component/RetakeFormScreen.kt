@@ -136,7 +136,7 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
             item {
                 DateTimePickerField(
                     value = endAt.value,
-                    label = "Время окончания",
+                    label = "Время конца",
                     onDateTimePickerClick = { showEndDateTimePicker.value = true },
                     modifier = Modifier.fillMaxWidth()
                 )

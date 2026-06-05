@@ -140,7 +140,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                                                 Text(text = "$subjectTitle (" + retake.type.take(3) + ")", style = MaterialTheme.typography.titleMedium)
                                                 Text(text = "Место: ${retake.place}", style = MaterialTheme.typography.bodySmall)
                                                 Text(text = "Начало: ${formatInstantToHuman(retake.startAt)}", style = MaterialTheme.typography.bodySmall)
-                                                Text(text = "Окончание: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodySmall)
+                                                Text(text = "Конец: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodySmall)
                                             }
                                             Row(
                                                 horizontalArrangement = Arrangement.spacedBy(4.dp)

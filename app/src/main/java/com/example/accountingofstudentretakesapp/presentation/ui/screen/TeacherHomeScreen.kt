@@ -108,7 +108,7 @@ fun TeacherHomeScreen(uiState: RetakeUiState,
 									Text(text = "Предмет: $subjectTitle", style = MaterialTheme.typography.bodyMedium)
 									Text(text = "Место: ${retake.place}", style = MaterialTheme.typography.bodyMedium)
 									Text(text = "Начало: ${formatInstantToHuman(retake.startAt)}", style = MaterialTheme.typography.bodyMedium)
-									Text(text = "Окончание: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodyMedium)
+									Text(text = "Конец: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodyMedium)
 								}
 							}
 						}

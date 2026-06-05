@@ -110,7 +110,7 @@ fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,
                                     modifier = Modifier.weight(1f)
                                 )
                                 InfoTile(
-                                    label = "Окончание",
+                                    label = "Конец",
                                     value = formatInstantToHuman(retake.endAt),
                                     modifier = Modifier.weight(1f)
                                 )
