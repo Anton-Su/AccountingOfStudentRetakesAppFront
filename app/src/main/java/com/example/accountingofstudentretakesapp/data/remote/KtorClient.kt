@@ -23,6 +23,7 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.LogLevel
@@ -40,6 +41,7 @@ import kotlinx.serialization.json.Json
 
 
 object KtorClient {
+    private const val BASE_URL = "http://10.0.2.2:8080"
     private var currentAccessToken: String? = null
     private fun buildClient() = HttpClient(OkHttp) {
         install(ContentNegotiation) {
@@ -69,6 +71,9 @@ object KtorClient {
                 }
             }
         }
+        defaultRequest {
+            url(BASE_URL)
+        }
 
     }
     private var client = buildClient()
@@ -84,7 +89,7 @@ object KtorClient {
     }
 
     suspend fun login(email: String, password: String): LoginResponseDto {
-        return client.post("http://10.0.2.2:8080/auth/login") {
+        return client.post("/auth/login") {
             contentType(ContentType.Application.Json)
             setBody(
                 mapOf(
@@ -96,113 +101,113 @@ object KtorClient {
     }
 
     suspend fun getProfile(): UserDto {
-        return client.get("http://10.0.2.2:8080/api/users/me") {
+        return client.get("/api/users/me") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun getTeachersByDiscipline(discipline: String): List<TeacherDto> {
-        return client.get("http://10.0.2.2:8080/api/admin/teachers") {
+        return client.get("/api/admin/teachers") {
             parameter("discipline", discipline)
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun getSubjects(): List<SubjectDto> {
-        return client.get("http://10.0.2.2:8080/general/subjects") {
+        return client.get("/general/subjects") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun createRetake(request: CreateRetakeRequestDto): RetakeDto {
-        return client.post("http://10.0.2.2:8080/api/admin/create_retake") {
+        return client.post("/api/admin/create_retake") {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
     }
 
     suspend fun updateRetake(id: Long, request: CreateRetakeRequestDto): RetakeDto {
-        return client.put("http://10.0.2.2:8080/api/admin/retakes/$id") {
+        return client.put("/api/admin/retakes/$id") {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
     }
 
     suspend fun deleteRetake(id: Long) {
-        client.delete("http://10.0.2.2:8080/api/admin/retakes/$id") {
+        client.delete("/api/admin/retakes/$id") {
             contentType(ContentType.Application.Json)
         }
     }
 
     suspend fun getAllComments(): List<CommentDto> {
-        return client.get("http://10.0.2.2:8080/api/admin/comments") {
+        return client.get("/api/admin/comments") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun getAllRetakes(): List<RetakeDto> {
-        return client.get("http://10.0.2.2:8080/api/admin/retakes") {
+        return client.get("/api/admin/retakes") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun getStudentDebts(studentId: Long): List<StudentDebtDto> {
-        return client.get("http://10.0.2.2:8080/api/student/$studentId/debts") {
+        return client.get("/api/student/$studentId/debts") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun getAvailableRetakes(studentId: Long): List<RetakeDto> {
-        return client.get("http://10.0.2.2:8080/api/student/$studentId/retakes/available") {
+        return client.get("/api/student/$studentId/retakes/available") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun getEnrolledRetakes(studentId: Long): List<RetakeDto> {
-        return client.get("http://10.0.2.2:8080/api/student/$studentId/retakes/enrolled") {
+        return client.get("/api/student/$studentId/retakes/enrolled") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun enrollToRetake(studentId: Long, debtId: Long, retakeId: Long): Boolean {
-        return client.post("http://10.0.2.2:8080/api/student/$studentId/debts/$debtId/retakes/$retakeId") {
+        return client.post("/api/student/$studentId/debts/$debtId/retakes/$retakeId") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun cancelRetakeEnrollment(studentId: Long, debtId: Long, retakeId: Long): Boolean {
-        return client.delete("http://10.0.2.2:8080/api/student/$studentId/debts/$debtId/retakes/$retakeId") {
+        return client.delete("/api/student/$studentId/debts/$debtId/retakes/$retakeId") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun createComment(studentId: Long, request: CreateCommentRequestDto): CommentDto {
-        return client.post("http://10.0.2.2:8080/api/student/$studentId/comments") {
+        return client.post("/api/student/$studentId/comments") {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
     }
 
     suspend fun getStudentDebtRank(studentId: Long): StudentDebtRankDto {
-        return client.get("http://10.0.2.2:8080/api/student/$studentId/debts/rank") {
+        return client.get("/api/student/$studentId/debts/rank") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun getTeacherRetakes(): List<RetakeDto> {
-        return client.get("http://10.0.2.2:8080/api/teacher/retakes") {
+        return client.get("/api/teacher/retakes") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun getRetakeDetails(retakeId: Long): RetakeDetailsDto {
-        return client.get("http://10.0.2.2:8080/api/teacher/retake/$retakeId") {
+        return client.get("/api/teacher/retake/$retakeId") {
             contentType(ContentType.Application.Json)
         }.body()
     }
 
     suspend fun gradeStudent(retakeId: Long, studentId: Long, request: GradeRequestDto): RetakeEnrollmentDto {
-        return client.post("http://10.0.2.2:8080/api/teacher/retake/$retakeId/student/$studentId/grade") {
+        return client.post("/api/teacher/retake/$retakeId/student/$studentId/grade") {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
