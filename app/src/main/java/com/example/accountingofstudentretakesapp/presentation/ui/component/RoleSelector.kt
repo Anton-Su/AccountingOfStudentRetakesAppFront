@@ -41,7 +41,7 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
     val textColorSelected = Color.White
     val textColorUnselected = MaterialTheme.colorScheme.onSurface
     val features = when (selectedRole) {
-        UserRole.STUDENT -> listOf("Запись на пересдачу", "Отмена записи", "Статистика долгов", "Место в топе должников")
+        UserRole.STUDENT -> listOf("Запись на пересдачу", "Отмена записи", "Статистика долгов", "Место в топе должников", "Оставить отзыв о пересдаче")
         UserRole.TEACHER -> listOf("Журнал пересдач")
         UserRole.ADMIN -> listOf("История пересдач", "Анализ комментариев", "Редактирование пар", "Удаление пар")
         else -> {emptyList()}
