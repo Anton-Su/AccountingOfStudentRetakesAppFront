@@ -1,6 +1,5 @@
 package com.example.accountingofstudentretakesapp.presentation.ui.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
@@ -25,9 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.presentation.model.UserRole
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RoleSelector
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
@@ -35,15 +31,15 @@ import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeVi
 @Composable
 fun LoginScreen(viewModel: RetakeViewModel) {
 
-    var email by remember { mutableStateOf("petrov.m.i@edu.mirea.ru") }
-    var password by remember { mutableStateOf("Student123!") }
-   // var role by remember { mutableStateOf(UserRole.STUDENT) }
- // var email by remember { mutableStateOf("kuznetsova.i.a@edu.mirea.ru") }
-  //  var password by remember { mutableStateOf("Teacher123!") }
-  //  var role by remember { mutableStateOf(UserRole.NONE) }
-   //var email by remember { mutableStateOf("volkov.a.s@edu.mirea.ru") }
-   //var password by remember { mutableStateOf("Admin123!") }
-   var role by remember { mutableStateOf(UserRole.ADMIN) }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+   // var email by remember { mutableStateOf("petrov.m.i@edu.mirea.ru") }
+  //  var password by remember { mutableStateOf("Student123!") }
+    var role by remember { mutableStateOf(UserRole.NONE) }
+    // var email by remember { mutableStateOf("kuznetsova.i.a@edu.mirea.ru") }
+    // var password by remember { mutableStateOf("Teacher123!") }
+    // var email by remember { mutableStateOf("volkov.a.s@edu.mirea.ru") }
+    // var password by remember { mutableStateOf("Admin123!") }
     val uiState by viewModel.uiState.collectAsState()
     val isLoginEnabled = !uiState.isLoading && email.isNotBlank() && password.isNotBlank()
     Column(
