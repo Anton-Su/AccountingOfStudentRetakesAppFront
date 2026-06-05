@@ -52,7 +52,7 @@ fun CommentItemCard(comment: Comment) {
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
             ) {
                 CommentRatingBadge(label = "Преподаватель", rating = comment.gradeTeacher)
                 CommentRatingBadge(label = "Аудитория", rating = comment.gradePlace)

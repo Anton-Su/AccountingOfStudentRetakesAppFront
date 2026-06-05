@@ -123,6 +123,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(uiState.allRetakes) { retake ->
+                            val subjectTitle = uiState.subjects.find { it.id == retake.subjectId }?.title
                             Column {
                                 Card(
                                     modifier = Modifier.fillMaxWidth()
@@ -136,7 +137,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Column(modifier = Modifier.weight(1f)) {
-                                                Text(text = retake.type, style = MaterialTheme.typography.titleMedium)
+                                                Text(text = "$subjectTitle (" + retake.type.take(3) + ")", style = MaterialTheme.typography.titleMedium)
                                                 Text(text = "Место: ${retake.place}", style = MaterialTheme.typography.bodySmall)
                                                 Text(text = "Начало: ${formatInstantToHuman(retake.startAt)}", style = MaterialTheme.typography.bodySmall)
                                                 Text(text = "Окончание: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodySmall)
@@ -144,16 +145,17 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                                             Row(
                                                 horizontalArrangement = Arrangement.spacedBy(4.dp)
                                             ) {
-                                                IconButton(
-                                                    onClick = { onEditRetake(retake.id) },
-                                                    modifier = Modifier.padding(0.dp),
-                                                    enabled = retake.startAt > Instant.now()
-                                                ) {
-                                                    Icon(
-                                                        Icons.Default.Edit,
-                                                        contentDescription = "Редактировать",
-                                                        tint = MaterialTheme.colorScheme.primary
-                                                    )
+                                                if (retake.startAt > Instant.now()){
+                                                    IconButton(
+                                                        onClick = { onEditRetake(retake.id) },
+                                                        modifier = Modifier.padding(0.dp),
+                                                    ) {
+                                                        Icon(
+                                                            Icons.Default.Edit,
+                                                            contentDescription = "Редактировать",
+                                                            tint = MaterialTheme.colorScheme.primary
+                                                        )
+                                                    }
                                                 }
                                                 IconButton(
                                                     onClick = { onDeleteRetake(retake.id) },
@@ -182,4 +184,3 @@ fun AdminHomeScreen(uiState: RetakeUiState,
         }
     }
 }
-

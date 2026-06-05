@@ -231,7 +231,7 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
                     Button(onClick = onBack, modifier = Modifier.weight(1f)) {
                         Text("Отмена")
                     }
-                    Log.e("RetakeFormScreen", "Submitting with startAt=${startAt.value}, endAt=${endAt.value}, teachers=$selectedTeachers, subject=${selectedSubject.value}, type=${type.value}, place=${place.value}, admission=${admission.value}")
+                    // Log.e("RetakeFormScreen", "Submitting with startAt=${startAt.value}, endAt=${endAt.value}, teachers=$selectedTeachers, subject=${selectedSubject.value}, type=${type.value}, place=${place.value}, admission=${admission.value}")
                     Button(
                         onClick = { onSubmit(startAt.value, endAt.value, selectedTeachers, selectedSubject.value!!, type.value!!, place.value, admission.value.takeIf { it.isNotEmpty() }) },
                         enabled = !isLoading && selectedSubject.value != null && type.value != null && selectedTeachers.isNotEmpty(),

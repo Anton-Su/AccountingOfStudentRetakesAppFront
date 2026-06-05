@@ -109,7 +109,7 @@ object KtorClient {
     }
 
     suspend fun getSubjects(): List<SubjectDto> {
-        return client.get("http://10.0.2.2:8080/api/admin/subjects") {
+        return client.get("http://10.0.2.2:8080/general/subjects") {
             contentType(ContentType.Application.Json)
         }.body()
     }

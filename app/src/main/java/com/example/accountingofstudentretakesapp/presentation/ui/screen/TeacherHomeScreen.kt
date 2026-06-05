@@ -1,5 +1,6 @@
 package com.example.accountingofstudentretakesapp.presentation.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -96,6 +97,7 @@ fun TeacherHomeScreen(uiState: RetakeUiState,
 						verticalArrangement = Arrangement.spacedBy(8.dp)
 					) {
 						items(uiState.teacherRetakes) { retake ->
+							val subjectTitle = uiState.subjects.find { it.id == retake.subjectId }?.title
 							Card(
 								modifier = Modifier
 									.fillMaxWidth()
@@ -103,6 +105,7 @@ fun TeacherHomeScreen(uiState: RetakeUiState,
 							) {
 								Column(modifier = Modifier.padding(12.dp)) {
 									Text(text = retake.type, style = MaterialTheme.typography.titleMedium)
+									Text(text = "Предмет: $subjectTitle", style = MaterialTheme.typography.bodyMedium)
 									Text(text = "Место: ${retake.place}", style = MaterialTheme.typography.bodyMedium)
 									Text(text = "Начало: ${formatInstantToHuman(retake.startAt)}", style = MaterialTheme.typography.bodyMedium)
 									Text(text = "Окончание: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodyMedium)

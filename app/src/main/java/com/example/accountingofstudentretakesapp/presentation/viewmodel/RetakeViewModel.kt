@@ -1,7 +1,9 @@
 package com.example.accountingofstudentretakesapp.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.accountingofstudentretakesapp.data.repository.LocalCacheRepository
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.domain.model.CreateCommentRequestDto
 import com.example.accountingofstudentretakesapp.domain.repository.AuthRepository
@@ -35,6 +37,7 @@ import java.time.Instant
 class RetakeViewModel( // god object но пока будет так
     private val authRepository: AuthRepository,
     private val settingsDataStore: SettingsDataStore,
+    private val localCacheRepository: LocalCacheRepository,
     private val loginUseCase: LoginUseCase,
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val getTeacherRetakesUseCase: GetTeacherRetakesUseCase,
@@ -58,6 +61,10 @@ class RetakeViewModel( // god object но пока будет так
     private val _uiState = MutableStateFlow(RetakeUiState())
     val uiState: StateFlow<RetakeUiState> = _uiState.asStateFlow()
 
+    init {
+        loadSubjects()
+    }
+
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
@@ -68,6 +75,7 @@ class RetakeViewModel( // god object но пока будет так
                 }
                 return@launch
             }
+            loadSubjects()
             val currentUser = getCurrentUserUseCase()
             settingsDataStore.saveUserProfile(currentUser!!)
             _uiState.update {
@@ -206,14 +214,32 @@ class RetakeViewModel( // god object но пока будет так
                             subjectsError = null
                         )
                     }
+                    runCatching { localCacheRepository.saveSubjects(subjects) }
+                        .onFailure { }
                 }
                 .onFailure { error ->
-                    _uiState.update {
-                        it.copy(
-                            subjectsLoading = false,
-                            subjectsError = error.message ?: "Не удалось загрузить предметы"
-                        )
-                    }
+                    // загрузим с кеша
+                    runCatching { localCacheRepository.getAllSubjects() }
+                        .onSuccess { cached ->
+                            if (cached.isNotEmpty()) {
+                                _uiState.update { it.copy(subjects = cached, subjectsLoading = false, subjectsError = null) }
+                            } else {
+                                _uiState.update {
+                                    it.copy(
+                                        subjectsLoading = false,
+                                        subjectsError = error.message ?: "Не удалось загрузить предметы"
+                                    )
+                                }
+                            }
+                        }
+                        .onFailure {
+                            _uiState.update {
+                                it.copy(
+                                    subjectsLoading = false,
+                                    subjectsError = error.message ?: "Не удалось загрузить предметы"
+                                )
+                            }
+                        }
                 }
         }
     }
@@ -235,15 +261,31 @@ class RetakeViewModel( // god object но пока будет так
                             teachersByDisciplineError = null
                         )
                     }
+                    runCatching { localCacheRepository.saveTeachers(teachers) }
+                        .onFailure { }
                 }
                 .onFailure { error ->
-                    _uiState.update {
-                        it.copy(
-                            teachersByDisciplineLoading = false,
-                            teachersByDisciplineError = error.message
-                                ?: "Не удалось загрузить преподавателей"
-                        )
-                    }
+                    runCatching { localCacheRepository.getTeachersByDiscipline(discipline) }
+                        .onSuccess { cached ->
+                            if (cached.isNotEmpty()) {
+                                _uiState.update { it.copy(teachersByDiscipline = cached, teachersByDisciplineLoading = false, teachersByDisciplineError = null) }
+                            } else {
+                                _uiState.update {
+                                    it.copy(
+                                        teachersByDisciplineLoading = false,
+                                        teachersByDisciplineError = error.message ?: "Не удалось загрузить преподавателей"
+                                    )
+                                }
+                            }
+                        }
+                        .onFailure {
+                            _uiState.update {
+                                it.copy(
+                                    teachersByDisciplineLoading = false,
+                                    teachersByDisciplineError = error.message ?: "Не удалось загрузить преподавателей"
+                                )
+                            }
+                        }
                 }
         }
     }
@@ -265,14 +307,37 @@ class RetakeViewModel( // god object но пока будет так
                             allCommentsError = null
                         )
                     }
+                    runCatching { localCacheRepository.saveComments(comments) }
+                        .onFailure { }
                 }
                 .onFailure { error ->
-                    _uiState.update {
-                        it.copy(
-                            allCommentsLoading = false,
-                            allCommentsError = error.message ?: "Не удалось загрузить комментарии"
-                        )
-                    }
+                    runCatching { localCacheRepository.getAllComments() }
+                        .onSuccess { cached ->
+                            if (cached.isNotEmpty()) {
+                                _uiState.update {
+                                    it.copy(
+                                        allComments = cached,
+                                        allCommentsLoading = false,
+                                        allCommentsError = null
+                                    )
+                                }
+                            } else {
+                                _uiState.update {
+                                    it.copy(
+                                        allCommentsLoading = false,
+                                        allCommentsError = error.message ?: "Не удалось загрузить комментарии"
+                                    )
+                                }
+                            }
+                        }
+                        .onFailure {
+                            _uiState.update {
+                                it.copy(
+                                    allCommentsLoading = false,
+                                    allCommentsError = error.message ?: "Не удалось загрузить комментарии"
+                                )
+                            }
+                        }
                 }
         }
     }
@@ -330,8 +395,7 @@ class RetakeViewModel( // god object но пока будет так
                     _uiState.update {
                         it.copy(
                             studentDebtRankLoading = false,
-                            studentDebtRankError = error.message
-                                ?: "Не удалось загрузить рейтинг долгов"
+                            studentDebtRankError = error.message ?: "Не удалось загрузить рейтинг долгов"
                         )
                     }
                 }
@@ -360,8 +424,7 @@ class RetakeViewModel( // god object но пока будет так
                     _uiState.update {
                         it.copy(
                             availableRetakesLoading = false,
-                            availableRetakesError = error.message
-                                ?: "Не удалось загрузить доступные пересдачи"
+                            availableRetakesError = error.message ?: "Не удалось загрузить доступные пересдачи"
                         )
                     }
                 }
@@ -391,8 +454,7 @@ class RetakeViewModel( // god object но пока будет так
                     _uiState.update {
                         it.copy(
                             enrolledRetakesLoading = false,
-                            enrolledRetakesError = error.message
-                                ?: "Не удалось загрузить записанные пересдачи"
+                            enrolledRetakesError = error.message ?: "Не удалось загрузить записанные пересдачи"
                         )
                     }
                 }
@@ -529,6 +591,7 @@ class RetakeViewModel( // god object но пока будет так
                             createRetakeLoading = false, createRetakeError = null
                         )
                     }
+                   // Log.e("RetakeViewModel", "Retake created successfully")
                     loadAllRetakes()
                     onSuccess()
                 }
@@ -563,6 +626,7 @@ class RetakeViewModel( // god object но пока будет так
                             deleteRetakeError = null
                         )
                     }
+                    // Log.e("RetakeViewModel", "Retake delete successfully")
                     loadAllRetakes()
                     onSuccess()
                 }

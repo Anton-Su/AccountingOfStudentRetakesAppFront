@@ -57,7 +57,7 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
             }
         }
     }
-    val uiState = viewModel.uiState.collectAsState().value
+    val uiState by viewModel.uiState.collectAsState()
     NavHost(navController, startDestination = startDestination) {
         composable(Screen.LoginScreen.route) {
             LoginScreen(viewModel = viewModel)
@@ -147,7 +147,7 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 onAddRetake = { navController.navigate(Screen.AdminCreateRetakeScreen.route) },
                 onEditRetake = { retakeId -> navController.navigate(Screen.AdminRedactRetakeScreen.createRoute(retakeId)) },
                 onDeleteRetake = { retakeId ->
-                    viewModel.deleteRetake(retakeId, onSuccess = { navController.popBackStack() }, onError = { _ -> })
+                    viewModel.deleteRetake(retakeId, onSuccess = {}, onError = { })
                 },
                 onLogout = {
                     viewModel.logout()

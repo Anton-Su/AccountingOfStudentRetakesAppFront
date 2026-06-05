@@ -37,13 +37,13 @@ fun LoginScreen(viewModel: RetakeViewModel) {
 
     var email by remember { mutableStateOf("petrov.m.i@edu.mirea.ru") }
     var password by remember { mutableStateOf("Student123!") }
-    var role by remember { mutableStateOf(UserRole.STUDENT) }
-//  var email by remember { mutableStateOf("kuznetsova.i.a@edu.mirea.ru") }
-//    var password by remember { mutableStateOf("Teacher123!") }
-//    var role by remember { mutableStateOf(UserRole.NONE) }
-//     var email by remember { mutableStateOf("volkov.a.s@edu.mirea.ru") }
-//    var password by remember { mutableStateOf("Admin123!") }
-//    var role by remember { mutableStateOf(UserRole.ADMIN) }
+   // var role by remember { mutableStateOf(UserRole.STUDENT) }
+ // var email by remember { mutableStateOf("kuznetsova.i.a@edu.mirea.ru") }
+  //  var password by remember { mutableStateOf("Teacher123!") }
+  //  var role by remember { mutableStateOf(UserRole.NONE) }
+   //var email by remember { mutableStateOf("volkov.a.s@edu.mirea.ru") }
+   //var password by remember { mutableStateOf("Admin123!") }
+   var role by remember { mutableStateOf(UserRole.ADMIN) }
     val uiState by viewModel.uiState.collectAsState()
     val isLoginEnabled = !uiState.isLoading && email.isNotBlank() && password.isNotBlank()
     Column(

@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.example.accountingofstudentretakesapp.data.repository.LocalCacheRepository
 import com.example.accountingofstudentretakesapp.data.remote.KtorClient
 import com.example.accountingofstudentretakesapp.navigation.Navigation
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
@@ -80,9 +81,11 @@ class MainActivity : ComponentActivity() {
         val getTeacherRetakesUseCase = GetTeacherRetakesUseCase(teacherRepository)
         val getRetakeDetailsUseCase = GetRetakeDetailsUseCase(teacherRepository)
         val gradeStudentUseCase = GradeStudentUseCase(teacherRepository)
+        val localCacheRepo = LocalCacheRepository.getInstance(applicationContext)
         val viewModel = RetakeViewModel(
             authRepository = authRepository,
             settingsDataStore = settingsDataStore,
+            localCacheRepository = localCacheRepo,
             loginUseCase = loginUseCase,
             getCurrentUserUseCase = getCurrentUserUseCase,
             getTeacherRetakesUseCase = getTeacherRetakesUseCase,

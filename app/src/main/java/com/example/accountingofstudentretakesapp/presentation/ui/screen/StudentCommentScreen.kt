@@ -38,6 +38,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
+import com.example.accountingofstudentretakesapp.presentation.helpers.validate
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RatingField
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
@@ -53,23 +54,6 @@ fun StudentCommentScreen(
     val gradeOverall = remember { mutableStateOf("") }
     val comment = remember { mutableStateOf(TextFieldValue()) }
     val errorMessage = remember { mutableStateOf<String?>(null) }
-
-    fun validate(): String? {
-        val placeValue = gradePlace.value.toIntOrNull()
-        val teacherValue = gradeTeacher.value.toIntOrNull()
-        val overallValue = gradeOverall.value.toIntOrNull()
-        val commentText = comment.value.text.trim()
-        return when {
-            placeValue == null -> "Оцените аудиторию"
-            placeValue !in 0..10 -> "Оценка за аудиторию должна быть от 0 до 10"
-            teacherValue == null -> "Оцените преподавателя"
-            teacherValue !in 0..10 -> "Оценка преподавателя должна быть от 0 до 10"
-            overallValue == null -> "Введите общую оценку"
-            overallValue !in 0..100 -> "Общая оценка должна быть от 0 до 100"
-            commentText.length > 500 -> "Комментарий не должен быть длиннее 500 символов"
-            else -> null
-        }
-    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
@@ -176,7 +160,7 @@ fun StudentCommentScreen(
                         value = comment.value,
                         onValueChange = { comment.value = it },
                         modifier = Modifier.fillMaxWidth(),
-                        placeholder = { Text("Расскажите о своём опыте...") },
+                        placeholder = { Text("Изложите нам свою душу...") },
                         minLines = 4,
                         maxLines = 8,
                         shape = MaterialTheme.shapes.medium,
@@ -193,7 +177,7 @@ fun StudentCommentScreen(
             }
             Button(
                 onClick = {
-                    val validationError = validate()
+                    val validationError = validate(gradePlace.value, gradeTeacher.value, gradeOverall.value, comment.value.text)
                     if (validationError != null) {
                         errorMessage.value = validationError
                         return@Button
