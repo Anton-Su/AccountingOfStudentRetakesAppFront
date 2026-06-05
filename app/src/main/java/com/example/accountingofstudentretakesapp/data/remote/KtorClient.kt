@@ -114,7 +114,7 @@ object KtorClient {
         }.body()
     }
 
-        suspend fun createRetake(request: CreateRetakeRequestDto): RetakeDto {
+    suspend fun createRetake(request: CreateRetakeRequestDto): RetakeDto {
         return client.post("http://10.0.2.2:8080/api/admin/create_retake") {
             contentType(ContentType.Application.Json)
             setBody(request)

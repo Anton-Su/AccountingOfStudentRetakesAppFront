@@ -35,13 +35,13 @@ import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeVi
 @Composable
 fun LoginScreen(viewModel: RetakeViewModel) {
 
-    var email by remember { mutableStateOf("petrov.m.i@edu.mirea.ru") }
-    var password by remember { mutableStateOf("Student123!") }
-    var role by remember { mutableStateOf(UserRole.STUDENT) }
- // var email by remember { mutableStateOf("kuznetsova.i.a@edu.mirea.ru") }
-   // var password by remember { mutableStateOf("Teacher123!") }
-   // var role by remember { mutableStateOf(UserRole.TEACHER) }
-    // var email by remember { mutableStateOf("volkov.a.s@edu.mirea.ru") }
+//    var email by remember { mutableStateOf("petrov.m.i@edu.mirea.ru") }
+//    var password by remember { mutableStateOf("Student123!") }
+//    var role by remember { mutableStateOf(UserRole.STUDENT) }
+  var email by remember { mutableStateOf("kuznetsova.i.a@edu.mirea.ru") }
+    var password by remember { mutableStateOf("Teacher123!") }
+    var role by remember { mutableStateOf(UserRole.NONE) }
+//     var email by remember { mutableStateOf("volkov.a.s@edu.mirea.ru") }
 //    var password by remember { mutableStateOf("Admin123!") }
 //    var role by remember { mutableStateOf(UserRole.ADMIN) }
     val uiState by viewModel.uiState.collectAsState()
@@ -53,17 +53,19 @@ fun LoginScreen(viewModel: RetakeViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(
-            painter = painterResource(  R.drawable.reklamatry),
-            contentDescription = "Реклама",
-            modifier = Modifier.size(200.dp)
-        )
-        Text("Вход в приложение", style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(32.dp))
+//        Image(
+//            painter = painterResource(  R.drawable.reklamatry),
+//            contentDescription = "Реклама",
+//            modifier = Modifier.size(200.dp)
+//        )
+        Text("Функции ролей", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(16.dp))
         RoleSelector(
             selectedRole = role,
             onRoleSelected = { role = it }
         )
+        Spacer(modifier = Modifier.height(32.dp))
+        Text("Вход в приложение", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = email,

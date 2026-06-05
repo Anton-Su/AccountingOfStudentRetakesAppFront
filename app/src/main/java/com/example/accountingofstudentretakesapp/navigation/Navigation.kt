@@ -3,29 +3,27 @@ package com.example.accountingofstudentretakesapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.navArgument
-import androidx.navigation.NavType
-import com.example.accountingofstudentretakesapp.presentation.ui.screen.AdminCreateRetakeScreen
-import com.example.accountingofstudentretakesapp.presentation.ui.screen.AdminHomeScreen
-import com.example.accountingofstudentretakesapp.presentation.ui.screen.AdminRedactRetakeScreen
-import com.example.accountingofstudentretakesapp.presentation.ui.screen.LoginScreen
-import com.example.accountingofstudentretakesapp.presentation.model.UserRole
-import com.example.accountingofstudentretakesapp.presentation.ui.screen.StudentHomeScreen
-import com.example.accountingofstudentretakesapp.presentation.ui.screen.StudentCommentScreen
-import com.example.accountingofstudentretakesapp.presentation.ui.screen.TeacherHomeScreen
-import com.example.accountingofstudentretakesapp.presentation.ui.screen.TeacherRetakeDetailsScreen
-import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
-import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
+import com.example.accountingofstudentretakesapp.presentation.ui.screen.AdminCreateRetakeScreen
+import com.example.accountingofstudentretakesapp.presentation.ui.screen.AdminHomeScreen
+import com.example.accountingofstudentretakesapp.presentation.ui.screen.AdminRedactRetakeScreen
+import com.example.accountingofstudentretakesapp.presentation.ui.screen.LoginScreen
+import com.example.accountingofstudentretakesapp.presentation.ui.screen.StudentCommentScreen
+import com.example.accountingofstudentretakesapp.presentation.ui.screen.StudentHomeScreen
+import com.example.accountingofstudentretakesapp.presentation.ui.screen.TeacherHomeScreen
+import com.example.accountingofstudentretakesapp.presentation.ui.screen.TeacherRetakeDetailsScreen
+import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
 
 @Composable
 fun Navigation(navController: NavHostController = rememberNavController(), viewModel: RetakeViewModel) {
@@ -45,16 +43,16 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
         else
             Screen.LoginScreen.route
     }
-    LaunchedEffect(Unit) {
-        viewModel.navigationEvents.collectLatest { role ->
+    LaunchedEffect(isLoggedIn, role) {
+        if (isLoggedIn && role.isNotEmpty()) {
             val target = when (role) {
-                UserRole.STUDENT -> Screen.StudentAllScreen.route
-                UserRole.TEACHER -> Screen.TeacherAllScreen.route
-                UserRole.ADMIN -> Screen.AdminAllScreen.route
+                "STUDENT" -> Screen.StudentAllScreen.route
+                "TEACHER" -> Screen.TeacherAllScreen.route
+                "ADMIN" -> Screen.AdminAllScreen.route
+                else -> Screen.LoginScreen.route
             }
             navController.navigate(target) {
-                popUpTo(Screen.LoginScreen.route)
-                { inclusive = true }
+                popUpTo(Screen.LoginScreen.route) { inclusive = true }
                 launchSingleTop = true
             }
         }

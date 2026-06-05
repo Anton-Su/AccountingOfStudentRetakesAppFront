@@ -1,16 +1,12 @@
 package com.example.accountingofstudentretakesapp.data.repository
 
-import com.example.accountingofstudentretakesapp.domain.model.CommentDto
-import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequestDto
-import com.example.accountingofstudentretakesapp.domain.model.SubjectDto
-import com.example.accountingofstudentretakesapp.domain.model.TeacherDto
-import com.example.accountingofstudentretakesapp.domain.repository.AdminRepository
 import com.example.accountingofstudentretakesapp.data.remote.KtorClient
 import com.example.accountingofstudentretakesapp.domain.mapper.toCommentDomain
 import com.example.accountingofstudentretakesapp.domain.mapper.toRetakeDomain
 import com.example.accountingofstudentretakesapp.domain.mapper.toSubjectDomain
 import com.example.accountingofstudentretakesapp.domain.mapper.toTeacherDomain
-import com.example.accountingofstudentretakesapp.domain.model.RetakeDto
+import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequestDto
+import com.example.accountingofstudentretakesapp.domain.repository.AdminRepository
 import com.example.accountingofstudentretakesapp.presentation.model.Comment
 import com.example.accountingofstudentretakesapp.presentation.model.Retake
 import com.example.accountingofstudentretakesapp.presentation.model.Subject

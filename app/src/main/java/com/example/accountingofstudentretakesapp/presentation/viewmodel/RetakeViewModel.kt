@@ -24,12 +24,8 @@ import com.example.accountingofstudentretakesapp.domain.usecase.GetTeachersByDis
 import com.example.accountingofstudentretakesapp.domain.usecase.GradeStudentUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.LoginUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.RedactRetakeUseCase
-import com.example.accountingofstudentretakesapp.presentation.model.UserRole
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -61,9 +57,6 @@ class RetakeViewModel( // god object но пока будет так
 {
     private val _uiState = MutableStateFlow(RetakeUiState())
     val uiState: StateFlow<RetakeUiState> = _uiState.asStateFlow()
-    private val _navigationEvents = MutableSharedFlow<UserRole>(extraBufferCapacity = 1)
-    // создание потока навигации для отправки событий (emit) о том, что пользователь успешно вошёл в систему
-    val navigationEvents: SharedFlow<UserRole> = _navigationEvents.asSharedFlow()
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
@@ -80,7 +73,6 @@ class RetakeViewModel( // god object но пока будет так
             _uiState.update {
                 it.copy(isLoading = false, errorMessage = null)
             }
-            _navigationEvents.tryEmit(currentUser.role)
         }
     }
 
