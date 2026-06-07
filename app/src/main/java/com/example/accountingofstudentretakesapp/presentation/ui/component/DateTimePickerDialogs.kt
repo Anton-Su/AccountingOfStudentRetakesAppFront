@@ -23,9 +23,12 @@ import java.time.Instant
 import java.time.ZoneId
 
 /**
- * Полный диалог выбора даты и времени
- * showDatePicker - управляет видимостью диалога выбора даты
- * onDateTimeSelected - вызывается когда пользователь выбрал дату и время (ISO 8601)
+ * Диалоги выбора даты и времени.
+ * Сначала открывается выбор даты, затем автоматически выбор времени.
+ * Результат возвращается как [Instant] в московском времени.
+ *
+ * @param showDatePicker состояние видимости диалога выбора даты
+ * @param onDateTimeSelected вызывается с выбранным моментом времени
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,7 +61,7 @@ fun DateTimePickerDialogs(showDatePicker: MutableState<Boolean>,
                 TextButton(onClick = {
                     val millis = datePickerState.selectedDateMillis ?: 0L
                     val instant = Instant.ofEpochMilli(millis)
-                        .atZone(ZoneId.systemDefault())
+                        .atZone(ZoneId.of("Europe/Moscow"))
                         .withHour(timePickerState.hour)
                         .withMinute(timePickerState.minute)
                         .withSecond(0)

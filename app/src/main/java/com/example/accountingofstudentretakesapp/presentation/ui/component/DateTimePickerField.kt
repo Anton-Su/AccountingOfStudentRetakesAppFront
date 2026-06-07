@@ -13,8 +13,14 @@ import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToH
 import java.time.Instant
 
 /**
- * Компонент для выбора даты и времени
- * Отображает дату в удобном формате, но хранит ISO 8601 для сервера
+ * Поле ввода даты и времени только для чтения.
+ * При нажатии на иконку календаря открывает диалог выбора даты и времени.
+ *
+ * @param value текущее значение даты и времени
+ * @param label подпись поля
+ * @param onDateTimePickerClick вызывается при нажатии на иконку календаря
+ * @param modifier модификатор для настройки layout
+ * @param readOnly если true — поле нельзя редактировать вручную
  */
 @Composable
 fun DateTimePickerField(value: Instant, label: String, onDateTimePickerClick: () -> Unit, modifier: Modifier = Modifier, readOnly: Boolean = true) {

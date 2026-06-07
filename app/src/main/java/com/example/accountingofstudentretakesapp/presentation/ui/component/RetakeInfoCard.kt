@@ -26,6 +26,32 @@ import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToHuman
 import java.time.Instant
 
+/**
+ * Карточка пересдачи с кнопкой действия.
+ *
+ * Отображает информацию о пересдаче и кнопку для выполнения действия
+ * (записаться или отменить запись).
+ *
+ * Содержит:
+ * - Название предмета
+ * - Место проведения (с иконкой)
+ * - Время начала и конца (с иконкой)
+ * - Тип пересдачи (с иконкой)
+ * - Допуск — если указан (с иконкой)
+ * - Кнопка действия справа
+ *
+ * @param subjectTitle название предмета
+ * @param place место проведения
+ * @param startAt время начала пересдачи
+ * @param endAt время конца пересдачи
+ * @param type тип пересдачи (например "Экзамен")
+ * @param admission требования допуска — если null, не отображается
+ * @param actionIcon иконка кнопки действия
+ * @param actionDescription описание действия для accessibility
+ * @param onAction колбэк нажатия на кнопку действия
+ * @param actionEnabled активна ли кнопка действия (по умолчанию true)
+ * @param modifier модификатор карточки
+ */
 @Composable
 fun RetakeInfoCard(subjectTitle: String, place: String, startAt: Instant, endAt: Instant, type: String, admission: String?, actionIcon: ImageVector, actionDescription: String,
                    onAction: () -> Unit,

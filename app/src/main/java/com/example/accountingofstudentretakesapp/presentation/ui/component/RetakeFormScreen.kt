@@ -37,6 +37,46 @@ import com.example.accountingofstudentretakesapp.domain.model.Retake
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import java.time.Instant
 
+/**
+ * Переиспользуемый экран формы для создания и редактирования пересдачи.
+ *
+ * Используется как для создания новой пересдачи ([AdminCreateRetakeScreen]),
+ * так и для редактирования существующей ([AdminRedactRetakeScreen]).
+ *
+ * Содержит поля:
+ * - Место проведения
+ * - Тип пересдачи
+ * - Время начала и конца
+ * - Допуск (опционально)
+ * - Выбор предмета из выпадающего списка
+ * - Выбор преподавателей с галочками
+ *
+ * При открытии автоматически загружает список предметов.
+ * При выборе предмета загружает преподавателей по его названию.
+ * При наличии [initialSubjectId] — автоматически загружает преподавателей
+ * после загрузки предметов и восстанавливает галочки по [initialTeacherIds].
+ * При уходе с экрана очищает список преподавателей через [onClearTeachers].
+ *
+ * Кнопка подтверждения активна только когда выбран предмет,
+ * тип пересдачи и хотя бы один преподаватель.
+ *
+ * @param title заголовок экрана ("Создать пересдачу" / "Редактировать пересдачу")
+ * @param uiState общий UI стейт с данными предметов и преподавателей
+ * @param initialType начальный тип пересдачи (null при создании)
+ * @param initialPlace начальное место проведения
+ * @param initialStartAt начальное время начала (по умолчанию — сейчас)
+ * @param initialEndAt начальное время конца (по умолчанию — сейчас + 90 минут)
+ * @param initialAdmission начальный допуск
+ * @param initialSubjectId начальный ID предмета (null при создании)
+ * @param initialTeacherIds начальный список ID преподавателей
+ * @param isLoading флаг загрузки — блокирует кнопку подтверждения
+ * @param submitButtonText текст кнопки подтверждения ("Создать" / "Сохранить")
+ * @param onLoadSubjects загрузить список предметов
+ * @param onLoadTeachers загрузить преподавателей по названию предмета
+ * @param onClearTeachers очистить список преподавателей
+ * @param onSubmit отправить форму с данными [CreateRetakeRequest]
+ * @param onBack вернуться назад
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String? = null, initialPlace: String = "", initialStartAt: Instant = Instant.now(), initialEndAt: Instant = Instant.now().plusSeconds(90 * 60), initialAdmission: String = "", initialSubjectId: Long? = null, initialTeacherIds: List<Long> = emptyList(), isLoading: Boolean = false, submitButtonText: String,

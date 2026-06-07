@@ -16,6 +16,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.domain.model.Comment
 
+/**
+ * Карточка комментария студента к пересдаче.
+ * Отображает имя студента, группу, текст комментария и оценки.
+ *
+ * @param comment комментарий для отображения
+ */
 @Composable
 fun CommentItemCard(comment: Comment) {
     Card(

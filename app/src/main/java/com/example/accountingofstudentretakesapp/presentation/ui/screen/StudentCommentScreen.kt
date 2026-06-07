@@ -42,6 +42,25 @@ import com.example.accountingofstudentretakesapp.domain.helpers.validate
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RatingField
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
+/**
+ * Экран отправки отзыва студента о пересдаче.
+ *
+ * Содержит три поля оценок и текстовый комментарий:
+ * - Аудитория (0–10) — [RatingField]
+ * - Преподаватель (0–10) — [RatingField]
+ * - Общая оценка (0–100) — [RatingField]
+ * - Комментарий (до 500 символов) с счётчиком символов
+ *
+ * Валидация выполняется локально перед отправкой через [validate].
+ * Ошибка отображается в карточке вверху экрана — как локальная
+ * так и серверная ([RetakeUiState.createCommentError]).
+ *
+ * Кнопка "Отправить отзыв" заблокирована во время загрузки.
+ *
+ * @param uiState UI стейт — состояние загрузки и ошибка с сервера
+ * @param onSubmit колбэк отправки отзыва с оценками и комментарием
+ * @param onBack вернуться назад
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentCommentScreen(
@@ -210,7 +229,3 @@ fun StudentCommentScreen(
         }
     }
 }
-
-
-
-

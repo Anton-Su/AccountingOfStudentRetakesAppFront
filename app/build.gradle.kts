@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "2.3.21"
+    id("org.jetbrains.dokka") version "1.8.20"
 }
 
 android {
@@ -64,8 +65,7 @@ dependencies {
     implementation("io.ktor:ktor-client-auth:3.0.3")
     implementation("io.ktor:ktor-client-core")
 
-
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    //implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
     implementation("androidx.activity:activity-ktx:1.7.2")
@@ -89,5 +89,30 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2")
     ksp("androidx.room:room-compiler:2.6.1")
+}
 
+
+tasks.named("dokkaHtml", org.jetbrains.dokka.gradle.DokkaTask::class) {
+    outputDirectory.set(layout.buildDirectory.dir("dokka/html").get().asFile) // // куда сохранить HTML
+    dokkaSourceSets {
+        named("main") {
+            moduleName.set("AccountingOfStudentRetakesApp")
+            jdkVersion.set(11)
+            sourceRoots.from(file("src/main/java"), file("src/main/kotlin")) // // название модуля в доках
+            perPackageOption {
+                matchingRegex.set("com.example.*") // где искать исходники
+                includeNonPublic.set(false)
+            }
+        }
+    }
+}
+
+tasks.named("dokkaJavadoc", org.jetbrains.dokka.gradle.DokkaTask::class) {
+    outputDirectory.set(layout.buildDirectory.dir("dokka/javadoc").get().asFile)
+}
+
+tasks.register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
+    dependsOn("dokkaJavadoc")
+    archiveClassifier.set("javadoc")
+    from(layout.buildDirectory.dir("dokka/javadoc").get().asFile)
 }

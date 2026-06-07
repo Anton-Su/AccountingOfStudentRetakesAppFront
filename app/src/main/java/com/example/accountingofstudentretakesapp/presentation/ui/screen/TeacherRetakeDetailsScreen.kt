@@ -31,6 +31,33 @@ import com.example.accountingofstudentretakesapp.presentation.ui.component.InfoT
 import com.example.accountingofstudentretakesapp.presentation.ui.component.StudentGradeCard
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
+/**
+ * Экран деталей пересдачи для преподавателя.
+ *
+ * Загружает детали пересдачи по [retakeId] при открытии экрана.
+ *
+ * Содержит:
+ * - Карточка с информацией о пересдаче:
+ *   тип, место, время начала и конца, допуск (если есть),
+ *   время последнего изменения
+ * - Список записанных студентов с [StudentGradeCard] для каждого —
+ *   преподаватель выставляет оценку прямо здесь
+ *
+ * После выставления оценки студент убирается из списка
+ * через [RetakeViewModel.gradeStudent].
+ *
+ * Состояния:
+ * - Загрузка → "Загрузка деталей пересдачи..."
+ * - Ошибка → текст ошибки красным
+ * - Нет данных → "Нет данных о пересдаче"
+ * - Успех → карточка + список студентов
+ *
+ * @param retakeId ID пересдачи для загрузки деталей
+ * @param uiState общий UI стейт
+ * @param onLoadRetakeDetails загрузить детали пересдачи по ID
+ * @param onGradeStudent выставить оценку студенту (retakeId, studentId, score)
+ * @param onBack вернуться назад
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,

@@ -31,6 +31,23 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.domain.model.UserRole
 
+/**
+ * Селектор роли пользователя при входе в приложение.
+ *
+ * Отображает три кнопки — Student, Teacher, Admin — в одной строке.
+ * Выбранная кнопка подсвечивается цветом роли:
+ * - Student — зелёный
+ * - Teacher — фиолетовый
+ * - Admin — оранжевый
+ *
+ * Под селектором отображается карточка с возможностями выбранной роли:
+ * - Student: запись на пересдачу, отмена, статистика, место в топе, отзывы
+ * - Teacher: журнал пересдач
+ * - Admin: управление пересдачами, просмотр отзывов
+ *
+ * @param selectedRole текущая выбранная роль
+ * @param onRoleSelected колбэк при выборе роли
+ */
 @Composable
 fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
     val shape = RoundedCornerShape(14.dp)
@@ -127,5 +144,3 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
         }
     }
 }
-
-

@@ -18,6 +18,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Круговой индикатор прогресса с анимацией и текстом процента внутри.
+ *
+ * @param percentage значение процента от 0 до 100
+ * @param modifier модификатор для настройки layout
+ * @param size размер индикатора
+ * @param backgroundColor цвет фонового круга
+ * @param progressColor цвет дуги прогресса
+ * @param strokeWidth толщина линии индикатора
+ */
 @Composable
 fun CircularPercentageIndicator(percentage: Int, modifier: Modifier = Modifier, size: Dp = 80.dp, backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant, progressColor: Color = MaterialTheme.colorScheme.primary, strokeWidth: Dp = 6.dp) {
     val targetPercentage = percentage.toFloat() / 100f

@@ -1,6 +1,5 @@
 package com.example.accountingofstudentretakesapp.navigation
 
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,13 +24,31 @@ import com.example.accountingofstudentretakesapp.presentation.ui.screen.TeacherH
 import com.example.accountingofstudentretakesapp.presentation.ui.screen.TeacherRetakeDetailsScreen
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
 
+/**
+ * Основной навигационный граф приложения.
+ * Определяет все маршруты и передаёт зависимости в экраны.
+ *
+ * При запуске автоматически определяет стартовый экран
+ * на основе статуса авторизации и роли пользователя.
+ *
+ * @param navController контроллер навигации
+ * @param viewModel общий ViewModel для всех экранов
+ */
 @Composable
-fun Navigation(navController: NavHostController = rememberNavController(), viewModel: RetakeViewModel) {
+fun Navigation(
+    navController: NavHostController = rememberNavController(),
+    viewModel: RetakeViewModel
+) {
     val context = LocalContext.current
     val settings = SettingsDataStore(context)
     val isLoggedIn by settings.isLoggedInFlow.collectAsState(initial = false)
     val role by settings.roleFlow.collectAsState(initial = "")
     val uiState by viewModel.uiState.collectAsState()
+
+    /**
+     * Стартовый экран определяется при первом запуске.
+     * Пересчитывается только при изменении [isLoggedIn] или [role].
+     */
     val startDestination = remember(isLoggedIn, role) {
         if (isLoggedIn) {
             when (role) {
@@ -40,10 +57,10 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 "ADMIN" -> Screen.AdminAllScreen.route
                 else -> Screen.LoginScreen.route
             }
-        }
-        else
-            Screen.LoginScreen.route
+        } else Screen.LoginScreen.route
     }
+
+    // Автоматически перенаправляет на нужный экран после авторизации
     LaunchedEffect(isLoggedIn, role) {
         if (isLoggedIn && role.isNotEmpty()) {
             val target = when (role) {
@@ -58,10 +75,14 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
             }
         }
     }
+
     NavHost(navController, startDestination = startDestination) {
+        // Экран авторизации
         composable(Screen.LoginScreen.route) {
-            LoginScreen(viewModel = viewModel, uiState=uiState)
+            LoginScreen(viewModel = viewModel, uiState = uiState)
         }
+
+        // Главный экран студента
         composable(Screen.StudentAllScreen.route) {
             StudentHomeScreen(
                 uiState = uiState,
@@ -83,14 +104,14 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 onLogout = {
                     viewModel.logout()
                     navController.navigate(Screen.LoginScreen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            inclusive = true
-                        }
+                        popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
                         launchSingleTop = true
                     }
                 }
             )
         }
+
+        // Экран создания комментария к пересдаче
         composable(
             Screen.StudentCommentScreen.route,
             arguments = listOf(navArgument("retakeId") { type = NavType.LongType })
@@ -99,11 +120,21 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
             StudentCommentScreen(
                 uiState = uiState,
                 onSubmit = { gradePlace, gradeTeacher, gradeOverall, comment ->
-                    viewModel.createComment(gradePlace = gradePlace, gradeTeacher = gradeTeacher, gradeOverall = gradeOverall, comment = comment, retakeId = retakeId, onSuccess = { navController.popBackStack() }, onError = {})
+                    viewModel.createComment(
+                        gradePlace = gradePlace,
+                        gradeTeacher = gradeTeacher,
+                        gradeOverall = gradeOverall,
+                        comment = comment,
+                        retakeId = retakeId,
+                        onSuccess = { navController.popBackStack() },
+                        onError = {}
+                    )
                 },
                 onBack = { navController.popBackStack() }
             )
         }
+
+        // Главный экран преподавателя
         composable(Screen.TeacherAllScreen.route) {
             TeacherHomeScreen(
                 uiState = uiState,
@@ -114,15 +145,14 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 onLogout = {
                     viewModel.logout()
                     navController.navigate(Screen.LoginScreen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            inclusive = true
-                        }
+                        popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
                         launchSingleTop = true
                     }
                 }
             )
         }
 
+        // Экран деталей пересдачи для преподавателя
         composable(
             Screen.TeacherRetakeDetailsScreen.route,
             arguments = listOf(navArgument("retakeId") { type = NavType.LongType })
@@ -131,48 +161,52 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
             TeacherRetakeDetailsScreen(
                 retakeId = retakeId,
                 uiState = uiState,
-                onLoadRetakeDetails = { retakeId -> viewModel.loadTeacherRetakeDetails(retakeId) },
+                onLoadRetakeDetails = { viewModel.loadTeacherRetakeDetails(it) },
                 onGradeStudent = { retakeId, studentId, score ->
                     viewModel.gradeStudent(retakeId, studentId, score)
                 },
                 onBack = { navController.popBackStack() }
             )
         }
+
+        // Главный экран администратора
         composable(Screen.AdminAllScreen.route) {
             AdminHomeScreen(
                 uiState = uiState,
                 onLoadRetakes = { viewModel.loadAllRetakes() },
                 onLoadComments = { viewModel.loadAllComments() },
                 onAddRetake = { navController.navigate(Screen.AdminCreateRetakeScreen.route) },
-                onEditRetake = { retakeId -> navController.navigate(Screen.AdminRedactRetakeScreen.createRoute(retakeId)) },
+                onEditRetake = { retakeId ->
+                    navController.navigate(Screen.AdminRedactRetakeScreen.createRoute(retakeId))
+                },
                 onDeleteRetake = { retakeId ->
-                    viewModel.deleteRetake(retakeId, onSuccess = {}, onError = { })
+                    viewModel.deleteRetake(retakeId, onSuccess = {}, onError = {})
                 },
                 onLogout = {
                     viewModel.logout()
                     navController.navigate(Screen.LoginScreen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            inclusive = true
-                        }
+                        popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
                         launchSingleTop = true
                     }
                 }
             )
         }
+
+        // Экран создания пересдачи
         composable(Screen.AdminCreateRetakeScreen.route) {
             AdminCreateRetakeScreen(
                 uiState = uiState,
                 onLoadSubjects = { viewModel.loadSubjects() },
-                onLoadTeachers = { discipline ->
-                    viewModel.loadTeachersByDiscipline(discipline)
-                },
+                onLoadTeachers = { viewModel.loadTeachersByDiscipline(it) },
                 onCreateRetake = { request ->
-                    viewModel.createRetake(request, onSuccess = { navController.popBackStack() }, onError = { _ -> })
+                    viewModel.createRetake(request, onSuccess = { navController.popBackStack() }, onError = {})
                 },
                 onClearTeachers = { viewModel.clearTeachersByDiscipline() },
                 onBack = { navController.popBackStack() }
             )
         }
+
+        // Экран редактирования пересдачи
         composable(
             Screen.AdminRedactRetakeScreen.route,
             arguments = listOf(navArgument("retakeId") { type = NavType.LongType })
@@ -182,14 +216,12 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 retakeId = retakeId,
                 uiState = uiState,
                 onLoadSubjects = { viewModel.loadSubjects() },
-                onLoadTeachers = { discipline ->
-                    viewModel.loadTeachersByDiscipline(discipline)
-                },
-                onRedactRetake = {request ->
+                onLoadTeachers = { viewModel.loadTeachersByDiscipline(it) },
+                onRedactRetake = { request ->
                     viewModel.redactRetake(
                         request = request,
                         onSuccess = { navController.popBackStack() },
-                        onError = { _ -> }
+                        onError = {}
                     )
                 },
                 onClearTeachers = { viewModel.clearTeachersByDiscipline() },

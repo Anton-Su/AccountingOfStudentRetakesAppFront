@@ -4,9 +4,13 @@ import com.example.accountingofstudentretakesapp.domain.model.requests.CreateRet
 import com.example.accountingofstudentretakesapp.domain.model.Retake
 import com.example.accountingofstudentretakesapp.domain.repository.AdminRepository
 
+/** Создаёт новую пересдачу. */
 class CreateRetakeUseCase(private val adminRepository: AdminRepository) {
+    /**
+     * @param request данные для создания пересдачи
+     * @return созданная пересдача
+     */
     suspend operator fun invoke(request: CreateRetakeRequest): Retake {
         return adminRepository.createRetake(request)
     }
 }
-

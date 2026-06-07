@@ -53,6 +53,23 @@ import com.example.accountingofstudentretakesapp.ui.theme.AccountingOfStudentRet
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+/**
+ * Точка входа в приложение.
+ *
+ * При запуске восстанавливает токен авторизации из DataStore
+ * и передаёт его в [KtorClient] — чтобы запросы работали
+ * без повторного логина.
+ *
+ * Вручную создаёт все зависимости и передаёт в [RetakeViewModel]:
+ * - Репозитории: auth, user, admin, student, teacher, guest, local (Room)
+ * - UseCase'ы для всех операций
+ * - [SettingsDataStore] для хранения профиля пользователя
+ *
+ * Локальные UseCase'ы ([SaveSubjectsUseCase], [GetCachedSubjectsUseCase] и др.)
+ * используются для кэширования данных в Room через [LocalRepositoryImpl].
+ *
+ * Отображает [Navigation] внутри [AccountingOfStudentRetakesAppTheme].
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

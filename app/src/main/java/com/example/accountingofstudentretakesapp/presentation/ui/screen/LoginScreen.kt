@@ -28,6 +28,25 @@ import com.example.accountingofstudentretakesapp.presentation.ui.component.RoleS
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
 
+/**
+ * Экран входа в приложение.
+ *
+ * Содержит:
+ * - [RoleSelector] для ознакомления с возможностями каждой роли
+ * - Поля ввода email и пароля с кнопкой очистки
+ * - Кнопка входа — заблокирована пока поля пустые или идёт загрузка
+ * - Сообщение об ошибке если логин не удался
+ *
+ * Роль определяется автоматически на сервере по email —
+ * [RoleSelector] здесь только информационный, не влияет на логин.
+ *
+ * Кнопка "Войти" активна только когда:
+ * - email и пароль не пустые
+ * - не идёт загрузка ([RetakeUiState.isLoading] = false)
+ *
+ * @param viewModel ViewModel для вызова [RetakeViewModel.login]
+ * @param uiState UI стейт — состояние загрузки и сообщение об ошибке
+ */
 @Composable
 fun LoginScreen(viewModel: RetakeViewModel, uiState: RetakeUiState) {
     var email by remember { mutableStateOf("") }

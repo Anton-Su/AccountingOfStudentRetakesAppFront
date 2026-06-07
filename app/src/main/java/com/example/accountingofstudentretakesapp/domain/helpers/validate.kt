@@ -1,5 +1,14 @@
 package com.example.accountingofstudentretakesapp.domain.helpers
 
+/**
+ * Валидирует поля формы комментария к пересдаче.
+ *
+ * @param placeValue оценка за аудиторию в виде строки (ожидается число от 0 до 10)
+ * @param teacherValue оценка за преподавателя в виде строки (ожидается число от 0 до 10)
+ * @param overallValue общая оценка в виде строки (ожидается число от 0 до 100)
+ * @param commentText текст комментария (не более 500 символов)
+ * @return сообщение об ошибке или null если все поля валидны
+ */
 fun validate(placeValue: String, teacherValue: String, overallValue: String, commentText: String): String? {
     val place = placeValue.toIntOrNull()
     val teacher = teacherValue.toIntOrNull()

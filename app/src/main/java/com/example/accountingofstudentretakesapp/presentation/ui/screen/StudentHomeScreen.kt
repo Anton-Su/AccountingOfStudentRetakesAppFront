@@ -35,11 +35,43 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
+import com.example.accountingofstudentretakesapp.domain.helpers.makeFIO
 import com.example.accountingofstudentretakesapp.presentation.ui.component.CircularPercentageIndicator
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeInfoCard
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import java.time.Instant
 
+/**
+ * Главный экран студента.
+ *
+ * В TopAppBar показывает ФИО студента из DataStore.
+ * Данные загружаются один раз при открытии экрана через [onLoadStudentData].
+ *
+ * Содержит секции:
+ *
+ * **Место в топе должников** — карточка с [CircularPercentageIndicator],
+ * показывает место среди всех студентов. Скрыта если данных нет.
+ *
+ * **Долги** — список предметов со статусом DEBT (красные карточки).
+ * Состояния: загрузка / ошибка / пусто / список.
+ *
+ * **Доступные пересдачи** — пересдачи по предметам из долгов,
+ * на которые студент ещё не записан. Кнопка "+" для записи.
+ * Фильтруется по [RetakeUiState.availableRetakes] и [RetakeUiState.studentDebts].
+ *
+ * **Я записан на...** — активные пересдачи (endAt > сейчас).
+ * Кнопка отмены заблокирована если пересдача уже началась.
+ *
+ * **Прошедшие пересдачи** — пересдачи где endAt <= сейчас.
+ * Кнопка перехода на экран отзыва.
+ *
+ * @param uiState общий UI стейт
+ * @param onLoadStudentData загрузить все данные студента
+ * @param onRetakeClick перейти на экран отзыва по ID пересдачи
+ * @param onEnrollRetake записаться на пересдачу (subjectId, retakeId)
+ * @param onCancelRetake отменить запись на пересдачу (subjectId, retakeId)
+ * @param onLogout выйти из аккаунта
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentHomeScreen(uiState: RetakeUiState,
@@ -57,9 +89,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
     val firstName by settings.firstNameFlow.collectAsState(initial = "")
     val lastName by settings.lastNameFlow.collectAsState(initial = "")
     val secondName by settings.secondNameFlow.collectAsState(initial = "")
-    val formattedName = remember(firstName, lastName, secondName) {
-        firstName + " " + secondName + " " + lastName.take(1)
-    }
+    val formattedName = makeFIO(firstName, secondName, lastName)
     val availableForDebts = remember(uiState.availableRetakes, uiState.studentDebts) {
         uiState.availableRetakes.filter { retake ->
             uiState.studentDebts.any { debt -> debt.subjectId == retake.subjectId }
@@ -239,4 +269,3 @@ fun StudentHomeScreen(uiState: RetakeUiState,
 
     }
 }
-

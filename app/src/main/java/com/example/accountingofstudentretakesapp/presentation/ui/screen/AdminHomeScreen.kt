@@ -34,10 +34,38 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToHuman
+import com.example.accountingofstudentretakesapp.domain.helpers.makeFIO
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeCommentsCard
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import java.time.Instant
 
+/**
+ * Главный экран администратора.
+ *
+ * Отображает список всех пересдач с комментариями студентов.
+ * В TopAppBar показывает ФИО администратора из DataStore.
+ *
+ * Каждая карточка пересдачи содержит:
+ * - Название предмета и тип (первые 3 символа)
+ * - Место, время начала и конца
+ * - Кнопку редактирования — только если пересдача ещё не началась
+ * - Кнопку удаления — всегда
+ * - [RetakeCommentsCard] с отзывами студентов
+ *
+ * Состояния загрузки:
+ * - Загрузка → текст "Загрузка пересдач..."
+ * - Ошибка → текст ошибки красным
+ * - Пусто → текст "Нет пересдач"
+ * - Успех → [LazyColumn] с карточками
+ *
+ * @param uiState общий UI стейт
+ * @param onLoadRetakes загрузить все пересдачи
+ * @param onLoadComments загрузить все комментарии
+ * @param onAddRetake перейти на экран создания пересдачи
+ * @param onEditRetake перейти на экран редактирования пересдачи по ID
+ * @param onDeleteRetake удалить пересдачу по ID
+ * @param onLogout выйти из аккаунта
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminHomeScreen(uiState: RetakeUiState,
@@ -57,9 +85,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
     val firstName by settings.firstNameFlow.collectAsState(initial = "")
     val lastName by settings.lastNameFlow.collectAsState(initial = "")
     val secondName by settings.secondNameFlow.collectAsState(initial = "")
-    val formattedName = remember(firstName, lastName, secondName) {
-        firstName + " " + secondName + " " + lastName.take(1)
-    }
+    val formattedName = makeFIO(firstName, secondName, lastName)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,

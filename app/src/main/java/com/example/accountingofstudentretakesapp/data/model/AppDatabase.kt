@@ -10,7 +10,16 @@ import com.example.accountingofstudentretakesapp.data.local.dao.SubjectDao
 import com.example.accountingofstudentretakesapp.data.local.entity.SubjectEntity
 import com.example.accountingofstudentretakesapp.data.local.dao.TeacherDao
 import com.example.accountingofstudentretakesapp.data.local.entity.TeacherEntity
-
+/**
+ * Локальная база данных приложения.
+ * Содержит таблицы для кэширования предметов, преподавателей и комментариев.
+ *
+ * Используется для offline-доступа к данным при отсутствии сети.
+ *
+ * @see SubjectEntity
+ * @see TeacherEntity
+ * @see CommentEntity
+ */
 @Database(entities = [SubjectEntity::class, TeacherEntity::class, CommentEntity::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     /**

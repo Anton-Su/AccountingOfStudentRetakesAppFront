@@ -4,98 +4,91 @@ import android.content.Context
 import com.example.accountingofstudentretakesapp.data.local.entity.CommentEntity
 import com.example.accountingofstudentretakesapp.data.local.entity.SubjectEntity
 import com.example.accountingofstudentretakesapp.data.local.entity.TeacherEntity
+import com.example.accountingofstudentretakesapp.data.local.mapper.toCommentDomain
+import com.example.accountingofstudentretakesapp.data.local.mapper.toCommentEntity
+import com.example.accountingofstudentretakesapp.data.local.mapper.toSubjectDomain
+import com.example.accountingofstudentretakesapp.data.local.mapper.toSubjectEntity
+import com.example.accountingofstudentretakesapp.data.local.mapper.toTeacherDomain
+import com.example.accountingofstudentretakesapp.data.local.mapper.toTeacherEntity
 import com.example.accountingofstudentretakesapp.data.model.AppDatabase
 import com.example.accountingofstudentretakesapp.domain.model.Comment
 import com.example.accountingofstudentretakesapp.domain.model.Subject
 import com.example.accountingofstudentretakesapp.domain.model.Teacher
 import com.example.accountingofstudentretakesapp.domain.repository.LocalRepository
 
-class LocalRepositoryImpl(private val db: AppDatabase): LocalRepository {
+/**
+ * Реализация локального репозитория для кэширования данных в Room.
+ * Используется для offline-доступа при отсутствии сети.
+ *
+ * @param db экземпляр базы данных
+ */
+class LocalRepositoryImpl(private val db: AppDatabase) : LocalRepository {
 
+    /**
+     * Сохраняет список предметов в локальный кэш.
+     *
+     * @param subjects список предметов для сохранения
+     */
     override suspend fun saveSubjects(subjects: List<Subject>) {
-        val entities = subjects.map { SubjectEntity(id = it.id, title = it.title) }
+        val entities = subjects.map { it.toSubjectEntity() }
         db.subjectDao().insertAll(entities)
     }
 
+    /**
+     * Возвращает все предметы из локального кэша.
+     *
+     * @return список кэшированных предметов
+     */
     override suspend fun getAllSubjects(): List<Subject> {
-        return db.subjectDao().getAll().map { Subject(id = it.id, title = it.title) }
-    }
-
-    override suspend fun saveTeachers(teachers: List<Teacher>) {
-        val entities = teachers.map {
-            TeacherEntity(
-                userId = it.userId,
-                fullName = it.fullName,
-                disciplines = it.disciplines.joinToString(separator = "||")
-            )
-        }
-        db.teacherDao().insertAll(entities)
-    }
-
-    override suspend fun getTeachersByDiscipline(discipline: String): List<Teacher> {
-        val entities = db.teacherDao().getByDisciplineSimple(discipline)
-        return entities.map {
-            Teacher(
-                userId = it.userId,
-                fullName = it.fullName,
-                disciplines = it.disciplines.split("||").filter { s -> s.isNotEmpty() })
-        }
+        return db.subjectDao().getAll().map { it.toSubjectDomain() }
     }
 
     /**
-     * Сохраняет список комментариев в локальный кеш.
+     * Сохраняет список преподавателей в локальный кэш.
+     * Список дисциплин сохраняется как строка с разделителем "||".
+     *
+     * @param teachers список преподавателей для сохранения
+     */
+    override suspend fun saveTeachers(teachers: List<Teacher>) {
+        val entities = teachers.map { it.toTeacherEntity()}
+        db.teacherDao().insertAll(entities)
+    }
+
+    /**
+     * Возвращает преподавателей по дисциплине из локального кэша.
+     * Строка дисциплин разбивается обратно в список по разделителю "||".
+     *
+     * @param discipline название дисциплины
+     * @return список преподавателей ведущих данную дисциплину
+     */
+    override suspend fun getTeachersByDiscipline(discipline: String): List<Teacher> {
+        return db.teacherDao().getByDisciplineSimple(discipline).map { it.toTeacherDomain() }
+    }
+
+    /**
+     * Сохраняет список комментариев в локальный кэш.
+     *
      * @param comments список комментариев для сохранения
      */
     override suspend fun saveComments(comments: List<Comment>) {
-        val entities = comments.map {
-            CommentEntity(
-                id = it.id,
-                studentId = it.studentId,
-                studentFullName = it.studentFullName,
-                subjectTitle = it.subjectTitle,
-                groupName = it.groupName,
-                gradePlace = it.gradePlace,
-                gradeTeacher = it.gradeTeacher,
-                gradeOverall = it.gradeOverall,
-                comment = it.comment,
-                retakeId = it.retakeId,
-                retakeStartAt = it.retakeStartAt,
-                retakeEndAt = it.retakeEndAt
-            )
-        }
+        val entities = comments.map { it.toCommentEntity() }
         db.commentDao().insertAll(entities)
     }
 
     /**
-     * Получает все комментарии из локального кеша.
-     * @return список всех кешированных комментариев
+     * Возвращает все комментарии из локального кэша.
+     *
+     * @return список кэшированных комментариев
      */
     override suspend fun getAllComments(): List<Comment> {
-        return db.commentDao().getAll().map {
-            Comment(
-                id = it.id,
-                studentId = it.studentId,
-                studentFullName = it.studentFullName,
-                subjectTitle = it.subjectTitle,
-                groupName = it.groupName,
-                gradePlace = it.gradePlace,
-                gradeTeacher = it.gradeTeacher,
-                gradeOverall = it.gradeOverall,
-                comment = it.comment,
-                retakeId = it.retakeId,
-                retakeStartAt = it.retakeStartAt,
-                retakeEndAt = it.retakeEndAt
-            )
-        }
+        return db.commentDao().getAll().map { it.toCommentDomain() }
     }
 
     companion object {
-        // гарантирует что все потоки видят актуальное значение INSTANCE
         @Volatile
         private var INSTANCE: LocalRepository? = null
 
         fun getInstance(context: Context): LocalRepository {
-            // только один поток может войти сюда одновременно, чтобы не создать два объекта
             return INSTANCE ?: synchronized(this) {
                 val db = AppDatabase.getInstance(context)
                 val instance = LocalRepositoryImpl(db)

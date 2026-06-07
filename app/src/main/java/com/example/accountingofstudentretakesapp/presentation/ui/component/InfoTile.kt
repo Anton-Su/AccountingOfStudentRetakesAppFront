@@ -21,6 +21,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Карточка с информационным полем.
+ * Отображает метку и значение с иконкой первой буквы метки.
+ *
+ * @param label название поля
+ * @param value значение поля
+ * @param modifier модификатор для настройки layout
+ */
 @Composable
 fun InfoTile(label: String, value: String, modifier: Modifier = Modifier) {
     Card(

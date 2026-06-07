@@ -20,7 +20,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-
+/**
+ * Карточка выставления оценки студенту на пересдаче.
+ *
+ * Отображает имя студента, группу и выпадающий список оценок.
+ * Доступные оценки зависят от типа пересдачи:
+ * - Экзамен: 2, 3, 4, 5
+ * - Зачёт: 2, 3
+ *
+ * Кнопка "Выставить" активна только когда выбрана оценка.
+ * После выставления оценки — сбрасывает выбор.
+ *
+ * @param studentFullName ФИО студента
+ * @param groupName название группы студента
+ * @param retakeType тип пересдачи ("Экзамен" или "Зачёт")
+ * @param onGradeSubmit колбэк при выставлении оценки с выбранным баллом
+ */
 @Composable
 fun StudentGradeCard(studentFullName: String, groupName: String, retakeType: String, onGradeSubmit: (Int) -> Unit) {
     val (selectedGrade, setSelectedGrade) = remember { mutableStateOf<Int?>(null) }

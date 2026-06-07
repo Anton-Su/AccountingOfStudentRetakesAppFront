@@ -22,6 +22,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * Селектор типа пересдачи — "Экзамен" или "Зачёт".
+ *
+ * Отображает две кнопки в одной строке. Выбранная кнопка подсвечивается
+ * цветом: "Экзамен" — primary, "Зачёт" — secondary.
+ *
+ * @param selectedType текущий выбранный тип (null — ничего не выбрано)
+ * @param onTypeSelected колбэк при выборе типа
+ * @param modifier модификатор
+ */
+
 @Composable
 fun RetakeTypeSelector(selectedType: String?, onTypeSelected: (String) -> Unit, modifier: Modifier = Modifier) {
     val shape = RoundedCornerShape(14.dp)

@@ -29,6 +29,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.domain.model.Comment
 
+/**
+ * Карточка комментариев для конкретной пересдачи.
+ *
+ * Отображает список комментариев студентов, отфильтрованных по [retakeId].
+ * Если комментариев нет — карточка не отображается совсем.
+ * Комментарии скрыты по умолчанию и разворачиваются по нажатию на кнопку.
+ *
+ * @param retakeId ID пересдачи, для которой показываются комментарии
+ * @param comments полный список всех комментариев — фильтруется внутри по [retakeId]
+ * @param modifier модификатор для настройки внешнего вида карточки
+ */
 @Composable
 fun RetakeCommentsCard(retakeId: Long, comments: List<Comment>, modifier: Modifier = Modifier) {
     val retakeComments = comments.filter { it.retakeId == retakeId }
@@ -92,13 +103,3 @@ fun RetakeCommentsCard(retakeId: Long, comments: List<Comment>, modifier: Modifi
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

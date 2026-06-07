@@ -19,6 +19,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+/**
+ * Поле ввода числовой оценки с иконкой и описанием диапазона.
+ *
+ * @param value текущее значение оценки в виде строки
+ * @param onValueChange вызывается при изменении значения
+ * @param label название критерия оценки
+ * @param range допустимый диапазон значений (например "0–10")
+ * @param icon иконка критерия оценки
+ */
 @Composable
 fun RatingField(value: String, onValueChange: (String) -> Unit, label: String, range: String, icon: ImageVector) {
     Row(

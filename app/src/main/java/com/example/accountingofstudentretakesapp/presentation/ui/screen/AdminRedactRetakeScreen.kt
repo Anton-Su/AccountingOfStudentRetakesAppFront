@@ -8,6 +8,24 @@ import com.example.accountingofstudentretakesapp.presentation.ui.component.Retak
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import java.time.Instant
 
+/**
+ * Экран редактирования существующей пересдачи для администратора.
+ *
+ * Обёртка над [RetakeFormScreen] с предзаполненными значениями
+ * из текущей пересдачи найденной по [retakeId] в [uiState.allRetakes].
+ *
+ * Использует ту же форму что и [AdminCreateRetakeScreen] — чтобы
+ * не дублировать UI. Маппит [CreateRetakeRequest] в [RedactRetakeRequest]
+ * добавляя [retakeId].
+ *
+ * @param retakeId ID редактируемой пересдачи
+ * @param uiState общий UI стейт — берёт пересдачу из [RetakeUiState.allRetakes]
+ * @param onLoadSubjects загрузить список предметов
+ * @param onLoadTeachers загрузить преподавателей по названию предмета
+ * @param onClearTeachers очистить список преподавателей
+ * @param onRedactRetake отправить запрос на редактирование пересдачи
+ * @param onBack вернуться назад
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminRedactRetakeScreen(retakeId: Long, uiState: RetakeUiState,
@@ -52,6 +70,3 @@ fun AdminRedactRetakeScreen(retakeId: Long, uiState: RetakeUiState,
         onBack = onBack
     )
 }
-
-
-
