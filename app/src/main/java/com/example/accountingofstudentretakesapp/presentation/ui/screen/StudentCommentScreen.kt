@@ -24,9 +24,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.outlined.Edit
@@ -38,6 +39,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
+import com.example.accountingofstudentretakesapp.R
+import com.example.accountingofstudentretakesapp.domain.helpers.ValidationError
 import com.example.accountingofstudentretakesapp.domain.helpers.validate
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RatingField
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
@@ -72,16 +75,16 @@ fun StudentCommentScreen(
     val gradeTeacher = remember { mutableStateOf("") }
     val gradeOverall = remember { mutableStateOf("") }
     val comment = remember { mutableStateOf(TextFieldValue()) }
-    val errorMessage = remember { mutableStateOf<String?>(null) }
+    val errorMessage = remember { mutableStateOf<ValidationError?>(null) }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Отзыв о пересдаче") },
+                title = { Text(stringResource(R.string.student_comment_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -95,7 +98,17 @@ fun StudentCommentScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            val displayError = errorMessage.value ?: uiState.createCommentError
+            val displayError = errorMessage.value?.let {
+                when (it) {
+                    ValidationError.PLACE_REQUIRED -> stringResource(R.string.validation_rate_place)
+                    ValidationError.PLACE_RANGE -> stringResource(R.string.validation_place_range)
+                    ValidationError.TEACHER_REQUIRED -> stringResource(R.string.validation_rate_teacher)
+                    ValidationError.TEACHER_RANGE -> stringResource(R.string.validation_teacher_range)
+                    ValidationError.OVERALL_REQUIRED -> stringResource(R.string.validation_overall_required)
+                    ValidationError.OVERALL_RANGE -> stringResource(R.string.validation_overall_range)
+                    ValidationError.COMMENT_LENGTH -> stringResource(R.string.validation_comment_length)
+                }
+            } ?: uiState.createCommentError
             if (displayError != null) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -127,11 +140,11 @@ fun StudentCommentScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text(text = "Оценки", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(text = stringResource(R.string.student_comment_ratings), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     RatingField(
                         value = gradePlace.value,
                         onValueChange = { gradePlace.value = it.filter { char -> char.isDigit() } },
-                        label = "Аудитория",
+                        label = stringResource(R.string.student_comment_place),
                         range = "0–10",
                         icon = Icons.Outlined.LocationOn
                     )
@@ -139,7 +152,7 @@ fun StudentCommentScreen(
                     RatingField(
                         value = gradeTeacher.value,
                         onValueChange = { gradeTeacher.value = it.filter {char -> char.isDigit()} },
-                        label = "Преподаватель",
+                        label = stringResource(R.string.student_comment_teacher),
                         range = "0–10",
                         icon = Icons.Outlined.Person
                     )
@@ -147,7 +160,7 @@ fun StudentCommentScreen(
                     RatingField(
                         value = gradeOverall.value,
                         onValueChange = { gradeOverall.value = it.filter {char -> char.isDigit()} },
-                        label = "Общая оценка",
+                        label = stringResource(R.string.student_comment_overall),
                         range = "0–100",
                         icon = Icons.Outlined.Star
                     )
@@ -173,18 +186,18 @@ fun StudentCommentScreen(
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Text(text = "Комментарий", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(text = stringResource(R.string.student_comment_comment), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                     OutlinedTextField(
                         value = comment.value,
                         onValueChange = { comment.value = it },
                         modifier = Modifier.fillMaxWidth(),
-                        placeholder = { Text("Изложите нам свою душу...") },
+                        placeholder = { Text(stringResource(R.string.student_comment_placeholder)) },
                         minLines = 4,
                         maxLines = 8,
                         shape = MaterialTheme.shapes.medium,
                         supportingText = {
-                            Text(text = "${comment.value.text.length}/500", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End, style = MaterialTheme.typography.labelSmall,
+                            Text(text = stringResource(R.string.student_comment_counter, comment.value.text.length), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End, style = MaterialTheme.typography.labelSmall,
                                 color = if (comment.value.text.length > 500)
                                     MaterialTheme.colorScheme.error
                                 else
@@ -224,7 +237,7 @@ fun StudentCommentScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
-                Text("Отправить отзыв", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.student_comment_submit), style = MaterialTheme.typography.labelLarge)
             }
         }
     }

@@ -25,8 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.domain.model.Comment
 
 /**
@@ -68,11 +70,11 @@ fun RetakeCommentsCard(retakeId: Long, comments: List<Comment>, modifier: Modifi
                 ) {
                     Icon(
                         imageVector = Icons.Default.MailOutline,
-                        contentDescription = "Комментарии",
+                        contentDescription = stringResource(R.string.retake_comments_cd),
                         modifier = Modifier.padding(end = 8.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
-                    Text(text = "Комментарии (${retakeComments.size})", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
+                    Text(text = stringResource(R.string.retake_comments_title, retakeComments.size), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
                 }
                 IconButton(
                     onClick = { isExpanded = !isExpanded },
@@ -80,7 +82,7 @@ fun RetakeCommentsCard(retakeId: Long, comments: List<Comment>, modifier: Modifi
                 ) {
                     Icon(
                         imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        contentDescription = if (isExpanded) "Скрыть" else "Показать"
+                        contentDescription = if (isExpanded) stringResource(R.string.retake_comments_hide) else stringResource(R.string.retake_comments_show)
                     )
                 }
             }

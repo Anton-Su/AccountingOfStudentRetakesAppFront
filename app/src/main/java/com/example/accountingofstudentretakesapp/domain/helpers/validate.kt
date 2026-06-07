@@ -1,5 +1,10 @@
 package com.example.accountingofstudentretakesapp.domain.helpers
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.ui.res.stringResource
+import com.example.accountingofstudentretakesapp.R
+
 /**
  * Валидирует поля формы комментария к пересдаче.
  *
@@ -7,21 +12,22 @@ package com.example.accountingofstudentretakesapp.domain.helpers
  * @param teacherValue оценка за преподавателя в виде строки (ожидается число от 0 до 10)
  * @param overallValue общая оценка в виде строки (ожидается число от 0 до 100)
  * @param commentText текст комментария (не более 500 символов)
- * @return сообщение об ошибке или null если все поля валидны
+ * @return код ошибки или null если все поля валидны
  */
-fun validate(placeValue: String, teacherValue: String, overallValue: String, commentText: String): String? {
+
+fun validate(placeValue: String, teacherValue: String, overallValue: String, commentText: String): ValidationError? {
     val place = placeValue.toIntOrNull()
     val teacher = teacherValue.toIntOrNull()
     val overall = overallValue.toIntOrNull()
     val comment = commentText.trim()
     return when {
-        place == null -> "Оцените аудиторию"
-        place !in 0..10 -> "Оценка за аудиторию должна быть от 0 до 10"
-        teacher == null -> "Оцените преподавателя"
-        teacher !in 0..10 -> "Оценка преподавателя должна быть от 0 до 10"
-        overall == null -> "Введите общую оценку"
-        overall !in 0..100 -> "Общая оценка должна быть от 0 до 100"
-        comment.length > 500 -> "Комментарий не должен быть длиннее 500 символов"
+        place == null -> ValidationError.PLACE_REQUIRED
+        place !in 0..10 -> ValidationError.PLACE_RANGE
+        teacher == null -> ValidationError.TEACHER_REQUIRED
+        teacher !in 0..10 -> ValidationError.TEACHER_RANGE
+        overall == null -> ValidationError.OVERALL_REQUIRED
+        overall !in 0..100 -> ValidationError.OVERALL_RANGE
+        comment.length > 500 -> ValidationError.COMMENT_LENGTH
         else -> null
     }
 }

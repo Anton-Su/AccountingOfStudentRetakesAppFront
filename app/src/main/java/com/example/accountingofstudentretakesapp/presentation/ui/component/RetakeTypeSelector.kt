@@ -21,6 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.accountingofstudentretakesapp.R
 
 /**
  * Селектор типа пересдачи — "Экзамен" или "Зачёт".
@@ -41,7 +43,9 @@ fun RetakeTypeSelector(selectedType: String?, onTypeSelected: (String) -> Unit, 
     val passColor = MaterialTheme.colorScheme.secondary
     val textColorSelected = Color.White
     val textColorUnselected = MaterialTheme.colorScheme.onSurface
-    val options = listOf("Экзамен", "Зачёт")
+    val examLabel = stringResource(R.string.retake_type_exam)
+    val passLabel = stringResource(R.string.retake_type_pass)
+    val options = listOf(examLabel, passLabel)
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
@@ -62,8 +66,8 @@ fun RetakeTypeSelector(selectedType: String?, onTypeSelected: (String) -> Unit, 
                         .fillMaxHeight()
                         .background(
                             when {
-                                selected && option == "Экзамен" -> examColor
-                                selected && option == "Зачёт" -> passColor
+                                selected && option == examLabel -> examColor
+                                selected && option == passLabel -> passColor
                                 else -> Color.Transparent
                             }
                         )

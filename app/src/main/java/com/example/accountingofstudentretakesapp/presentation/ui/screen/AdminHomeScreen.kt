@@ -27,11 +27,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToHuman
 import com.example.accountingofstudentretakesapp.domain.helpers.makeFIO
@@ -93,7 +94,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
             TopAppBar(
                 title = {
                     Column {
-                        Text("Кабинет администратора")
+                        Text(stringResource(R.string.admin_home_title))
                         if (formattedName.isNotBlank()) {
                             Text(formattedName, style = MaterialTheme.typography.bodyMedium)
                         }
@@ -101,7 +102,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                 },
                 actions = {
                     IconButton(onClick = onLogout) {
-                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Выйти")
+                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = stringResource(R.string.logout))
                     }
                 }
             )
@@ -123,23 +124,23 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Все пересдачи",
+                    text = stringResource(R.string.admin_all_retakes_title),
                     style = MaterialTheme.typography.headlineSmall
                 )
                 Button(onClick = onAddRetake) {
-                    Icon(Icons.Default.Add, contentDescription = "Добавить")
-                    Text(" Добавить", modifier = Modifier.padding(start = 4.dp))
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
+                    Text(stringResource(R.string.add), modifier = Modifier.padding(start = 4.dp))
                 }
             }
             when {
                 uiState.allRetakesLoading -> {
-                    Text("Загрузка пересдач...", style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.loading_retakes), style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.allRetakesError != null -> {
                     Text(text = uiState.allRetakesError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.allRetakes.isEmpty() -> {
-                    Text("Нет пересдач", style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.no_retakes), style = MaterialTheme.typography.bodyMedium)
                 }
                 else -> {
                     LazyColumn(
@@ -162,10 +163,10 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Column(modifier = Modifier.weight(1f)) {
-                                                Text(text = "$subjectTitle (" + retake.type.take(3) + ")", style = MaterialTheme.typography.titleMedium)
-                                                Text(text = "Место: ${retake.place}", style = MaterialTheme.typography.bodySmall)
-                                                Text(text = "Начало: ${formatInstantToHuman(retake.startAt)}", style = MaterialTheme.typography.bodySmall)
-                                                Text(text = "Конец: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodySmall)
+                                                Text(text = stringResource(R.string.admin_retake_subject_type, subjectTitle ?: "", retake.type.take(3)), style = MaterialTheme.typography.titleMedium)
+                                                Text(text = stringResource(R.string.retake_prefix_place, retake.place), style = MaterialTheme.typography.bodySmall)
+                                                Text(text = stringResource(R.string.retake_prefix_start, formatInstantToHuman(retake.startAt)), style = MaterialTheme.typography.bodySmall)
+                                                Text(text = stringResource(R.string.retake_prefix_end, formatInstantToHuman(retake.endAt)), style = MaterialTheme.typography.bodySmall)
                                             }
                                             Row(
                                                 horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -177,7 +178,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                                                     ) {
                                                         Icon(
                                                             Icons.Default.Edit,
-                                                            contentDescription = "Редактировать",
+                                                            contentDescription = stringResource(R.string.edit),
                                                             tint = MaterialTheme.colorScheme.primary
                                                         )
                                                     }
@@ -188,7 +189,7 @@ fun AdminHomeScreen(uiState: RetakeUiState,
                                                 ) {
                                                     Icon(
                                                         Icons.Default.Delete,
-                                                        contentDescription = "Удалить",
+                                                            contentDescription = stringResource(R.string.delete),
                                                         tint = MaterialTheme.colorScheme.error
                                                     )
                                                 }

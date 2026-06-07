@@ -1,3 +1,133 @@
 <resources>
-    <string name="app_name">AccountingOfStudentRetakesApp</string>
+    <string name="app_name">Учёт пересдач студентов</string>
+    <string name="role_selector_title">Функции ролей</string>
+    <string name="login_title">Вход в приложение</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_clear_email_cd">Очистить email</string>
+    <string name="login_clear_password_cd">Очистить пароль</string>
+    <string name="login_loading">Вход...</string>
+    <string name="login_submit">Войти</string>
+    <string name="login_help_university">Не получается войти? Уточните у ответственного лица университета.</string>
+    <string name="login_help_developer">Нашли ошибку в системе? Напишите разработчику на почту develplover@mail.ru. Он, возможно, прочитает. Возможно...</string>
+
+    <string name="role_student">Student</string>
+    <string name="role_teacher">Teacher</string>
+    <string name="role_admin">Admin</string>
+    <string name="role_feature_student_enroll">Запись на пересдачу</string>
+    <string name="role_feature_student_cancel">Отмена записи</string>
+    <string name="role_feature_student_stats">Статистика долгов</string>
+    <string name="role_feature_student_top">Место в топе должников</string>
+    <string name="role_feature_student_comment">Оставить отзыв о пересдаче</string>
+    <string name="role_feature_teacher_journal">Журнал пересдач</string>
+    <string name="role_feature_admin_control">Полный контроль над пересдачами</string>
+    <string name="role_feature_admin_reviews">Просмотр отзывов</string>
+
+    <string name="retake_type_exam">Экзамен</string>
+    <string name="retake_type_pass">Зачёт</string>
+
+    <string name="group_prefix">Группа: %1$s</string>
+    <string name="grade_undetermined">—</string>
+    <string name="grade_submit">Выставить</string>
+
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="dialog_choose_time">Выберите время</string>
+    <string name="date_picker_cd">Выбрать дату</string>
+
+    <string name="comment_rating_teacher">Преподаватель</string>
+    <string name="comment_rating_place">Аудитория</string>
+    <string name="comment_rating_total">Итог</string>
+    <string name="comment_quoted">«%1$s»</string>
+
+    <string name="retake_comments_title">Комментарии (%1$d)</string>
+    <string name="retake_comments_cd">Комментарии</string>
+    <string name="retake_comments_hide">Скрыть</string>
+    <string name="retake_comments_show">Показать</string>
+
+    <string name="student_comment_title">Отзыв о пересдаче</string>
+    <string name="back">Назад</string>
+    <string name="student_comment_ratings">Оценки</string>
+    <string name="student_comment_place">Аудитория</string>
+    <string name="student_comment_teacher">Преподаватель</string>
+    <string name="student_comment_overall">Общая оценка</string>
+    <string name="student_comment_range_0_10">0–10</string>
+    <string name="student_comment_range_0_100">0–100</string>
+    <string name="student_comment_comment">Комментарий</string>
+    <string name="student_comment_placeholder">Изложите нам свою душу...</string>
+    <string name="student_comment_counter">%1$d/500</string>
+    <string name="student_comment_submit">Отправить отзыв</string>
+
+    <string name="teacher_retake_details_title">Детали пересдачи</string>
+    <string name="teacher_retake_loading">Загрузка деталей пересдачи...</string>
+    <string name="teacher_retake_type_label">Тип</string>
+    <string name="teacher_retake_place_label">Место</string>
+    <string name="teacher_retake_start_label">Начало</string>
+    <string name="teacher_retake_end_label">Конец</string>
+    <string name="teacher_retake_admission_label">Допуск</string>
+    <string name="teacher_retake_last_modified">Последнее изменение: %1$s</string>
+    <string name="teacher_retake_students">Записанные студенты (%1$d)</string>
+    <string name="teacher_retake_no_students">Нет записанных студентов</string>
+    <string name="teacher_retake_no_data">Нет данных о пересдаче</string>
+
+    <string name="admin_home_title">Кабинет администратора</string>
+    <string name="logout">Выйти</string>
+    <string name="admin_all_retakes_title">Все пересдачи</string>
+    <string name="add">Добавить</string>
+    <string name="loading_retakes">Загрузка пересдач...</string>
+    <string name="no_retakes">Нет пересдач</string>
+    <string name="retake_prefix_place">Место: %1$s</string>
+    <string name="retake_prefix_start">Начало: %1$s</string>
+    <string name="retake_prefix_end">Конец: %1$s</string>
+    <string name="admin_retake_subject_type">%1$s (%2$s)</string>
+    <string name="retake_time_range">%1$s — %2$s</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
+
+    <string name="teacher_home_title">Кабинет преподавателя</string>
+    <string name="my_retakes">Мои пересдачи</string>
+    <string name="loading_retakes_common">Загрузка пересдач...</string>
+    <string name="no_assigned_retakes">Пока нет назначенных пересдач</string>
+    <string name="subject_prefix">Предмет: %1$s</string>
+
+    <string name="student_home_title">Кабинет студента</string>
+    <string name="top_place_label">Занимаемое место в топе:</string>
+    <string name="student_rank_value">%1$d из %2$d</string>
+    <string name="debt_section">Долги</string>
+    <string name="loading_debts">Загрузка долгов...</string>
+    <string name="no_debts">Пока нет долгов</string>
+    <string name="available_retakes">Доступные пересдачи</string>
+    <string name="loading_available_retakes">Загрузка доступных пересдач...</string>
+    <string name="no_available_retakes">Нет доступных пересдач по вашим долгам</string>
+    <string name="enrolled_retakes">Я записан на...</string>
+    <string name="loading_enrolled">Загрузка записей...</string>
+    <string name="no_enrolled">Пока вы ни на что не записаны</string>
+    <string name="past_retakes">Прошедшие пересдачи</string>
+    <string name="enroll_action">Записаться на пересдачу</string>
+    <string name="cancel_action">Отменить запись</string>
+    <string name="comment_action">Оставить комментарий</string>
+
+    <string name="create_retake_title">Создать пересдачу</string>
+    <string name="create_retake_submit">Создать</string>
+    <string name="edit_retake_title">Редактировать пересдачу</string>
+    <string name="edit_retake_submit">Сохранить</string>
+
+    <string name="form_place">Место проведения</string>
+    <string name="form_choose_type">Выберите тип пересдачи</string>
+    <string name="form_start_time">Время начала</string>
+    <string name="form_end_time">Время конца</string>
+    <string name="form_admission_optional">Допуск (опционально)</string>
+    <string name="form_choose_subject">Выберите предмет</string>
+    <string name="form_subject_not_selected">Предмет не выбран</string>
+    <string name="form_choose_teachers">Выберите преподавателей</string>
+    <string name="form_no_teachers">Нет преподавателей по этому предмету</string>
+    <string name="form_cancel">Отмена</string>
+
+    <string name="validation_rate_place">Оцените аудиторию</string>
+    <string name="validation_place_range">Оценка за аудиторию должна быть от 0 до 10</string>
+    <string name="validation_rate_teacher">Оцените преподавателя</string>
+    <string name="validation_teacher_range">Оценка преподавателя должна быть от 0 до 10</string>
+    <string name="validation_overall_required">Введите общую оценку</string>
+    <string name="validation_overall_range">Общая оценка должна быть от 0 до 100</string>
+    <string name="validation_comment_length">Комментарий не должен быть длиннее 500 символов</string>
 </resources>

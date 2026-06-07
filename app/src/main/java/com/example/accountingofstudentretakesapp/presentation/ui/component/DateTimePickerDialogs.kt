@@ -18,7 +18,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 import java.time.Instant
 import java.time.ZoneId
 
@@ -45,10 +47,10 @@ fun DateTimePickerDialogs(showDatePicker: MutableState<Boolean>,
                 TextButton(onClick = {
                     showDatePicker.value = false
                     showTimePicker.value = true
-                }) { Text("OK") }
+                }) { Text(stringResource(R.string.dialog_ok)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker.value = false }) { Text("Отмена") }
+                TextButton(onClick = { showDatePicker.value = false }) { Text(stringResource(R.string.dialog_cancel)) }
             }
         ) {
             DatePicker(state = datePickerState)
@@ -68,12 +70,12 @@ fun DateTimePickerDialogs(showDatePicker: MutableState<Boolean>,
                         .toInstant()
                     onDateTimeSelected(instant)  // отдаём Instant
                     showTimePicker.value = false
-                }) { Text("OK") }
+                }) { Text(stringResource(R.string.dialog_ok)) }
             },
             dismissButton = {
-                TextButton(onClick = { showTimePicker.value = false }) { Text("Отмена") }
+                TextButton(onClick = { showTimePicker.value = false }) { Text(stringResource(R.string.dialog_cancel)) }
             },
-            title = { Text("Выберите время") },
+            title = { Text(stringResource(R.string.dialog_choose_time)) },
             text = {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),

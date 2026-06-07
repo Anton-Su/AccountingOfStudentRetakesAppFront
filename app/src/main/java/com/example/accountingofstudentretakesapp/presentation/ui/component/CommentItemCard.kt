@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.domain.model.Comment
 
 /**
@@ -50,7 +52,7 @@ fun CommentItemCard(comment: Comment) {
             }
             if (!comment.comment.isNullOrBlank()) {
                 Text(
-                    text = "«${comment.comment}»",
+                    text = stringResource(R.string.comment_quoted, comment.comment),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -59,9 +61,9 @@ fun CommentItemCard(comment: Comment) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
             ) {
-                CommentRatingBadge(label = "Преподаватель", rating = comment.gradeTeacher)
-                CommentRatingBadge(label = "Аудитория", rating = comment.gradePlace)
-                CommentRatingBadge(label = "Итог", rating = comment.gradeOverall, isTotal = true)
+                CommentRatingBadge(label = stringResource(R.string.comment_rating_teacher), rating = comment.gradeTeacher)
+                CommentRatingBadge(label = stringResource(R.string.comment_rating_place), rating = comment.gradePlace)
+                CommentRatingBadge(label = stringResource(R.string.comment_rating_total), rating = comment.gradeOverall, isTotal = true)
             }
         }
     }

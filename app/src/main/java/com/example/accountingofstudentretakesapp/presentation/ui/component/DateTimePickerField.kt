@@ -9,6 +9,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToHuman
 import java.time.Instant
 
@@ -33,7 +35,7 @@ fun DateTimePickerField(value: Instant, label: String, onDateTimePickerClick: ()
             IconButton(onClick = onDateTimePickerClick) {
                 Icon(
                     Icons.Filled.DateRange,
-                    contentDescription = "Выбрать дату",
+                    contentDescription = stringResource(R.string.date_picker_cd),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }

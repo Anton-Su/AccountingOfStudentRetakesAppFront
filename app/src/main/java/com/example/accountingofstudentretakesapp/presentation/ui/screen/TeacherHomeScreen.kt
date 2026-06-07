@@ -26,7 +26,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToHuman
 import com.example.accountingofstudentretakesapp.domain.helpers.makeFIO
@@ -79,19 +81,22 @@ fun TeacherHomeScreen(uiState: RetakeUiState,
 		containerColor = MaterialTheme.colorScheme.background,
 		topBar = {
 			TopAppBar(
-			title = {
-				Column {
-					Text("Кабинет преподавателя")
-					if (formattedName.isNotBlank())
-						Text(formattedName, style = MaterialTheme.typography.bodyMedium)
+				title = {
+					Column {
+						Text(stringResource(R.string.teacher_home_title))
+						if (formattedName.isNotBlank())
+							Text(formattedName, style = MaterialTheme.typography.bodyMedium)
+					}
+				},
+				actions = {
+					IconButton(onClick = onLogout) {
+						Icon(
+							Icons.AutoMirrored.Filled.ExitToApp,
+							contentDescription = stringResource(R.string.logout)
+						)
+					}
 				}
-			},
-			actions = {
-				IconButton(onClick = onLogout) {
-					Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Выйти")
-				}
-			}
-		)
+			)
 		}
 	) { innerPadding ->
 		Column(
@@ -102,16 +107,16 @@ fun TeacherHomeScreen(uiState: RetakeUiState,
 			horizontalAlignment = Alignment.Start,
 			verticalArrangement = Arrangement.Top
 		) {
-			Text(text = "Мои пересдачи", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 12.dp))
+			Text(text = stringResource(R.string.my_retakes), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 12.dp))
 			when {
 				uiState.teacherRetakesLoading -> {
-					Text("Загрузка пересдач...", style = MaterialTheme.typography.bodyMedium)
+					Text(stringResource(R.string.loading_retakes_common), style = MaterialTheme.typography.bodyMedium)
 				}
 				uiState.teacherRetakesError != null -> {
 					Text(text = uiState.teacherRetakesError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
 				}
 				uiState.teacherRetakes.isEmpty() -> {
-					Text("Пока нет назначенных пересдач", style = MaterialTheme.typography.bodyMedium)
+					Text(stringResource(R.string.no_assigned_retakes), style = MaterialTheme.typography.bodyMedium)
 				}
 				else -> {
 					LazyColumn(
@@ -120,7 +125,8 @@ fun TeacherHomeScreen(uiState: RetakeUiState,
 						verticalArrangement = Arrangement.spacedBy(8.dp)
 					) {
 						items(uiState.teacherRetakes) { retake ->
-							val subjectTitle = uiState.subjects.find { it.id == retake.subjectId }?.title
+							val subjectTitle =
+								uiState.subjects.find { it.id == retake.subjectId }?.title
 							Card(
 								modifier = Modifier
 									.fillMaxWidth()
@@ -128,10 +134,30 @@ fun TeacherHomeScreen(uiState: RetakeUiState,
 							) {
 								Column(modifier = Modifier.padding(12.dp)) {
 									Text(text = retake.type, style = MaterialTheme.typography.titleMedium)
-									Text(text = "Предмет: $subjectTitle", style = MaterialTheme.typography.bodyMedium)
-									Text(text = "Место: ${retake.place}", style = MaterialTheme.typography.bodyMedium)
-									Text(text = "Начало: ${formatInstantToHuman(retake.startAt)}", style = MaterialTheme.typography.bodyMedium)
-									Text(text = "Конец: ${formatInstantToHuman(retake.endAt)}", style = MaterialTheme.typography.bodyMedium)
+									Text(
+										text = stringResource(
+											R.string.subject_prefix,
+											subjectTitle ?: ""
+										), style = MaterialTheme.typography.bodyMedium
+									)
+									Text(
+										text = stringResource(
+											R.string.retake_prefix_place,
+											retake.place
+										), style = MaterialTheme.typography.bodyMedium
+									)
+									Text(
+										text = stringResource(
+											R.string.retake_prefix_start,
+											formatInstantToHuman(retake.startAt)
+										), style = MaterialTheme.typography.bodyMedium
+									)
+									Text(
+										text = stringResource(
+											R.string.retake_prefix_end,
+											formatInstantToHuman(retake.endAt)
+										), style = MaterialTheme.typography.bodyMedium
+									)
 								}
 							}
 						}

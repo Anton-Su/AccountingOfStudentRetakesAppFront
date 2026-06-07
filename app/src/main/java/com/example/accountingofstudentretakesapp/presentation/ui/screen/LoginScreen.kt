@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
@@ -22,7 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.domain.model.UserRole
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RoleSelector
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
@@ -70,25 +74,25 @@ fun LoginScreen(viewModel: RetakeViewModel, uiState: RetakeUiState) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Функции ролей", style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.role_selector_title), style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
         RoleSelector(
             selectedRole = role,
             onRoleSelected = { role = it }
         )
         Spacer(modifier = Modifier.height(32.dp))
-        Text("Вход в приложение", style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.login_title), style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
+            label = { Text(stringResource(R.string.login_email_label)) },
             modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
                 IconButton(onClick = { email = "" }) {
                     Icon(
                         imageVector = Icons.Filled.Clear,
-                        contentDescription = "Очистить email"
+                        contentDescription = stringResource(R.string.login_clear_email_cd)
                     )
                 }
             }
@@ -97,13 +101,14 @@ fun LoginScreen(viewModel: RetakeViewModel, uiState: RetakeUiState) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text(stringResource(R.string.login_password_label)) },
             modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {
                 IconButton(onClick = { password = "" }) {
                     Icon(
                         imageVector = Icons.Filled.Clear,
-                        contentDescription = "Очистить пароль"
+                        contentDescription = stringResource(R.string.login_clear_password_cd)
                     )
                 }
             }
@@ -114,12 +119,12 @@ fun LoginScreen(viewModel: RetakeViewModel, uiState: RetakeUiState) {
             modifier = Modifier.fillMaxWidth(),
             enabled = isLoginEnabled
         ) {
-            Text(if (uiState.isLoading) "Вход..." else "Войти")
+            Text(if (uiState.isLoading) stringResource(R.string.login_loading) else stringResource(R.string.login_submit))
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Не получается войти? Уточните у ответственного лица университета.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(text = stringResource(R.string.login_help_university), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Нашли ошибку в системе? Напишите разработчику на почту develplover@mail.ru. Он, возможно, прочитает. Возможно...", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onErrorContainer)
+        Text(text = stringResource(R.string.login_help_developer), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onErrorContainer)
         uiState.errorMessage?.let {
             Spacer(modifier = Modifier.height(16.dp))
             Text(it, color = MaterialTheme.colorScheme.error)

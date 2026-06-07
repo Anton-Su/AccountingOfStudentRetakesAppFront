@@ -18,7 +18,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 
 /**
  * Карточка выставления оценки студенту на пересдаче.
@@ -40,7 +42,8 @@ import androidx.compose.ui.unit.dp
 fun StudentGradeCard(studentFullName: String, groupName: String, retakeType: String, onGradeSubmit: (Int) -> Unit) {
     val (selectedGrade, setSelectedGrade) = remember { mutableStateOf<Int?>(null) }
     val (expandedDropdown, setExpandedDropdown) = remember { mutableStateOf(false) }
-    val availableGrades = if (retakeType == "Экзамен") {
+    val examType = stringResource(R.string.retake_type_exam)
+    val availableGrades = if (retakeType == examType) {
         listOf(2, 3, 4, 5)
     } else {
         listOf(2, 3)
@@ -55,7 +58,7 @@ fun StudentGradeCard(studentFullName: String, groupName: String, retakeType: Str
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(text = studentFullName, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
-            Text(text = "Группа: $groupName", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(text = stringResource(R.string.group_prefix, groupName), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -68,7 +71,7 @@ fun StudentGradeCard(studentFullName: String, groupName: String, retakeType: Str
                         onClick = { setExpandedDropdown(!expandedDropdown) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(selectedGrade?.toString() ?: "???")
+                        Text(selectedGrade?.toString() ?: stringResource(R.string.grade_undetermined))
                     }
                     DropdownMenu(
                         expanded = expandedDropdown,
@@ -95,7 +98,7 @@ fun StudentGradeCard(studentFullName: String, groupName: String, retakeType: Str
                     enabled = selectedGrade != null,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Выставить")
+                    Text(stringResource(R.string.grade_submit))
                 }
             }
         }

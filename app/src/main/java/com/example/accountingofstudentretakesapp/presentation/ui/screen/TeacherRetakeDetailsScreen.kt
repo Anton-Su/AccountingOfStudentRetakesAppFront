@@ -25,7 +25,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToHuman
 import com.example.accountingofstudentretakesapp.presentation.ui.component.InfoTile
 import com.example.accountingofstudentretakesapp.presentation.ui.component.StudentGradeCard
@@ -73,10 +75,10 @@ fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Детали пересдачи") },
+                title = { Text(stringResource(R.string.teacher_retake_details_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -92,7 +94,7 @@ fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,
         ) {
             when {
                 uiState.teacherRetakeDetailsLoading -> {
-                    Text("Загрузка деталей пересдачи...", style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.teacher_retake_loading), style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.teacherRetakeDetailsError != null -> {
                     Text(text = uiState.teacherRetakeDetailsError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
@@ -117,12 +119,12 @@ fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 InfoTile(
-                                    label = "Тип",
+                                    label = stringResource(R.string.teacher_retake_type_label),
                                     value = retake.type,
                                     modifier = Modifier.weight(1f)
                                 )
                                 InfoTile(
-                                    label = "Место",
+                                    label = stringResource(R.string.teacher_retake_place_label),
                                     value = retake.place,
                                     modifier = Modifier.weight(1f)
                                 )
@@ -132,28 +134,28 @@ fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 InfoTile(
-                                    label = "Начало",
+                                    label = stringResource(R.string.teacher_retake_start_label),
                                     value = formatInstantToHuman(retake.startAt),
                                     modifier = Modifier.weight(1f)
                                 )
                                 InfoTile(
-                                    label = "Конец",
+                                    label = stringResource(R.string.teacher_retake_end_label),
                                     value = formatInstantToHuman(retake.endAt),
                                     modifier = Modifier.weight(1f)
                                 )
                             }
                             if (!retake.admission.isNullOrEmpty()) {
                                 InfoTile(
-                                    label = "Допуск",
+                                    label = stringResource(R.string.teacher_retake_admission_label),
                                     value = retake.admission
                                 )
                             }
-                            Text(text = "Последнее изменение: ${formatInstantToHuman(retake.lastModified)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(text = stringResource(R.string.teacher_retake_last_modified, formatInstantToHuman(retake.lastModified)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
-                    Text(text = "Записанные студенты (${details.enrollments.size})", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 16.dp, bottom = 12.dp))
+                    Text(text = stringResource(R.string.teacher_retake_students, details.enrollments.size), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 16.dp, bottom = 12.dp))
                     if (details.enrollments.isEmpty()) {
-                        Text(text = "Нет записанных студентов", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(text = stringResource(R.string.teacher_retake_no_students), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     } else {
                         LazyColumn(
                             modifier = Modifier.fillMaxWidth(),
@@ -174,7 +176,7 @@ fun TeacherRetakeDetailsScreen(retakeId: Long, uiState: RetakeUiState,
                     }
                 }
                 else -> {
-                    Text("Нет данных о пересдаче", style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.teacher_retake_no_data), style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }

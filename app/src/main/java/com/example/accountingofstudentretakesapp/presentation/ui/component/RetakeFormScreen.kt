@@ -31,7 +31,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.domain.model.requests.CreateRetakeRequest
 import com.example.accountingofstudentretakesapp.domain.model.Retake
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
@@ -129,7 +131,7 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
                 title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -154,12 +156,12 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
                 OutlinedTextField(
                     value = place.value,
                     onValueChange = { place.value = it },
-                    label = { Text("Место проведения") },
+                    label = { Text(stringResource(R.string.form_place)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
             item {
-                Text(text = "Выберите тип пересдачи", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
+                Text(text = stringResource(R.string.form_choose_type), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
                 RetakeTypeSelector(
                     selectedType = type.value,
                     onTypeSelected = { type.value = it },
@@ -169,7 +171,7 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
             item {
                 DateTimePickerField(
                     value = startAt.value,
-                    label = "Время начала",
+                    label = stringResource(R.string.form_start_time),
                     onDateTimePickerClick = { showStartDateTimePicker.value = true },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -177,7 +179,7 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
             item {
                 DateTimePickerField(
                     value = endAt.value,
-                    label = "Время конца",
+                    label = stringResource(R.string.form_end_time),
                     onDateTimePickerClick = { showEndDateTimePicker.value = true },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -186,17 +188,17 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
                 OutlinedTextField(
                     value = admission.value,
                     onValueChange = { admission.value = it },
-                    label = { Text("Допуск (опционально)") },
+                    label = { Text(stringResource(R.string.form_admission_optional)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
             item {
-                Text(text = "Выберите предмет", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
+                Text(text = stringResource(R.string.form_choose_subject), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
                 Button(
                     onClick = { expandedSubject.value = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(selectedSubject.value?.let { id -> uiState.subjects.find { it.id == id }?.title } ?: "Предмет не выбран")
+                    Text(selectedSubject.value?.let { id -> uiState.subjects.find { it.id == id }?.title } ?: stringResource(R.string.form_subject_not_selected))
                 }
                 DropdownMenu(
                     expanded = expandedSubject.value,
@@ -218,7 +220,7 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
             }
             item {
                 Text(
-                    text = "Выберите преподавателей",
+                    text = stringResource(R.string.form_choose_teachers),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
@@ -227,7 +229,7 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
                         CircularProgressIndicator(modifier = Modifier.padding(16.dp))
                     }
                     uiState.teachersByDiscipline.isEmpty() -> {
-                        Text("Нет преподавателей по этому предмету")
+                        Text(stringResource(R.string.form_no_teachers))
                     }
                     else -> {
                         Card {
@@ -270,7 +272,7 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Button(onClick = onBack, modifier = Modifier.weight(1f)) {
-                        Text("Отмена")
+                        Text(stringResource(R.string.form_cancel))
                     }
                     // Log.e("RetakeFormScreen", "Submitting with startAt=${startAt.value}, endAt=${endAt.value}, teachers=$selectedTeachers, subject=${selectedSubject.value}, type=${type.value}, place=${place.value}, admission=${admission.value}")
                     Button(

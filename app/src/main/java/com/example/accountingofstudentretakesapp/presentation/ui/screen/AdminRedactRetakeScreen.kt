@@ -2,6 +2,8 @@ package com.example.accountingofstudentretakesapp.presentation.ui.screen
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.domain.model.requests.CreateRetakeRequest
 import com.example.accountingofstudentretakesapp.domain.model.requests.RedactRetakeRequest
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeFormScreen
@@ -37,8 +39,8 @@ fun AdminRedactRetakeScreen(retakeId: Long, uiState: RetakeUiState,
 ) {
     val retake = uiState.allRetakes.find { it.id == retakeId }
     RetakeFormScreen(
-        title = "Редактировать пересдачу",
-        submitButtonText = "Сохранить",
+        title = stringResource(R.string.edit_retake_title),
+        submitButtonText = stringResource(R.string.edit_retake_submit),
         isLoading = uiState.redactRetakeLoading,
         initialType = retake?.type,
         initialPlace = retake?.place ?: "",

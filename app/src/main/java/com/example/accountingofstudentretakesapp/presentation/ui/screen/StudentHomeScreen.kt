@@ -33,7 +33,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.domain.helpers.makeFIO
 import com.example.accountingofstudentretakesapp.presentation.ui.component.CircularPercentageIndicator
@@ -113,7 +115,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
             TopAppBar(
                 title = {
                     Column {
-                        Text("Кабинет студента")
+                        Text(stringResource(R.string.student_home_title))
                         if (formattedName.isNotBlank()) {
                             Text(formattedName, style = MaterialTheme.typography.bodyMedium)
                         }
@@ -121,7 +123,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                 },
                 actions = {
                     IconButton(onClick = onLogout) {
-                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Выйти")
+                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = stringResource(R.string.logout))
                     }
                 }
             )
@@ -145,9 +147,9 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Column(modifier = Modifier.weight(1f)) {
-                                    Text(text = "Занимаемое место в топе:", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Text(text = stringResource(R.string.top_place_label), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text(text = "${rank.place} из ${rank.totalStudents}", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Text(text = stringResource(R.string.student_rank_value, rank.place, rank.totalStudents), style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 }
                                 CircularPercentageIndicator(
                                     percentage = rank.topPercent,
@@ -161,17 +163,17 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                 }
             }
             item {
-                Text("Долги", style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.debt_section), style = MaterialTheme.typography.titleMedium)
             }
             when {
                 uiState.studentDebtsLoading -> item {
-                    Text("Загрузка долгов...", style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.loading_debts), style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.studentDebtsError != null -> item {
                     Text(text = uiState.studentDebtsError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                 }
                 uiState.studentDebts.isEmpty() -> item {
-                    Text("Пока нет долгов", style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.no_debts), style = MaterialTheme.typography.bodyMedium)
                 }
                 else -> {
                     // key = { "debt-${it.id}"
@@ -188,16 +190,16 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                         }
                     }
                     item {
-                        Text("Доступные пересдачи", style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.available_retakes), style = MaterialTheme.typography.titleMedium)
                     }
                     if (uiState.availableRetakesLoading) {
-                        item { Text("Загрузка доступных пересдач...", style = MaterialTheme.typography.bodyMedium) }
+                        item { Text(stringResource(R.string.loading_available_retakes), style = MaterialTheme.typography.bodyMedium) }
                     } else if (uiState.availableRetakesError != null) {
                         item {
                             Text(text = uiState.availableRetakesError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                         }
                     } else if (availableForDebts.isEmpty()) {
-                        item { Text("Нет доступных пересдач по вашим долгам", style = MaterialTheme.typography.bodyMedium) }
+                        item { Text(stringResource(R.string.no_available_retakes), style = MaterialTheme.typography.bodyMedium) }
                     } else {
                         // key = { "available-${it.id}" }
                         items(availableForDebts) { retake ->
@@ -211,21 +213,21 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                                     type = retake.type,
                                     admission = retake.admission,
                                     actionIcon = Icons.Filled.Add,
-                                    actionDescription = "Записаться на пересдачу",
+                                    actionDescription = stringResource(R.string.enroll_action),
                                     onAction = { onEnrollRetake(matchingDebt.subjectId, retake.id) }
                                 )
                             }
                         }
                     }
-                    item { Text("Я записан на...", style = MaterialTheme.typography.titleMedium) }
+                    item { Text(stringResource(R.string.enrolled_retakes), style = MaterialTheme.typography.titleMedium) }
                     if (uiState.enrolledRetakesLoading)
-                        item { Text("Загрузка записей...", style = MaterialTheme.typography.bodyMedium) }
+                        item { Text(stringResource(R.string.loading_enrolled), style = MaterialTheme.typography.bodyMedium) }
                     else if (uiState.enrolledRetakesError != null) {
                         item {
                             Text(text = uiState.enrolledRetakesError, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                         }
                     } else if (enrolledActive.isEmpty()) {
-                        item { Text("Пока вы ни на что не записаны", style = MaterialTheme.typography.bodyMedium) }
+                        item { Text(stringResource(R.string.no_enrolled), style = MaterialTheme.typography.bodyMedium) }
                     } else {
                         //, key = { "enrolled-${it.id}" }
                         items(enrolledActive) { retake ->
@@ -239,7 +241,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                                     type = retake.type,
                                     admission = retake.admission,
                                     actionIcon = Icons.Filled.Close,
-                                    actionDescription = "Отменить запись",
+                                    actionDescription = stringResource(R.string.cancel_action),
                                     actionEnabled = retake.startAt > Instant.now(),
                                     onAction = { onCancelRetake(matchingDebt.subjectId, retake.id) },
                                 )
@@ -248,7 +250,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                     }
                 }
             }
-            item { Text("Прошедшие пересдачи", style = MaterialTheme.typography.titleMedium) }
+            item { Text(stringResource(R.string.past_retakes), style = MaterialTheme.typography.titleMedium) }
             items(enrolledPast) { retake ->
                 val subjectDebt = uiState.subjects.find { it.id == retake.subjectId }
                 if (subjectDebt != null) {
@@ -260,7 +262,7 @@ fun StudentHomeScreen(uiState: RetakeUiState,
                         type = retake.type,
                         admission = retake.admission,
                         actionIcon = Icons.Filled.Email,  // иконка для комментария
-                        actionDescription = "Оставить комментарий",
+                        actionDescription = stringResource(R.string.comment_action),
                         onAction = { onRetakeClick(retake.id) }  // открыть экран с комментарием
                     )
                 }

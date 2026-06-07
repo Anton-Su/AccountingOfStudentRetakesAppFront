@@ -29,6 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.accountingofstudentretakesapp.R
 import com.example.accountingofstudentretakesapp.domain.model.UserRole
 
 /**
@@ -58,9 +60,18 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
     val textColorSelected = Color.White
     val textColorUnselected = MaterialTheme.colorScheme.onSurface
     val features = when (selectedRole) {
-        UserRole.STUDENT -> listOf("Запись на пересдачу", "Отмена записи", "Статистика долгов", "Место в топе должников", "Оставить отзыв о пересдаче")
-        UserRole.TEACHER -> listOf("Журнал пересдач")
-        UserRole.ADMIN -> listOf("Полный контроль над пересдачами", "Просмотр отзывов")
+        UserRole.STUDENT -> listOf(
+            stringResource(R.string.role_feature_student_enroll),
+            stringResource(R.string.role_feature_student_cancel),
+            stringResource(R.string.role_feature_student_stats),
+            stringResource(R.string.role_feature_student_top),
+            stringResource(R.string.role_feature_student_comment)
+        )
+        UserRole.TEACHER -> listOf(stringResource(R.string.role_feature_teacher_journal))
+        UserRole.ADMIN -> listOf(
+            stringResource(R.string.role_feature_admin_control),
+            stringResource(R.string.role_feature_admin_reviews)
+        )
         else -> {emptyList()}
     }
     val featureColor = when (selectedRole) {
@@ -90,7 +101,7 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
                         .clickable { onRoleSelected(UserRole.STUDENT) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Student", color = if (selectedRole == UserRole.STUDENT) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.role_student), color = if (selectedRole == UserRole.STUDENT) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
                 }
                 Box(
                     modifier = Modifier
@@ -100,7 +111,7 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
                         .clickable { onRoleSelected(UserRole.TEACHER) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Teacher", color = if (selectedRole == UserRole.TEACHER) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.role_teacher), color = if (selectedRole == UserRole.TEACHER) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
                 }
                 Box(
                     modifier = Modifier
@@ -110,7 +121,7 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
                         .clickable { onRoleSelected(UserRole.ADMIN) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Admin", color = if (selectedRole == UserRole.ADMIN) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.role_admin), color = if (selectedRole == UserRole.ADMIN) textColorSelected else textColorUnselected, fontWeight = FontWeight.Bold)
                 }
             }
         }
