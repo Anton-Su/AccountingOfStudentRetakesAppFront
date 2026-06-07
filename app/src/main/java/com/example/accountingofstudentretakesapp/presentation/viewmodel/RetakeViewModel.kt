@@ -2,12 +2,9 @@ package com.example.accountingofstudentretakesapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.accountingofstudentretakesapp.data.model.requests.CreateCommentRequestDto
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
-import com.example.accountingofstudentretakesapp.data.repository.LocalCacheRepository
-import com.example.accountingofstudentretakesapp.domain.model.requests.CreateRetakeRequest
-import com.example.accountingofstudentretakesapp.domain.model.Retake
 import com.example.accountingofstudentretakesapp.domain.model.requests.CreateCommentRequest
+import com.example.accountingofstudentretakesapp.domain.model.requests.CreateRetakeRequest
 import com.example.accountingofstudentretakesapp.domain.model.requests.GradeRequest
 import com.example.accountingofstudentretakesapp.domain.model.requests.LoginRequest
 import com.example.accountingofstudentretakesapp.domain.model.requests.RedactRetakeRequest
@@ -20,6 +17,9 @@ import com.example.accountingofstudentretakesapp.domain.usecase.EnrollToRetakeUs
 import com.example.accountingofstudentretakesapp.domain.usecase.GetAllCommentsUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetAllRetakesUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetAvailableRetakesUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetCachedCommentsUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetCachedSubjectsUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetCachedTeachersByDisciplineUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetCurrentUserUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetEnrolledRetakesUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetRetakeDetailsUseCase
@@ -30,19 +30,27 @@ import com.example.accountingofstudentretakesapp.domain.usecase.GetTeacherRetake
 import com.example.accountingofstudentretakesapp.domain.usecase.GetTeachersByDisciplineUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GradeStudentUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.LoginUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.LogoutUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.RedactRetakeUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.SaveCommentsUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.SaveSubjectsUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.SaveTeachersUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.Instant
 
 class RetakeViewModel( // god object, но пока будет так
-    private val authRepository: AuthRepository,
+    private val logoutUseCase: LogoutUseCase,
     private val settingsDataStore: SettingsDataStore,
-    private val localCacheRepository: LocalCacheRepository,
+    private val saveCommentsUseCase: SaveCommentsUseCase,
+    private val getCachedCommentsUseCase: GetCachedCommentsUseCase,
+    private val saveSubjectsUseCase: SaveSubjectsUseCase,
+    private val getCachedSubjectsUseCase: GetCachedSubjectsUseCase,
+    private val saveTeachersUseCase: SaveTeachersUseCase,
+    private val getCachedTeachersByDisciplineUseCase: GetCachedTeachersByDisciplineUseCase,
     private val loginUseCase: LoginUseCase,
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val getTeacherRetakesUseCase: GetTeacherRetakesUseCase,
@@ -95,8 +103,7 @@ class RetakeViewModel( // god object, но пока будет так
 
     fun logout() {
         viewModelScope.launch {
-            authRepository.logout()
-            settingsDataStore.clearUserData()
+            logoutUseCase()
             _uiState.update { RetakeUiState() }
         }
     }
@@ -219,12 +226,12 @@ class RetakeViewModel( // god object, но пока будет так
                             subjectsLoading = false,
                         )
                     }
-                    runCatching { localCacheRepository.saveSubjects(subjects) }
+                    runCatching { saveSubjectsUseCase(subjects) }
                         .onFailure { }
                 }
                 .onFailure { error ->
                     // загрузим с кеша
-                    runCatching { localCacheRepository.getAllSubjects() }
+                    runCatching { getCachedSubjectsUseCase() }
                         .onSuccess { cached ->
                             if (cached.isNotEmpty()) {
                                 _uiState.update { it.copy(subjects = cached, subjectsLoading = false, subjectsError = null) }
@@ -265,11 +272,11 @@ class RetakeViewModel( // god object, но пока будет так
                             teachersByDisciplineLoading = false,
                         )
                     }
-                    runCatching { localCacheRepository.saveTeachers(teachers) }
+                    runCatching { saveTeachersUseCase(teachers)  }
                         .onFailure { }
                 }
                 .onFailure { error ->
-                    runCatching { localCacheRepository.getTeachersByDiscipline(discipline) }
+                    runCatching {  getCachedTeachersByDisciplineUseCase(discipline) }
                         .onSuccess { cached ->
                             if (cached.isNotEmpty()) {
                                 _uiState.update { it.copy(teachersByDiscipline = cached, teachersByDisciplineLoading = false, teachersByDisciplineError = null) }
@@ -311,11 +318,11 @@ class RetakeViewModel( // god object, но пока будет так
                             allCommentsError = null
                         )
                     }
-                    runCatching { localCacheRepository.saveComments(comments) }
+                    runCatching { saveCommentsUseCase(comments) }
                         .onFailure { }
                 }
                 .onFailure { error ->
-                    runCatching { localCacheRepository.getAllComments() }
+                    runCatching { getCachedCommentsUseCase() }
                         .onSuccess { cached ->
                             if (cached.isNotEmpty()) {
                                 _uiState.update {

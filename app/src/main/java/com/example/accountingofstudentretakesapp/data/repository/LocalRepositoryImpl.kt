@@ -8,19 +8,20 @@ import com.example.accountingofstudentretakesapp.data.model.AppDatabase
 import com.example.accountingofstudentretakesapp.domain.model.Comment
 import com.example.accountingofstudentretakesapp.domain.model.Subject
 import com.example.accountingofstudentretakesapp.domain.model.Teacher
+import com.example.accountingofstudentretakesapp.domain.repository.LocalRepository
 
-class LocalCacheRepository(private val db: AppDatabase) {
+class LocalRepositoryImpl(private val db: AppDatabase): LocalRepository {
 
-    suspend fun saveSubjects(subjects: List<Subject>) {
+    override suspend fun saveSubjects(subjects: List<Subject>) {
         val entities = subjects.map { SubjectEntity(id = it.id, title = it.title) }
         db.subjectDao().insertAll(entities)
     }
 
-    suspend fun getAllSubjects(): List<Subject> {
+    override suspend fun getAllSubjects(): List<Subject> {
         return db.subjectDao().getAll().map { Subject(id = it.id, title = it.title) }
     }
 
-    suspend fun saveTeachers(teachers: List<Teacher>) {
+    override suspend fun saveTeachers(teachers: List<Teacher>) {
         val entities = teachers.map {
             TeacherEntity(
                 userId = it.userId,
@@ -31,7 +32,7 @@ class LocalCacheRepository(private val db: AppDatabase) {
         db.teacherDao().insertAll(entities)
     }
 
-    suspend fun getTeachersByDiscipline(discipline: String): List<Teacher> {
+    override suspend fun getTeachersByDiscipline(discipline: String): List<Teacher> {
         val entities = db.teacherDao().getByDisciplineSimple(discipline)
         return entities.map {
             Teacher(
@@ -45,7 +46,7 @@ class LocalCacheRepository(private val db: AppDatabase) {
      * Сохраняет список комментариев в локальный кеш.
      * @param comments список комментариев для сохранения
      */
-    suspend fun saveComments(comments: List<Comment>) {
+    override suspend fun saveComments(comments: List<Comment>) {
         val entities = comments.map {
             CommentEntity(
                 id = it.id,
@@ -69,7 +70,7 @@ class LocalCacheRepository(private val db: AppDatabase) {
      * Получает все комментарии из локального кеша.
      * @return список всех кешированных комментариев
      */
-    suspend fun getAllComments(): List<Comment> {
+    override suspend fun getAllComments(): List<Comment> {
         return db.commentDao().getAll().map {
             Comment(
                 id = it.id,
@@ -89,13 +90,15 @@ class LocalCacheRepository(private val db: AppDatabase) {
     }
 
     companion object {
+        // гарантирует что все потоки видят актуальное значение INSTANCE
         @Volatile
-        private var INSTANCE: LocalCacheRepository? = null
+        private var INSTANCE: LocalRepository? = null
 
-        fun getInstance(context: Context): LocalCacheRepository {
+        fun getInstance(context: Context): LocalRepository {
+            // только один поток может войти сюда одновременно, чтобы не создать два объекта
             return INSTANCE ?: synchronized(this) {
                 val db = AppDatabase.getInstance(context)
-                val instance = LocalCacheRepository(db)
+                val instance = LocalRepositoryImpl(db)
                 INSTANCE = instance
                 instance
             }

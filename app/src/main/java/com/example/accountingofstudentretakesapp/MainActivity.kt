@@ -11,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.example.accountingofstudentretakesapp.data.repository.LocalCacheRepository
 import com.example.accountingofstudentretakesapp.data.remote.KtorClient
 import com.example.accountingofstudentretakesapp.navigation.Navigation
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
@@ -19,6 +18,7 @@ import com.example.accountingofstudentretakesapp.data.remote.TokenManager
 import com.example.accountingofstudentretakesapp.data.repository.AdminRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.AuthRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.GuestRepositoryImpl
+import com.example.accountingofstudentretakesapp.data.repository.LocalRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.StudentRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.TeacherRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.UserRepositoryImpl
@@ -41,6 +41,13 @@ import com.example.accountingofstudentretakesapp.domain.usecase.EnrollToRetakeUs
 import com.example.accountingofstudentretakesapp.domain.usecase.GetTeachersByDisciplineUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.RedactRetakeUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.GetAllCommentsUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetCachedCommentsUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetCachedSubjectsUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.GetCachedTeachersByDisciplineUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.LogoutUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.SaveCommentsUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.SaveSubjectsUseCase
+import com.example.accountingofstudentretakesapp.domain.usecase.SaveTeachersUseCase
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
 import com.example.accountingofstudentretakesapp.ui.theme.AccountingOfStudentRetakesAppTheme
 import kotlinx.coroutines.flow.first
@@ -50,7 +57,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val settingsDataStore = SettingsDataStore(applicationContext)
         val tokenManager = TokenManager(applicationContext)
         // восстанавливаем токен при запуске приложения и устанавливаем его в KtorClient
         lifecycleScope.launch {
@@ -64,7 +70,9 @@ class MainActivity : ComponentActivity() {
         val adminRepository = AdminRepositoryImpl()
         val studentRepository = StudentRepositoryImpl()
         val guestRepository = GuestRepositoryImpl()
+        val settingsDataStore = SettingsDataStore(applicationContext)
 
+        val logoutUseCase = LogoutUseCase(authRepository, settingsDataStore)
         val getAllRetakesUseCase = GetAllRetakesUseCase(adminRepository)
         val getSubjectsUseCase = GetSubjectsUseCase(guestRepository)
         val getTeachersByDisciplineUseCase = GetTeachersByDisciplineUseCase(adminRepository)
@@ -84,11 +92,24 @@ class MainActivity : ComponentActivity() {
         val getTeacherRetakesUseCase = GetTeacherRetakesUseCase(teacherRepository)
         val getRetakeDetailsUseCase = GetRetakeDetailsUseCase(teacherRepository)
         val gradeStudentUseCase = GradeStudentUseCase(teacherRepository)
-        val localCacheRepo = LocalCacheRepository.getInstance(applicationContext)
+        val localRepo = LocalRepositoryImpl.getInstance(applicationContext)
+
+        val saveCommentsUseCase = SaveCommentsUseCase(localRepo)
+        val getCachedCommentsUseCase = GetCachedCommentsUseCase(localRepo)
+        val saveSubjectsUseCase = SaveSubjectsUseCase(localRepo)
+        val getCachedSubjectsUseCase = GetCachedSubjectsUseCase(localRepo)
+        val saveTeachersUseCase = SaveTeachersUseCase(localRepo)
+        val getCachedTeachersByDisciplineUseCase = GetCachedTeachersByDisciplineUseCase(localRepo)
+
         val viewModel = RetakeViewModel(
-            authRepository = authRepository,
+            logoutUseCase = logoutUseCase,
             settingsDataStore = settingsDataStore,
-            localCacheRepository = localCacheRepo,
+            saveCommentsUseCase = saveCommentsUseCase,
+            getCachedCommentsUseCase = getCachedCommentsUseCase,
+            saveSubjectsUseCase = saveSubjectsUseCase,
+            getCachedSubjectsUseCase = getCachedSubjectsUseCase,
+            saveTeachersUseCase = saveTeachersUseCase,
+            getCachedTeachersByDisciplineUseCase = getCachedTeachersByDisciplineUseCase,
             loginUseCase = loginUseCase,
             getCurrentUserUseCase = getCurrentUserUseCase,
             getTeacherRetakesUseCase = getTeacherRetakesUseCase,
