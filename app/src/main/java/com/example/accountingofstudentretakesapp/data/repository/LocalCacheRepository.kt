@@ -5,9 +5,9 @@ import com.example.accountingofstudentretakesapp.data.local.entity.CommentEntity
 import com.example.accountingofstudentretakesapp.data.local.entity.SubjectEntity
 import com.example.accountingofstudentretakesapp.data.local.entity.TeacherEntity
 import com.example.accountingofstudentretakesapp.data.model.AppDatabase
-import com.example.accountingofstudentretakesapp.presentation.model.Comment
-import com.example.accountingofstudentretakesapp.presentation.model.Subject
-import com.example.accountingofstudentretakesapp.presentation.model.Teacher
+import com.example.accountingofstudentretakesapp.domain.model.Comment
+import com.example.accountingofstudentretakesapp.domain.model.Subject
+import com.example.accountingofstudentretakesapp.domain.model.Teacher
 
 class LocalCacheRepository(private val db: AppDatabase) {
 

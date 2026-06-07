@@ -1,6 +1,6 @@
-﻿package com.example.accountingofstudentretakesapp.domain.model
-import kotlinx.serialization.Serializable
+package com.example.accountingofstudentretakesapp.data.model
 
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class CommentDto(

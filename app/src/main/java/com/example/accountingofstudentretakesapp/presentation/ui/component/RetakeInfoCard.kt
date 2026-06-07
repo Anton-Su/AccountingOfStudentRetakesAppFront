@@ -23,7 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.presentation.helpers.formatInstantToHuman
+import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToHuman
 import java.time.Instant
 
 @Composable

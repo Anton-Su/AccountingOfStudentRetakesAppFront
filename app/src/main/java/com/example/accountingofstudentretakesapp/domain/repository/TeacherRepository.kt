@@ -1,9 +1,9 @@
 package com.example.accountingofstudentretakesapp.domain.repository
 
-import com.example.accountingofstudentretakesapp.domain.model.GradeRequestDto
-import com.example.accountingofstudentretakesapp.presentation.model.Retake
-import com.example.accountingofstudentretakesapp.presentation.model.RetakeDetails
-import com.example.accountingofstudentretakesapp.presentation.model.RetakeEnrollment
+import com.example.accountingofstudentretakesapp.data.model.GradeRequestDto
+import com.example.accountingofstudentretakesapp.domain.model.Retake
+import com.example.accountingofstudentretakesapp.domain.model.RetakeDetails
+import com.example.accountingofstudentretakesapp.domain.model.RetakeEnrollment
 
 interface TeacherRepository {
 	suspend fun getTeacherRetakes(): List<Retake>

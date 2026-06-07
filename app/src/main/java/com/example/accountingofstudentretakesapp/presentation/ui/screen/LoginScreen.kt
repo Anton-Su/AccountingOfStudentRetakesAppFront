@@ -16,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,23 +23,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.presentation.model.UserRole
+import com.example.accountingofstudentretakesapp.domain.model.UserRole
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RoleSelector
+import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeViewModel
 
 @Composable
-fun LoginScreen(viewModel: RetakeViewModel) {
-
+fun LoginScreen(viewModel: RetakeViewModel, uiState: RetakeUiState) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-   // var email by remember { mutableStateOf("petrov.m.i@edu.mirea.ru") }
-  //  var password by remember { mutableStateOf("Student123!") }
     var role by remember { mutableStateOf(UserRole.NONE) }
-    // var email by remember { mutableStateOf("kuznetsova.i.a@edu.mirea.ru") }
-    // var password by remember { mutableStateOf("Teacher123!") }
-    // var email by remember { mutableStateOf("volkov.a.s@edu.mirea.ru") }
-    // var password by remember { mutableStateOf("Admin123!") }
-    val uiState by viewModel.uiState.collectAsState()
+
+    //petrov.m.i@edu.mirea.ru
+    // Student123!
+
+    // kuznetsova.i.a@edu.mirea.ru
+    // Teacher123!
+
+    // volkov.a.s@edu.mirea.ru
+    // Admin123!
+
     val isLoginEnabled = !uiState.isLoading && email.isNotBlank() && password.isNotBlank()
     Column(
         modifier = Modifier
@@ -49,11 +51,6 @@ fun LoginScreen(viewModel: RetakeViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-//        Image(
-//            painter = painterResource(  R.drawable.reklamatry),
-//            contentDescription = "Реклама",
-//            modifier = Modifier.size(200.dp)
-//        )
         Text("Функции ролей", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
         RoleSelector(

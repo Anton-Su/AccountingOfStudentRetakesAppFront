@@ -1,7 +1,7 @@
 package com.example.accountingofstudentretakesapp.domain.mapper
 
-import com.example.accountingofstudentretakesapp.domain.model.RetakeDto
-import com.example.accountingofstudentretakesapp.presentation.model.Retake
+import com.example.accountingofstudentretakesapp.data.model.RetakeDto
+import com.example.accountingofstudentretakesapp.domain.model.Retake
 import java.time.Instant
 
 fun RetakeDto.toRetakeDomain() = Retake(

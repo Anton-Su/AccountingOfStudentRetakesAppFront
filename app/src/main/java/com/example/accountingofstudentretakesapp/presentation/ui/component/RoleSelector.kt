@@ -29,7 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.presentation.model.UserRole
+import com.example.accountingofstudentretakesapp.domain.model.UserRole
 
 @Composable
 fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
@@ -43,7 +43,7 @@ fun RoleSelector(selectedRole: UserRole, onRoleSelected: (UserRole) -> Unit) {
     val features = when (selectedRole) {
         UserRole.STUDENT -> listOf("Запись на пересдачу", "Отмена записи", "Статистика долгов", "Место в топе должников", "Оставить отзыв о пересдаче")
         UserRole.TEACHER -> listOf("Журнал пересдач")
-        UserRole.ADMIN -> listOf("История пересдач", "Анализ комментариев", "Редактирование пар", "Удаление пар")
+        UserRole.ADMIN -> listOf("Полный контроль над пересдачами", "Просмотр отзывов")
         else -> {emptyList()}
     }
     val featureColor = when (selectedRole) {

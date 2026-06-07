@@ -1,6 +1,4 @@
-package com.example.accountingofstudentretakesapp.presentation.model
-
-
+package com.example.accountingofstudentretakesapp.domain.model
 data class StudentDebt(
     val id: Long,
     val subjectId: Long,

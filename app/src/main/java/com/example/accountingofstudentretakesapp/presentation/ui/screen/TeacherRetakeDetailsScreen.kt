@@ -26,7 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.presentation.helpers.formatInstantToHuman
+import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToHuman
 import com.example.accountingofstudentretakesapp.presentation.ui.component.InfoTile
 import com.example.accountingofstudentretakesapp.presentation.ui.component.StudentGradeCard
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState

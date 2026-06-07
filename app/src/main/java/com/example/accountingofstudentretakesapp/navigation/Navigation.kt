@@ -31,6 +31,7 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
     val settings = SettingsDataStore(context)
     val isLoggedIn by settings.isLoggedInFlow.collectAsState(initial = false)
     val role by settings.roleFlow.collectAsState(initial = "")
+    val uiState by viewModel.uiState.collectAsState()
     val startDestination = remember(isLoggedIn, role) {
         if (isLoggedIn) {
             when (role) {
@@ -57,10 +58,9 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
             }
         }
     }
-    val uiState by viewModel.uiState.collectAsState()
     NavHost(navController, startDestination = startDestination) {
         composable(Screen.LoginScreen.route) {
-            LoginScreen(viewModel = viewModel)
+            LoginScreen(viewModel = viewModel, uiState=uiState)
         }
         composable(Screen.StudentAllScreen.route) {
             StudentHomeScreen(
@@ -96,7 +96,6 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
             arguments = listOf(navArgument("retakeId") { type = NavType.LongType })
         ) { backStackEntry ->
             val retakeId = backStackEntry.arguments?.getLong("retakeId") ?: return@composable
-            val uiState = uiState
             StudentCommentScreen(
                 uiState = uiState,
                 onSubmit = { gradePlace, gradeTeacher, gradeOverall, comment ->
@@ -167,8 +166,8 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 onLoadTeachers = { discipline ->
                     viewModel.loadTeachersByDiscipline(discipline)
                 },
-                onCreateRetake = { startAt, endAt, teacherIds, subjectId, type, place, admission ->
-                    viewModel.createRetake(startAt = startAt, endAt = endAt, teacherIds = teacherIds, subjectId = subjectId, type = type, place = place, admission = admission, onSuccess = { navController.popBackStack() }, onError = { _ -> })
+                onCreateRetake = { request ->
+                    viewModel.createRetake(request, onSuccess = { navController.popBackStack() }, onError = { _ -> })
                 },
                 onClearTeachers = { viewModel.clearTeachersByDiscipline() },
                 onBack = { navController.popBackStack() }
@@ -186,8 +185,13 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 onLoadTeachers = { discipline ->
                     viewModel.loadTeachersByDiscipline(discipline)
                 },
-                onRedactRetake = { id, startAt, endAt, teacherIds, subjectId, type, place, admission ->
-                    viewModel.redactRetake(retakeId = id, startAt = startAt, endAt = endAt, teacherIds = teacherIds, subjectId = subjectId, type = type, place = place, admission = admission, onSuccess = { navController.popBackStack() }, onError = { _ -> })
+                onRedactRetake = { id, request ->
+                    viewModel.redactRetake(
+                        id = id,
+                        request = request,
+                        onSuccess = { navController.popBackStack() },
+                        onError = { _ -> }
+                    )
                 },
                 onClearTeachers = { viewModel.clearTeachersByDiscipline() },
                 onBack = { navController.popBackStack() }

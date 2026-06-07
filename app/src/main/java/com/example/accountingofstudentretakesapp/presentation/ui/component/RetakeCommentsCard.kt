@@ -27,7 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.presentation.model.Comment
+import com.example.accountingofstudentretakesapp.domain.model.Comment
 
 @Composable
 fun RetakeCommentsCard(retakeId: Long, comments: List<Comment>, modifier: Modifier = Modifier) {

@@ -1,7 +1,8 @@
 package com.example.accountingofstudentretakesapp.domain.mapper
 
-import com.example.accountingofstudentretakesapp.domain.model.CommentDto
-import com.example.accountingofstudentretakesapp.presentation.model.Comment
+import com.example.accountingofstudentretakesapp.data.model.CommentDto
+import com.example.accountingofstudentretakesapp.domain.model.Comment
+
 
 fun CommentDto.toCommentDomain() = Comment(
     id = id,

@@ -1,4 +1,4 @@
-package com.example.accountingofstudentretakesapp.presentation.helpers
+package com.example.accountingofstudentretakesapp.domain.helpers
 
 import java.time.Instant
 import java.time.ZoneId

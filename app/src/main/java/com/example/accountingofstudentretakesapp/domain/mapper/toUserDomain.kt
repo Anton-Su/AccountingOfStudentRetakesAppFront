@@ -1,7 +1,7 @@
 package com.example.accountingofstudentretakesapp.domain.mapper
 
-import com.example.accountingofstudentretakesapp.domain.model.UserDto
-import com.example.accountingofstudentretakesapp.presentation.model.User
+import com.example.accountingofstudentretakesapp.data.model.UserDto
+import com.example.accountingofstudentretakesapp.domain.model.User
 
 fun UserDto.toUserDomain() = User(
     id = id,

@@ -1,6 +1,5 @@
 package com.example.accountingofstudentretakesapp.presentation.ui.component
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +32,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequest
+import com.example.accountingofstudentretakesapp.domain.model.Retake
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import java.time.Instant
 
@@ -42,7 +43,7 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
                      onLoadSubjects: () -> Unit,
                      onLoadTeachers: (String) -> Unit,
                      onClearTeachers: () -> Unit,
-                     onSubmit: (startAt: Instant, endAt: Instant, teacherIds: List<Long>, subjectId: Long, type: String, place: String, admission: String?) -> Unit,
+                     onSubmit: (CreateRetakeRequest) -> Unit,
                      onBack: () -> Unit
 ) {
     val type = remember { mutableStateOf(initialType) }
@@ -233,7 +234,19 @@ fun RetakeFormScreen(title: String, uiState: RetakeUiState, initialType: String?
                     }
                     // Log.e("RetakeFormScreen", "Submitting with startAt=${startAt.value}, endAt=${endAt.value}, teachers=$selectedTeachers, subject=${selectedSubject.value}, type=${type.value}, place=${place.value}, admission=${admission.value}")
                     Button(
-                        onClick = { onSubmit(startAt.value, endAt.value, selectedTeachers, selectedSubject.value!!, type.value!!, place.value, admission.value.takeIf { it.isNotEmpty() }) },
+                        onClick = {
+                            onSubmit(
+                                CreateRetakeRequest(
+                                    startAt = startAt.value,
+                                    endAt = endAt.value,
+                                    teacherIds = selectedTeachers.toList(),
+                                    subjectId = selectedSubject.value!!,
+                                    type = type.value!!,
+                                    place = place.value,
+                                    admission = admission.value.ifEmpty { null }
+                                )
+                            )
+                        },
                         enabled = !isLoading && selectedSubject.value != null && type.value != null && selectedTeachers.isNotEmpty(),
                         modifier = Modifier.weight(1f)
                     ) {

@@ -1,14 +1,15 @@
 package com.example.accountingofstudentretakesapp.presentation.viewmodel
 
-import com.example.accountingofstudentretakesapp.presentation.model.Comment
-import com.example.accountingofstudentretakesapp.presentation.model.Retake
-import com.example.accountingofstudentretakesapp.presentation.model.RetakeDetails
-import com.example.accountingofstudentretakesapp.presentation.model.StudentDebt
-import com.example.accountingofstudentretakesapp.presentation.model.StudentDebtRank
-import com.example.accountingofstudentretakesapp.presentation.model.Subject
-import com.example.accountingofstudentretakesapp.presentation.model.Teacher
+import com.example.accountingofstudentretakesapp.domain.model.Comment
+import com.example.accountingofstudentretakesapp.domain.model.Retake
+import com.example.accountingofstudentretakesapp.domain.model.RetakeDetails
+import com.example.accountingofstudentretakesapp.domain.model.StudentDebt
+import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRank
+import com.example.accountingofstudentretakesapp.domain.model.Subject
+import com.example.accountingofstudentretakesapp.domain.model.Teacher
 
-data class RetakeUiState( // god object но пока будет так
+
+data class RetakeUiState( // god object, но пока будет так
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val teacherRetakes: List<Retake> = emptyList(),

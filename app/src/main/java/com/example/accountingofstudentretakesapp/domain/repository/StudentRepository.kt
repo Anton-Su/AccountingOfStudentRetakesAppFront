@@ -1,10 +1,11 @@
 package com.example.accountingofstudentretakesapp.domain.repository
 
-import com.example.accountingofstudentretakesapp.domain.model.CreateCommentRequestDto
-import com.example.accountingofstudentretakesapp.presentation.model.Comment
-import com.example.accountingofstudentretakesapp.presentation.model.Retake
-import com.example.accountingofstudentretakesapp.presentation.model.StudentDebt
-import com.example.accountingofstudentretakesapp.presentation.model.StudentDebtRank
+import com.example.accountingofstudentretakesapp.data.model.CreateCommentRequestDto
+import com.example.accountingofstudentretakesapp.domain.model.Comment
+import com.example.accountingofstudentretakesapp.domain.model.Retake
+import com.example.accountingofstudentretakesapp.domain.model.StudentDebt
+import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRank
+
 
 interface StudentRepository {
     suspend fun findDebtsByStudentId(studentId: Long): List<StudentDebt>

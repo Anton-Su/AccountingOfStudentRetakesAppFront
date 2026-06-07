@@ -1,6 +1,6 @@
-package com.example.accountingofstudentretakesapp.domain.model
+package com.example.accountingofstudentretakesapp.data.model
 
-import com.example.accountingofstudentretakesapp.presentation.model.UserRole
+import com.example.accountingofstudentretakesapp.domain.model.UserRole
 import kotlinx.serialization.Serializable
 
 @Serializable

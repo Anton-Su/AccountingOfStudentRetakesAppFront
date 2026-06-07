@@ -1,4 +1,4 @@
-package com.example.accountingofstudentretakesapp.presentation.helpers
+package com.example.accountingofstudentretakesapp.domain.helpers
 
 fun validate(placeValue: String, teacherValue: String, overallValue: String, commentText: String): String? {
     val place = placeValue.toIntOrNull()

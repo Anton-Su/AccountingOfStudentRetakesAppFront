@@ -1,7 +1,7 @@
 package com.example.accountingofstudentretakesapp.domain.mapper
 
-import com.example.accountingofstudentretakesapp.domain.model.RetakeEnrollmentDto
-import com.example.accountingofstudentretakesapp.presentation.model.RetakeEnrollment
+import com.example.accountingofstudentretakesapp.data.model.RetakeEnrollmentDto
+import com.example.accountingofstudentretakesapp.domain.model.RetakeEnrollment
 
 fun RetakeEnrollmentDto.toRetakeEnrollmentDomain() = RetakeEnrollment(
     id = id,

@@ -1,10 +1,9 @@
 package com.example.accountingofstudentretakesapp.domain.usecase
 
 import com.example.accountingofstudentretakesapp.domain.repository.AuthRepository
-import com.example.accountingofstudentretakesapp.presentation.model.UserRole
 
 class LoginUseCase(private val repository: AuthRepository) {
-    suspend operator fun invoke(email: String, password: String): Result<String> {
+    suspend operator fun invoke(email: String, password: String): String {
         return repository.login(email, password)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.accountingofstudentretakesapp.presentation.model
+package com.example.accountingofstudentretakesapp.domain.model
 
 data class Comment(
     val id: Long,

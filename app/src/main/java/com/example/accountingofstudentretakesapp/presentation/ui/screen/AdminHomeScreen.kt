@@ -1,6 +1,5 @@
 package com.example.accountingofstudentretakesapp.presentation.ui.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,7 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
-import com.example.accountingofstudentretakesapp.presentation.helpers.formatInstantToHuman
+import com.example.accountingofstudentretakesapp.domain.helpers.formatInstantToHuman
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeCommentsCard
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import java.time.Instant

@@ -1,5 +1,4 @@
-package com.example.accountingofstudentretakesapp.presentation.model
-
+package com.example.accountingofstudentretakesapp.domain.model
 data class StudentDebtRank(
     val studentId: Long,
     val debtsCount: Int,

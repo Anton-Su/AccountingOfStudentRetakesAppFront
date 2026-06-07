@@ -2,6 +2,7 @@ package com.example.accountingofstudentretakesapp.presentation.ui.screen
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequest
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeFormScreen
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import java.time.Instant
@@ -12,7 +13,7 @@ fun AdminRedactRetakeScreen(retakeId: Long, uiState: RetakeUiState,
                             onLoadSubjects: () -> Unit,
                             onLoadTeachers: (String) -> Unit,
                             onClearTeachers: () -> Unit,
-                            onRedactRetake: (id: Long, startAt: Instant, endAt: Instant, teacherIds: List<Long>, subjectId: Long, type: String, place: String, admission: String?) -> Unit,
+                            onRedactRetake: (Long, CreateRetakeRequest) -> Unit,
                             onBack: () -> Unit
 ) {
     val retake = uiState.allRetakes.find { it.id == retakeId }
@@ -31,9 +32,7 @@ fun AdminRedactRetakeScreen(retakeId: Long, uiState: RetakeUiState,
         onClearTeachers = onClearTeachers,
         onLoadSubjects = onLoadSubjects,
         onLoadTeachers = onLoadTeachers,
-        onSubmit = { startAt, endAt, teacherIds, subjectId, type, place, admission ->
-            onRedactRetake(retakeId, startAt, endAt, teacherIds, subjectId, type, place, admission)
-        },
+        onSubmit = { request -> onRedactRetake(retakeId, request) },
         onBack = onBack
     )
 }

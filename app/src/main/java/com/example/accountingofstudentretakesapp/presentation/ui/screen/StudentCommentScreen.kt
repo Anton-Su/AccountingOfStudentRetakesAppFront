@@ -38,7 +38,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
-import com.example.accountingofstudentretakesapp.presentation.helpers.validate
+import com.example.accountingofstudentretakesapp.domain.helpers.validate
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RatingField
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 
@@ -111,7 +111,7 @@ fun StudentCommentScreen(
                     Text(text = "Оценки", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     RatingField(
                         value = gradePlace.value,
-                        onValueChange = { gradePlace.value = it.filter(Char::isDigit) },
+                        onValueChange = { gradePlace.value = it.filter { char -> char.isDigit() } },
                         label = "Аудитория",
                         range = "0–10",
                         icon = Icons.Outlined.LocationOn
@@ -119,7 +119,7 @@ fun StudentCommentScreen(
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     RatingField(
                         value = gradeTeacher.value,
-                        onValueChange = { gradeTeacher.value = it.filter(Char::isDigit) },
+                        onValueChange = { gradeTeacher.value = it.filter {char -> char.isDigit()} },
                         label = "Преподаватель",
                         range = "0–10",
                         icon = Icons.Outlined.Person
@@ -127,7 +127,7 @@ fun StudentCommentScreen(
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     RatingField(
                         value = gradeOverall.value,
-                        onValueChange = { gradeOverall.value = it.filter(Char::isDigit) },
+                        onValueChange = { gradeOverall.value = it.filter {char -> char.isDigit()} },
                         label = "Общая оценка",
                         range = "0–100",
                         icon = Icons.Outlined.Star

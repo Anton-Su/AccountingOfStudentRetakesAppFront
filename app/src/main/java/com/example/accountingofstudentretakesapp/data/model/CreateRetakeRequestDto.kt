@@ -1,4 +1,4 @@
-package com.example.accountingofstudentretakesapp.domain.model
+package com.example.accountingofstudentretakesapp.data.model
 
 import kotlinx.serialization.Serializable
 
@@ -12,4 +12,3 @@ data class CreateRetakeRequestDto(
     val place: String,
     val admission: String? = null
 )
-

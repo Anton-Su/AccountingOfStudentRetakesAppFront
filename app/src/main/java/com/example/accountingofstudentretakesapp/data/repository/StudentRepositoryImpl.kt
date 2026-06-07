@@ -1,20 +1,17 @@
 package com.example.accountingofstudentretakesapp.data.repository
 
+import com.example.accountingofstudentretakesapp.data.model.CreateCommentRequestDto
 import com.example.accountingofstudentretakesapp.data.remote.KtorClient
 import com.example.accountingofstudentretakesapp.domain.mapper.toCommentDomain
 import com.example.accountingofstudentretakesapp.domain.mapper.toRetakeDomain
 import com.example.accountingofstudentretakesapp.domain.mapper.toStudentDebtDomain
 import com.example.accountingofstudentretakesapp.domain.mapper.toStudentDebtRankDomain
-import com.example.accountingofstudentretakesapp.domain.model.CommentDto
-import com.example.accountingofstudentretakesapp.domain.model.CreateCommentRequestDto
-import com.example.accountingofstudentretakesapp.domain.model.RetakeDto
-import com.example.accountingofstudentretakesapp.domain.model.StudentDebtDto
-import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRankDto
+import com.example.accountingofstudentretakesapp.domain.model.Comment
+import com.example.accountingofstudentretakesapp.domain.model.Retake
+import com.example.accountingofstudentretakesapp.domain.model.StudentDebt
+import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRank
 import com.example.accountingofstudentretakesapp.domain.repository.StudentRepository
-import com.example.accountingofstudentretakesapp.presentation.model.Comment
-import com.example.accountingofstudentretakesapp.presentation.model.Retake
-import com.example.accountingofstudentretakesapp.presentation.model.StudentDebt
-import com.example.accountingofstudentretakesapp.presentation.model.StudentDebtRank
+
 
 class StudentRepositoryImpl : StudentRepository {
     override suspend fun findDebtsByStudentId(studentId: Long): List<StudentDebt> {

@@ -14,8 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.domain.model.CommentDto
-import com.example.accountingofstudentretakesapp.presentation.model.Comment
+import com.example.accountingofstudentretakesapp.domain.model.Comment
 
 @Composable
 fun CommentItemCard(comment: Comment) {

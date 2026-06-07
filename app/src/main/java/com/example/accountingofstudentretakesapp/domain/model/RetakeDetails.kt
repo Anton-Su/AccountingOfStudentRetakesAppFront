@@ -1,4 +1,4 @@
-package com.example.accountingofstudentretakesapp.presentation.model
+package com.example.accountingofstudentretakesapp.domain.model
 
 data class RetakeDetails(
     val retake: Retake,

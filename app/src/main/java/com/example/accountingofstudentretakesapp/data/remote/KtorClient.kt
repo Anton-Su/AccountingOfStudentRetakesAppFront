@@ -1,20 +1,18 @@
 package com.example.accountingofstudentretakesapp.data.remote
 
-
-
-import com.example.accountingofstudentretakesapp.domain.model.TeacherDto
-import com.example.accountingofstudentretakesapp.domain.model.SubjectDto
-import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequestDto
-import com.example.accountingofstudentretakesapp.domain.model.CommentDto
-import com.example.accountingofstudentretakesapp.domain.model.CreateCommentRequestDto
-import com.example.accountingofstudentretakesapp.domain.model.StudentDebtDto
-import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRankDto
-import com.example.accountingofstudentretakesapp.domain.model.UserDto
-import com.example.accountingofstudentretakesapp.domain.model.RetakeDto
-import com.example.accountingofstudentretakesapp.domain.model.RetakeDetailsDto
-import com.example.accountingofstudentretakesapp.domain.model.RetakeEnrollmentDto
-import com.example.accountingofstudentretakesapp.domain.model.GradeRequestDto
-import com.example.accountingofstudentretakesapp.domain.model.LoginResponseDto
+import com.example.accountingofstudentretakesapp.data.model.CommentDto
+import com.example.accountingofstudentretakesapp.data.model.CreateCommentRequestDto
+import com.example.accountingofstudentretakesapp.data.model.CreateRetakeRequestDto
+import com.example.accountingofstudentretakesapp.data.model.GradeRequestDto
+import com.example.accountingofstudentretakesapp.data.model.LoginResponseDto
+import com.example.accountingofstudentretakesapp.data.model.RetakeDetailsDto
+import com.example.accountingofstudentretakesapp.data.model.RetakeDto
+import com.example.accountingofstudentretakesapp.data.model.RetakeEnrollmentDto
+import com.example.accountingofstudentretakesapp.data.model.StudentDebtDto
+import com.example.accountingofstudentretakesapp.data.model.StudentDebtRankDto
+import com.example.accountingofstudentretakesapp.data.model.SubjectDto
+import com.example.accountingofstudentretakesapp.data.model.TeacherDto
+import com.example.accountingofstudentretakesapp.data.model.UserDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
@@ -41,7 +39,11 @@ import kotlinx.serialization.json.Json
 
 
 object KtorClient {
-    private const val BASE_URL = "http://10.0.2.2:8080"
+    //private const val BASE_URL = "http://10.0.2.2:8080"
+    //private const val BASE_URL = "http://192.168.31.66:8080"
+    // private const val BASE_URL = "http://192.168.1.141:8080"
+
+    private const val BASE_URL = "https://historius.stranik.dev"
     private var currentAccessToken: String? = null
     private fun buildClient() = HttpClient(OkHttp) {
         install(ContentNegotiation) {
