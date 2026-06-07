@@ -1,1 +1,29 @@
-/build
+# Build
+build/
+**/build/
+
+# Local config
+local.properties
+*.local.properties
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+
+# Gradle
+.gradle/
+gradle/wrapper/gradle-wrapper.jar
+gradlew
+gradlew.bat
+
+# Keystore
+*.jks
+*.keystore
+
+# Android
+*.apk
+*.aab
+
+# Logs
+*.log
