@@ -2,11 +2,15 @@ package com.example.accountingofstudentretakesapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.accountingofstudentretakesapp.data.model.CreateCommentRequestDto
+import com.example.accountingofstudentretakesapp.data.model.requests.CreateCommentRequestDto
 import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.data.repository.LocalCacheRepository
-import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequest
+import com.example.accountingofstudentretakesapp.domain.model.requests.CreateRetakeRequest
 import com.example.accountingofstudentretakesapp.domain.model.Retake
+import com.example.accountingofstudentretakesapp.domain.model.requests.CreateCommentRequest
+import com.example.accountingofstudentretakesapp.domain.model.requests.GradeRequest
+import com.example.accountingofstudentretakesapp.domain.model.requests.LoginRequest
+import com.example.accountingofstudentretakesapp.domain.model.requests.RedactRetakeRequest
 import com.example.accountingofstudentretakesapp.domain.repository.AuthRepository
 import com.example.accountingofstudentretakesapp.domain.usecase.CancelRetakeEnrollmentUseCase
 import com.example.accountingofstudentretakesapp.domain.usecase.CreateCommentUseCase
@@ -69,7 +73,7 @@ class RetakeViewModel( // god object, но пока будет так
     fun login(email: String, password: String) {
     viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-        runCatching { loginUseCase(email, password) }
+        runCatching { loginUseCase(LoginRequest(email, password)) }
             .onFailure { error ->
                 _uiState.update {
                     it.copy(
@@ -151,7 +155,7 @@ class RetakeViewModel( // god object, но пока будет так
     }
     fun gradeStudent(retakeId: Long, studentId: Long, score: Int) {
         viewModelScope.launch {
-            runCatching { gradeStudentUseCase(retakeId, studentId, score) }
+            runCatching { gradeStudentUseCase(retakeId, studentId, GradeRequest(score)) }
                 .onSuccess { _ ->
                     _uiState.update { currentState ->
                         val updatedDetails = currentState.teacherRetakeDetails?.copy(
@@ -537,7 +541,7 @@ class RetakeViewModel( // god object, но пока будет так
             _uiState.update { it.copy(createCommentLoading = true,
                 createCommentError = null) }
 
-            val request = CreateCommentRequestDto(
+            val request = CreateCommentRequest(
                 gradePlace = gradePlace,
                 gradeTeacher = gradeTeacher,
                 gradeOverall = gradeOverall,
@@ -640,15 +644,14 @@ class RetakeViewModel( // god object, но пока будет так
     }
 
     fun redactRetake(
-        id: Long,
-        request: CreateRetakeRequest,
+        request: RedactRetakeRequest,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
         viewModelScope.launch {
             _uiState.update { it.copy(redactRetakeLoading = true, redactRetakeError = null) }
             runCatching {
-                redactRetakeUseCase(id = id, request = request)
+                redactRetakeUseCase(request = request)
             }
                 .onSuccess {
                     _uiState.update { it.copy(redactRetakeLoading = false) }

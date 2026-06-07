@@ -1,15 +1,16 @@
 package com.example.accountingofstudentretakesapp.data.repository
 
-import com.example.accountingofstudentretakesapp.data.model.CreateCommentRequestDto
 import com.example.accountingofstudentretakesapp.data.remote.KtorClient
-import com.example.accountingofstudentretakesapp.domain.mapper.toCommentDomain
-import com.example.accountingofstudentretakesapp.domain.mapper.toRetakeDomain
-import com.example.accountingofstudentretakesapp.domain.mapper.toStudentDebtDomain
-import com.example.accountingofstudentretakesapp.domain.mapper.toStudentDebtRankDomain
+import com.example.accountingofstudentretakesapp.domain.mapper.toDomain.toCommentDomain
+import com.example.accountingofstudentretakesapp.domain.mapper.toDomain.toRetakeDomain
+import com.example.accountingofstudentretakesapp.domain.mapper.toDomain.toStudentDebtDomain
+import com.example.accountingofstudentretakesapp.domain.mapper.toDomain.toStudentDebtRankDomain
+import com.example.accountingofstudentretakesapp.domain.mapper.toDto.toСreateCommentRequestDto
 import com.example.accountingofstudentretakesapp.domain.model.Comment
 import com.example.accountingofstudentretakesapp.domain.model.Retake
 import com.example.accountingofstudentretakesapp.domain.model.StudentDebt
 import com.example.accountingofstudentretakesapp.domain.model.StudentDebtRank
+import com.example.accountingofstudentretakesapp.domain.model.requests.CreateCommentRequest
 import com.example.accountingofstudentretakesapp.domain.repository.StudentRepository
 
 
@@ -34,8 +35,8 @@ class StudentRepositoryImpl : StudentRepository {
         return KtorClient.cancelRetakeEnrollment(studentId, debtId, retakeId)
     }
 
-    override suspend fun createComment(studentId: Long, request: CreateCommentRequestDto): Comment {
-        return KtorClient.createComment(studentId, request).toCommentDomain()
+    override suspend fun createComment(studentId: Long, request: CreateCommentRequest): Comment {
+        return KtorClient.createComment(studentId, request.toСreateCommentRequestDto()).toCommentDomain()
     }
 
     override suspend fun getStudentDebtRank(studentId: Long): StudentDebtRank {

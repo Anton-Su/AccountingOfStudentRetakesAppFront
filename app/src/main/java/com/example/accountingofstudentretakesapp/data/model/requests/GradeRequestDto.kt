@@ -1,4 +1,4 @@
-package com.example.accountingofstudentretakesapp.data.model
+package com.example.accountingofstudentretakesapp.data.model.requests
 
 import kotlinx.serialization.Serializable
 
@@ -6,4 +6,3 @@ import kotlinx.serialization.Serializable
 data class GradeRequestDto(
     val score: Int
 )
-

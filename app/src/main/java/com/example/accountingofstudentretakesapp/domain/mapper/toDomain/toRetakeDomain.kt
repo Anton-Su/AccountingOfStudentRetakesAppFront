@@ -1,4 +1,4 @@
-package com.example.accountingofstudentretakesapp.domain.mapper
+package com.example.accountingofstudentretakesapp.domain.mapper.toDomain
 
 import com.example.accountingofstudentretakesapp.data.model.RetakeDto
 import com.example.accountingofstudentretakesapp.domain.model.Retake

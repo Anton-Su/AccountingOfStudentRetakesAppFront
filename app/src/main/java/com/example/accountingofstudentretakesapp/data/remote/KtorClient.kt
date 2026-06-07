@@ -1,10 +1,8 @@
 package com.example.accountingofstudentretakesapp.data.remote
 
 import com.example.accountingofstudentretakesapp.data.model.CommentDto
-import com.example.accountingofstudentretakesapp.data.model.CreateCommentRequestDto
-import com.example.accountingofstudentretakesapp.data.model.CreateRetakeRequestDto
-import com.example.accountingofstudentretakesapp.data.model.GradeRequestDto
-import com.example.accountingofstudentretakesapp.data.model.LoginResponseDto
+import com.example.accountingofstudentretakesapp.data.model.requests.CreateCommentRequestDto
+import com.example.accountingofstudentretakesapp.data.model.LoginDto
 import com.example.accountingofstudentretakesapp.data.model.RetakeDetailsDto
 import com.example.accountingofstudentretakesapp.data.model.RetakeDto
 import com.example.accountingofstudentretakesapp.data.model.RetakeEnrollmentDto
@@ -13,6 +11,10 @@ import com.example.accountingofstudentretakesapp.data.model.StudentDebtRankDto
 import com.example.accountingofstudentretakesapp.data.model.SubjectDto
 import com.example.accountingofstudentretakesapp.data.model.TeacherDto
 import com.example.accountingofstudentretakesapp.data.model.UserDto
+import com.example.accountingofstudentretakesapp.data.model.requests.CreateRetakeRequestDto
+import com.example.accountingofstudentretakesapp.data.model.requests.GradeRequestDto
+import com.example.accountingofstudentretakesapp.data.model.requests.LoginRequestDto
+import com.example.accountingofstudentretakesapp.data.model.requests.RedactRetakeRequestDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
@@ -22,15 +24,15 @@ import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.delete
-import io.ktor.client.request.put
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -90,15 +92,10 @@ object KtorClient {
         client = buildClient()
     }
 
-    suspend fun login(email: String, password: String): LoginResponseDto {
+    suspend fun login(request: LoginRequestDto): LoginDto {
         return client.post("/auth/login") {
             contentType(ContentType.Application.Json)
-            setBody(
-                mapOf(
-                    "email" to email,
-                    "password" to password,
-                )
-            )
+            setBody(request)
         }.body()
     }
 
@@ -128,7 +125,7 @@ object KtorClient {
         }.body()
     }
 
-    suspend fun updateRetake(id: Long, request: CreateRetakeRequestDto): RetakeDto {
+    suspend fun updateRetake(id: Long, request: RedactRetakeRequestDto): RetakeDto {
         return client.put("/api/admin/retakes/$id") {
             contentType(ContentType.Application.Json)
             setBody(request)

@@ -185,9 +185,8 @@ fun Navigation(navController: NavHostController = rememberNavController(), viewM
                 onLoadTeachers = { discipline ->
                     viewModel.loadTeachersByDiscipline(discipline)
                 },
-                onRedactRetake = { id, request ->
+                onRedactRetake = {request ->
                     viewModel.redactRetake(
-                        id = id,
                         request = request,
                         onSuccess = { navController.popBackStack() },
                         onError = { _ -> }

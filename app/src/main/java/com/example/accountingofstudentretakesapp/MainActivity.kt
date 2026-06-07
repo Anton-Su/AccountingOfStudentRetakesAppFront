@@ -18,6 +18,7 @@ import com.example.accountingofstudentretakesapp.data.remote.SettingsDataStore
 import com.example.accountingofstudentretakesapp.data.remote.TokenManager
 import com.example.accountingofstudentretakesapp.data.repository.AdminRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.AuthRepositoryImpl
+import com.example.accountingofstudentretakesapp.data.repository.GuestRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.StudentRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.TeacherRepositoryImpl
 import com.example.accountingofstudentretakesapp.data.repository.UserRepositoryImpl
@@ -62,8 +63,10 @@ class MainActivity : ComponentActivity() {
         val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
         val adminRepository = AdminRepositoryImpl()
         val studentRepository = StudentRepositoryImpl()
+        val guestRepository = GuestRepositoryImpl()
+
         val getAllRetakesUseCase = GetAllRetakesUseCase(adminRepository)
-        val getSubjectsUseCase = GetSubjectsUseCase(adminRepository)
+        val getSubjectsUseCase = GetSubjectsUseCase(guestRepository)
         val getTeachersByDisciplineUseCase = GetTeachersByDisciplineUseCase(adminRepository)
         val createRetakeUseCase = CreateRetakeUseCase(adminRepository)
         val deleteRetakeUseCase = DeleteRetakeUseCase(adminRepository)

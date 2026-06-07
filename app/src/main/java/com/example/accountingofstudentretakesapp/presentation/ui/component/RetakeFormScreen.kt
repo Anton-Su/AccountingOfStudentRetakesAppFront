@@ -32,7 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequest
+import com.example.accountingofstudentretakesapp.domain.model.requests.CreateRetakeRequest
 import com.example.accountingofstudentretakesapp.domain.model.Retake
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 import java.time.Instant

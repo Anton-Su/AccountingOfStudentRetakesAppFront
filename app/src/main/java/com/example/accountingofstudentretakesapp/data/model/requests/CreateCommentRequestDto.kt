@@ -1,4 +1,4 @@
-package com.example.accountingofstudentretakesapp.data.model
+package com.example.accountingofstudentretakesapp.data.model.requests
 
 import kotlinx.serialization.Serializable
 

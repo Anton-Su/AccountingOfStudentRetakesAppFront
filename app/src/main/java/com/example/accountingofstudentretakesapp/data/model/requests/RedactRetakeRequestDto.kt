@@ -1,9 +1,9 @@
-package com.example.accountingofstudentretakesapp.data.model
+package com.example.accountingofstudentretakesapp.data.model.requests
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateRetakeRequestDto(
+data class RedactRetakeRequestDto(
     val startAt: String,
     val endAt: String,
     val teacherIds: List<Long>,

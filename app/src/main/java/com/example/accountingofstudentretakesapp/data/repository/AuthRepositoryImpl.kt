@@ -1,13 +1,14 @@
 package com.example.accountingofstudentretakesapp.data.repository
 
-import com.example.accountingofstudentretakesapp.data.model.LoginResponseDto
 import com.example.accountingofstudentretakesapp.data.remote.KtorClient
 import com.example.accountingofstudentretakesapp.data.remote.TokenManager
+import com.example.accountingofstudentretakesapp.domain.mapper.toDto.toLoginRequestDto
+import com.example.accountingofstudentretakesapp.domain.model.requests.LoginRequest
 import com.example.accountingofstudentretakesapp.domain.repository.AuthRepository
 
 class AuthRepositoryImpl(private val tokenManager: TokenManager) : AuthRepository {
-    override suspend fun login(email: String, password: String): String {
-        val response: LoginResponseDto = KtorClient.login(email, password)
+    override suspend fun login(request: LoginRequest): String {
+        val response = KtorClient.login(request.toLoginRequestDto())
         tokenManager.saveAccessToken(response.token)
         KtorClient.updateAccessToken(response.token)
         return response.token

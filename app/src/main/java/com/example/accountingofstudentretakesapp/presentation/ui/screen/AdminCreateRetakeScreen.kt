@@ -2,7 +2,7 @@ package com.example.accountingofstudentretakesapp.presentation.ui.screen
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import com.example.accountingofstudentretakesapp.domain.model.CreateRetakeRequest
+import com.example.accountingofstudentretakesapp.domain.model.requests.CreateRetakeRequest
 import com.example.accountingofstudentretakesapp.presentation.ui.component.RetakeFormScreen
 import com.example.accountingofstudentretakesapp.presentation.viewmodel.RetakeUiState
 

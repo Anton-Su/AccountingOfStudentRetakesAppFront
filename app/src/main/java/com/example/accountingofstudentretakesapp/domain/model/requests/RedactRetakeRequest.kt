@@ -1,8 +1,9 @@
-package com.example.accountingofstudentretakesapp.domain.model
+package com.example.accountingofstudentretakesapp.domain.model.requests
 
 import java.time.Instant
 
-data class CreateRetakeRequest(
+data class RedactRetakeRequest(
+    val id: Long,
     val startAt: Instant,
     val endAt: Instant,
     val teacherIds: List<Long>,
