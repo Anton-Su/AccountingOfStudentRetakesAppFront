@@ -142,13 +142,6 @@ AccountingOfStudentRetakesApp/
 3. Backend синхронизирует данные с PostgreSQL (Neon)
 4. При необходимости приложение может получить актуальные данные с облака
 
-### Примеры переменных окружения (для Backend)
-
-```env
-DATABASE_URL=postgresql://user:password@host/database
-NEON_API_KEY=your_neon_api_key
-```
-
 ## 📚 Документация
 
 Проект использует **Dokka** для генерации документации. Для создания HTML документации выполните:
