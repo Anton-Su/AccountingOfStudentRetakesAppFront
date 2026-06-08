@@ -1,0 +1,134 @@
+<resources>
+    <string name="app_name">AccountingOfStudentRetakesApp</string>
+    <string name="role_selector_title">Role Functions</string>
+    <string name="login_title">Application Login</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_clear_email_cd">Clear email</string>
+    <string name="login_clear_password_cd">Clear password</string>
+    <string name="login_loading">Signing in...</string>
+    <string name="login_submit">Sign In</string>
+    <string name="login_help_university">Can\'t sign in? Contact the person responsible at the university.</string>
+    <string name="login_help_developer">Found a bug in the system? Email the developer at develplover@mail.ru. They might read it. Maybe...</string>
+
+    <string name="role_student">Student</string>
+    <string name="role_teacher">Teacher</string>
+    <string name="role_admin">Admin</string>
+    <string name="role_feature_student_enroll">Enroll for Retake</string>
+    <string name="role_feature_student_cancel">Cancel Enrollment</string>
+    <string name="role_feature_student_stats">Debt Statistics</string>
+    <string name="role_feature_student_top">Ranking Among Debtors</string>
+    <string name="role_feature_student_comment">Leave Retake Review</string>
+    <string name="role_feature_teacher_journal">Retake Journal</string>
+    <string name="role_feature_admin_control">Full Retake Control</string>
+    <string name="role_feature_admin_reviews">View Reviews</string>
+
+    <string name="retake_type_exam">Exam</string>
+    <string name="retake_type_pass">Pass</string>
+
+    <string name="group_prefix">Group: %1$s</string>
+    <string name="grade_undetermined">—</string>
+    <string name="grade_submit">Submit</string>
+
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_choose_time">Select Time</string>
+    <string name="date_picker_cd">Select Date</string>
+
+    <string name="comment_rating_teacher">Teacher</string>
+    <string name="comment_rating_place">Classroom</string>
+    <string name="comment_rating_total">Total</string>
+    <string name="comment_quoted">«%1$s»</string>
+
+    <string name="retake_comments_title">Comments (%1$d)</string>
+    <string name="retake_comments_cd">Comments</string>
+    <string name="retake_comments_hide">Hide</string>
+    <string name="retake_comments_show">Show</string>
+
+    <string name="student_comment_title">Retake Review</string>
+    <string name="back">Back</string>
+    <string name="student_comment_ratings">Ratings</string>
+    <string name="student_comment_place">Classroom</string>
+    <string name="student_comment_teacher">Teacher</string>
+    <string name="student_comment_overall">Overall Rating</string>
+    <string name="student_comment_range_0_10">0–10</string>
+    <string name="student_comment_range_0_100">0–100</string>
+    <string name="student_comment_comment">Comment</string>
+    <string name="student_comment_placeholder">Share your thoughts with us...</string>
+    <string name="student_comment_counter">%1$d/500</string>
+    <string name="student_comment_submit">Submit Review</string>
+
+    <string name="teacher_retake_details_title">Retake Details</string>
+    <string name="teacher_retake_loading">Loading retake details...</string>
+    <string name="teacher_retake_type_label">Type</string>
+    <string name="teacher_retake_place_label">Location</string>
+    <string name="teacher_retake_start_label">Start</string>
+    <string name="teacher_retake_end_label">End</string>
+    <string name="teacher_retake_admission_label">Admission</string>
+    <string name="teacher_retake_last_modified">Last modified: %1$s</string>
+    <string name="teacher_retake_students">Enrolled Students (%1$d)</string>
+    <string name="teacher_retake_no_students">No enrolled students</string>
+    <string name="teacher_retake_no_data">No retake data available</string>
+
+    <string name="admin_home_title">Admin Panel</string>
+    <string name="logout">Sign Out</string>
+    <string name="admin_all_retakes_title">All Retakes</string>
+    <string name="add">Add</string>
+    <string name="loading_retakes">Loading retakes...</string>
+    <string name="no_retakes">No retakes</string>
+    <string name="retake_prefix_place">Location: %1$s</string>
+    <string name="retake_prefix_start">Start: %1$s</string>
+    <string name="retake_prefix_end">End: %1$s</string>
+    <string name="admin_retake_subject_type">%1$s (%2$s)</string>
+    <string name="retake_time_range">%1$s — %2$s</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <string name="teacher_home_title">Teacher Panel</string>
+    <string name="my_retakes">My Retakes</string>
+    <string name="loading_retakes_common">Loading retakes...</string>
+    <string name="no_assigned_retakes">No assigned retakes yet</string>
+    <string name="subject_prefix">Subject: %1$s</string>
+
+    <string name="student_home_title">Student Panel</string>
+    <string name="top_place_label">Current rank:</string>
+    <string name="student_rank_value">%1$d of %2$d</string>
+    <string name="debt_section">Debts</string>
+    <string name="loading_debts">Loading debts...</string>
+    <string name="no_debts">No debts yet</string>
+    <string name="available_retakes">Available Retakes</string>
+    <string name="loading_available_retakes">Loading available retakes...</string>
+    <string name="no_available_retakes">No available retakes for your debts</string>
+    <string name="enrolled_retakes">I\'m enrolled in...</string>
+    <string name="loading_enrolled">Loading enrollments...</string>
+    <string name="no_enrolled">You are not enrolled in any retakes yet</string>
+    <string name="past_retakes">Past Retakes</string>
+    <string name="enroll_action">Enroll for Retake</string>
+    <string name="cancel_action">Cancel Enrollment</string>
+    <string name="comment_action">Leave Comment</string>
+
+    <string name="create_retake_title">Create Retake</string>
+    <string name="create_retake_submit">Create</string>
+    <string name="edit_retake_title">Edit Retake</string>
+    <string name="edit_retake_submit">Save</string>
+
+    <string name="form_place">Location</string>
+    <string name="form_choose_type">Select Retake Type</string>
+    <string name="form_start_time">Start Time</string>
+    <string name="form_end_time">End Time</string>
+    <string name="form_admission_optional">Admission (Optional)</string>
+    <string name="form_choose_subject">Select Subject</string>
+    <string name="form_subject_not_selected">Subject not selected</string>
+    <string name="form_choose_teachers">Select Teachers</string>
+    <string name="form_no_teachers">No teachers for this subject</string>
+    <string name="form_cancel">Cancel</string>
+
+    <string name="validation_rate_place">Rate the classroom</string>
+    <string name="validation_place_range">Classroom rating must be between 0 and 10</string>
+    <string name="validation_rate_teacher">Rate the teacher</string>
+    <string name="validation_teacher_range">Teacher rating must be between 0 and 10</string>
+    <string name="validation_overall_required">Enter overall rating</string>
+    <string name="validation_overall_range">Overall rating must be between 0 and 100</string>
+    <string name="validation_comment_length">Comment must not exceed 500 characters</string>
+</resources>
+
